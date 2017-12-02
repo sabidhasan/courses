@@ -1,0 +1,46 @@
+@mixin font-family() {
+  font-family: 'Slabo 27px', sans-serif;
+}
+body {
+  text-align: center;
+  margin: 5% auto;
+  
+  > div { 
+    width: 50%; margin: 0 auto;
+  }
+  
+  h1, h2 {
+    @include font-family();
+    padding: 4%;
+    width: 100%
+  }
+  h1 {
+    font-weight: normal;
+    background: limegreen;
+  }
+  
+  .buttons {
+    width: 78%;
+    float: left;
+  }
+  
+  button {
+    display: block;
+    margin: 3% auto;
+    width: 75%;
+    padding: 5%;
+    font-size: 1.4rem;
+    background: limegreen;
+    border: 4px solid black;
+    font-weight: bold;
+    outline: none;
+    border-radius: 10px;
+    @include font-family()
+  }
+  
+  .marks {
+    h2:nth-child(1) {color: limegreen}
+    h2:nth-child(2) {color: crimson}
+    span {display: block}
+  }
+}
