@@ -1,0 +1,112 @@
+function Boxes(props) {
+  return (
+    <span>
+      <p>{props.text}</p>
+      <input type = "text" name = {props.name} value = {props.value} onChange = {props.handleChange} />
+    </span>
+  )
+  
+}
+
+function CourseChoices(props) {
+  var choices = ["Science Lab", "Swimming", "Cooking", "Painting"]
+  choices = choices.map((val, index) => <option key={index} value={val}>{val}</option>)
+                        
+  return (
+   <span>
+      <p>Select Activity</p>
+      <select name={props.name} value = {props.value} onChange = {props.handleChange}>{choices}</select>
+   </span>
+  )
+}
+
+function Checkbox(props) {
+  return (
+    <span className = "checkbox"><input type = "checkbox" name={"check"+props.title} value={props.title} checked = {props.state} onChange = {props.handleChange}/><label>{props.text}</label></span>
+  )
+}
+
+function SubmitButton(props) {
+  return <button type="submit" onClick = {props.action} id = "submit">Add Student</button>
+}
+
+function DeleteButton(props) {
+  return <button type="submit" onClick = {() => props.action(props.id)}>X</button>
+}
+
+function DrawTable(props) {
+  var arr = props.data.map((val) => <tr><td><DeleteButton action = {props.delete} id = {val.id} /></td><td>{val.firstName}</td><td>{val.lastName}</td><td>{val.course}</td><td>{val.needs}</td></tr>)
+  
+  return (arr.length > 0 && <table>
+                             <tr><td>&nbsp;</td><td>First Name</td><td>Last Name</td><td>Activity</td><td>Restrictions</td></tr>
+    {arr}
+  </table>                           
+  )
+}
+
+
+
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {course: "Science Lab", data: [], firstName: "", lastName: "", checka: false, checkb: false, checkc: false}
+    this.handleChange = this.handleChange.bind(this)
+    this.deleteData = this.deleteData.bind(this)
+    this.addData = this.addData.bind(this)
+  }
+  
+  addData() {
+    //If first or last name blank, do nothing
+    if (!this.state.firstName || !this.state.lastName) return null
+    //Determine what is checked
+    var needs = ['a', 'b', 'c'].filter((val) => this.state['check' + val] === true).join("") || "None"
+    //if (!needs) needs = "None"
+    
+    //add on the new data
+    var newData =  this.state.data.concat([{firstName: this.state.firstName, lastName: this.state.lastName, course: this.state.course, needs: needs, id: this.state.data.length}])
+    //update the state with new data
+    this.setState({data: newData, course: "Science Lab", firstName: "", lastName: "", checka: false, checkb: false, checkc: false}, () => console.log(this.state.data))
+  }
+  
+  deleteData(index) {
+    var data = this.state.data.slice()
+    data.splice(index, 1)
+    data = data.map((val, i) => {
+      if (i >= index) {val.id -= 1}
+      return val
+    })
+    this.setState({data: data})
+  }
+  
+  handleChange(event) {
+    //is it a checkbox or inputbox/select box?
+    var valueToCheck = event.target.name.indexOf("check") !== -1 ? "checked" : "value"
+    this.setState({[event.target.name]: event.target[valueToCheck]}, () => console.log(this.state))
+  }
+  
+  render() {
+    var checkboxes = [{title: "a", text: "dietary restrictions"}, {title: "b", text: "physical disabilities"}, {title: "c", text: "medical needs"}]
+    return (
+      <div>
+        <h2>Student Management System</h2>
+        <Boxes value = {this.state.firstName} handleChange = {this.handleChange} text = "First Name" name = "firstName" />
+        <Boxes value = {this.state.lastName} handleChange = {this.handleChange} text = "Last Name" name = "lastName" />
+        <CourseChoices value = {this.state.course} handleChange = {this.handleChange} name = "course" />
+
+        <p>Check all that apply</p>
+        {checkboxes.map((val) => <Checkbox title={val.title} handleChange={this.handleChange} state={this.state["check"+val.title]} text={val.text} />)
+        }
+        
+        <SubmitButton action = {this.addData} onClick = {this.addData}/>
+      <DrawTable data = {this.state.data} delete = {this.deleteData} />
+    </div>
+    )
+  }
+  
+}
+
+
+
+
+
+ReactDOM.render(<App />, document.getElementById("root"))
