@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Forms</title>
+  </head>
+  <body>
+    <h1>Register</h1>
+    <form action="#" method="GET">
+      <div>
+        <label>
+          First Name:
+          <input type="text" name="first-name" placeholder="John" required />
+        </label>
+        <label>
+          Last Name:
+          <input type="text" name="last-name" placeholder="Smith" required/>
+        </label>
+      </div>
+
+      <div>
+        <label for="male">Male</label>
+        <input type="radio" value="male" name="gender" id="male"/>
+
+        <label for="female">Female</label>
+        <input type="radio" value="female" name="gender" id="female"/>
+
+        <label for="other">Other</label>
+        <input type="radio" value="other" name="gender" id="other"/>
+      </div>
+
+      <div>
+        <label>
+          Email:
+          <input type="email" name="email" placeholder="your email" required/>
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Password (5-10 characters):
+          <input type="password" name="password" placeholder="your password" required pattern=".{5,10}" title="5 to 10 chars"/>
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Birthday
+          <select name="month">
+            <option>Month</option>
+            <option>Jan</option>
+            <option>Feb</option>
+            <option>Mar</option>
+            <option>Apr</option>
+            <option>...</option>
+          </select>
+
+          <select name="date">
+            <option>Date</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>...</option>
+            <option>30</option>
+          </select>
+
+          <select name="year">
+            <option>Year</option>
+            <option>1930</option>
+            <option>1931</option>
+            <option>...</option>
+            <option>2000</option>
+          </select>
+        </label>
+      </div>
+
+      <div>
+        <label>
+          I agree to the terms and conditions
+          <input type="checkbox" value="terms" required />
+        </label>
+      </div>
+
+      <button>Submit</button>
+    </form>
+
+  </body>
+</html>
