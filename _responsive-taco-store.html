@@ -4,14 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../assets/style.css">
-  <link rel="stylesheet" href="./responsive-START.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/responsive-taco-store.css">
   <title>Responsive Website!</title>
 </head>
 
 <body>
 
   <div class="wrapper">
+
     <div class="top">
       <header class="hero">
         <h1>Terry's Taco Joint</h1>
@@ -27,6 +28,7 @@
       </div>
 
     </div>
+
     <nav class="menu">
       <button aria-expanded="false" aria-controls="menu-list">
         <span class="open">☰</span>
@@ -76,7 +78,7 @@
     </section>
 
     <section class="about">
-      <img src="images/queso-taco.png" alt="Yummy Taco" class="about__mockup">
+      <img src="assets/images/taco.png" alt="Yummy Taco" class="about__mockup">
       <div class="about__details">
         <h2>Featured Taco</h2>
         <p>Slim Profile, easy to hold and loaded with cheese.</p>
@@ -84,7 +86,6 @@
         <button>Learn More →</button>
       </div>
     </section>
-
 
     <section class="gallery">
       <h2>Instant Grams</h2>
@@ -100,6 +101,17 @@
       <img src="https://source.unsplash.com/random/207x210" alt="">
     </section>
   </div>
+
+  <script type="text/javascript">
+    const navButton = document.querySelector("button[aria-expanded]");
+    navButton.addEventListener("click", toggleNav);
+
+    function toggleNav(e) {
+      const expanded = e.target.getAttribute('aria-expanded') === "true" || false;
+      navButton.setAttribute("aria-expanded", !expanded)
+    }
+
+  </script>
 
 </body>
 
