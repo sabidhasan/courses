@@ -131,4 +131,5 @@ background-color: #1b2b3b;
 .settings {
   padding: 10px;
   background-color: black;
+  display: grid;
 }
