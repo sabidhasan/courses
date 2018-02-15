@@ -1,4 +1,3 @@
-splash banner image
 
 music_artist_vinyl_1.jpg
 music_artist_vinyl_1a.jpg
@@ -9,12 +8,10 @@ music_artist_vinyl_3a.jpg
 music_artist_vinyl_4.jpg
 music_artist_vinyl_4a.jpg
 
-music_artist_cd.jpg
-
 video
 
 
 
 
-remove banner padding & update --banner-margin variable
-collapse menu to hangurger
+update --banner-margin variable
+collapse menu to hamgurger

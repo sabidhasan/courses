@@ -1,19 +1,50 @@
-body, html { box-sizing: border-box; margin: 0; font-family: 'Arimo', sans-serif;}
+body, html { box-sizing: border-box; margin: 0;}
 *, *:before, *:after { box-sizing: inherit; }
 @import url('https://fonts.googleapis.com/css?family=Arimo:400,700');
+body {
+  font-family: 'Arimo', sans-serif;
+}
+
 :root {
   --banner-margin: 20px;
 }
 
 /* ------------------------------------------------------------- */
 
-/* MAJOR ELEMENT -- Banner at the top */
+.small-title {
+  grid-column: span 2;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+.small-title:after {
+  content: "";
+  width: 50%;
+  margin: 0 auto;
+  border-bottom: 2px solid gray;
+  opacity: 0.4;
+  height: 15px;
+  display: block;
+}
+.normal-button {
+  outline: none;
+  border: 2px solid gray;
+  background: transparent;
+  color: white;
+  font-size: 1.1rem;
+  padding: 15px;
+  margin: 20px 0;
+  letter-spacing: 0.08rem;
+}
+
+
+/* ----------------------------------- */
+/* MAJOR ELEMENT -- top banner section */
+/* ----------------------------------- */
 .banner {
   background-image: url('music_artist_splash_banner.png'), linear-gradient(135deg, #3c4c52 0%, #283034 100%);
   background-repeat: no-repeat;
   background-size: 60vh, auto;
   background-position: left 100px bottom, left 0 top 0;
-
   /* to account for the margin, the height should be reduced by the margin size */
   height: calc(100vh - (2 * var(--banner-margin)));
   min-height: 400px;
@@ -23,7 +54,6 @@ body, html { box-sizing: border-box; margin: 0; font-family: 'Arimo', sans-serif
   grid-gap: 0 50px;
   color: white;
 }
-
 /* Logo image */
 .banner__logo {
   padding: 20px;
@@ -67,14 +97,60 @@ body, html { box-sizing: border-box; margin: 0; font-family: 'Arimo', sans-serif
   margin: 0.2rem 0;
   color: gray;
 }
-/* splash banner's button */
-.splash-banner__see-all {
-  outline: none;
-  border: 2px solid gray;
-  background: transparent;
-  color: white;
-  font-size: 1.1rem;
-  padding: 15px;
-  margin: 20px 0;
-  letter-spacing: 0.08rem;
+
+/* ------------------------------ */
+/* MAJOR ELEMENT -- about section */
+/* ------------------------------ */
+.about {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  justify-items: center;
+  color: #606368;
+}
+.about__quote {
+  grid-column: span 2;
+  font-family: cursive;
+  font-size: 3.4rem;
+  text-align: center;
+}
+.about__text {
+  justify-self: right;
+  text-align: justify;
+  padding-left: calc(var(--banner-margin) * 5);
+  line-height: 2.2rem;
+  font-size: 1.2rem;
+  font-family: 'Garamond';
+  align-self: flex-start;
+}
+.about__image {
+  justify-self: left;
+  margin: 0 30px;
+}
+.about__image img {
+  max-width: 200px;
+  border-radius: 50%;
+}
+
+/* ------------------------------------ */
+/* MAJOR ELEMENT -- latest work section */
+/* ------------------------------------ */
+.latest-work {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  justify-items: center;
+  color: #606368;
+}
+.latest-work__albums {
+  grid-column: span 2;
+  /*This is a grid itself*/
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+}
+.latest-work__see-all {
+  color: #283034;
+  opacity: 0.6;
+  grid-column: span 2;
 }
