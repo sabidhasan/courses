@@ -142,13 +142,45 @@ body {
   align-items: center;
   justify-items: center;
   color: #606368;
+  margin: 0 var(--banner-margin);
 }
 .latest-work__albums {
   grid-column: span 2;
+  width: 100%;
+  margin-top: 75px;
   /*This is a grid itself*/
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+  grid-gap: 15px;
 }
+.album {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.album__art {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: flex-end;
+  justify-content: center;
+  align-items: center;
+}
+.album__art:hover > .album__art-vinyl {
+  transform: translateX(0px)
+}
+.album__art-cover {
+  width: 160px;
+  justify-self: flex-end;
+}
+.album__art-vinyl {
+  width: 80px;
+  justify-self: flex-start;
+  /* Hide it behind the cover */
+  transform: translateX(-40px) translateY(-1px);
+  z-index: -1;
+  transition: all 0.4s linear;
+}
+/* button for see all  */
 .latest-work__see-all {
   color: #283034;
   opacity: 0.6;
