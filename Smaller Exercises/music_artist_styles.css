@@ -2,22 +2,26 @@ body, html { box-sizing: border-box; margin: 0; font-family: 'Arimo', sans-serif
 *, *:before, *:after { box-sizing: inherit; }
 @import url('https://fonts.googleapis.com/css?family=Arimo:400,700');
 :root {
-
+  --banner-margin: 20px;
 }
-
 
 /* ------------------------------------------------------------- */
 
-/* Banner at the top */
+/* MAJOR ELEMENT -- Banner at the top */
 .banner {
-  background: linear-gradient(135deg, #3c4c52 0%, #283034 100%);
-  height: 100vh;
-  margin: 20px;
+  background-image: url('music_artist_splash_banner.png'), linear-gradient(135deg, #3c4c52 0%, #283034 100%);
+  background-repeat: no-repeat;
+  background-size: 60vh, auto;
+  background-position: left 100px bottom, left 0 top 0;
+
+  /* to account for the margin, the height should be reduced by the margin size */
+  height: calc(100vh - (2 * var(--banner-margin)));
+  min-height: 400px;
+  margin: var(--banner-margin);
   display: grid;
   grid-template-columns: 100px 1fr;
-  grid-gap: 50px;
+  grid-gap: 0 50px;
   color: white;
-  /* text-shadow: 2px 1px 4px gray; */
 }
 
 /* Logo image */
@@ -25,7 +29,7 @@ body, html { box-sizing: border-box; margin: 0; font-family: 'Arimo', sans-serif
   padding: 20px;
   max-width: 100%;
 }
-
+/* Menu navigation */
 .menu {
   display: flex;
   flex-direction: row;
@@ -36,7 +40,41 @@ body, html { box-sizing: border-box; margin: 0; font-family: 'Arimo', sans-serif
 .menu__nav-item {
   list-style-type: none;
   text-transform: uppercase;
-  margin: 30px 12px;
-  font-size: 0.8rem;
+  margin: 55px 25px;
+  font-size: 0.9rem;
   font-weight: bold;
+}
+.menu__nav-link {
+  text-decoration: none;
+  color: white;
+}
+/* Artist title and latest news for the banner` */
+.splash-banner {
+  grid-column: -2;
+  padding: 40px;
+  justify-self: flex-end;
+  text-transform: uppercase;
+  text-align: right;
+}
+.splash-banner__name {
+  margin: 0.2rem 0;
+  font-size: 4.6rem;
+}
+.splash-banner__tour {
+  margin: 0;
+}
+.splash-banner__date {
+  margin: 0.2rem 0;
+  color: gray;
+}
+/* splash banner's button */
+.splash-banner__see-all {
+  outline: none;
+  border: 2px solid gray;
+  background: transparent;
+  color: white;
+  font-size: 1.1rem;
+  padding: 15px;
+  margin: 20px 0;
+  letter-spacing: 0.08rem;
 }
