@@ -27,11 +27,12 @@ body {
 }
 .normal-button {
   outline: none;
+  text-transform: uppercase;
   border: 2px solid gray;
   background: transparent;
   color: white;
   font-size: 1.1rem;
-  padding: 15px;
+  padding: 15px 35px;
   margin: 20px 0;
   letter-spacing: 0.08rem;
 }
@@ -154,23 +155,40 @@ body {
   grid-gap: 15px;
 }
 .album {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 .album__art {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  justify-items: flex-end;
-  justify-content: center;
+  justify-items: center;
   align-items: center;
+}
+.album__art:after {
+  background-size: contain;
+  content: "";
+  display: block;
+  height: 150px;
+  background: url(https://b.thumbs.redditmedia.com/2x_qjvsvFWbFpCK3Bg_LknS7bObByPbnPTz-DdyFr9I.jpg);
+  grid-column: 1;
+  grid-row: 1;
+  width: 150px;
+  background-repeat: no-repeat;
+  justify-self: flex-end;
 }
 .album__art:hover > .album__art-vinyl {
   transform: translateX(0px)
 }
 .album__art-cover {
   width: 160px;
+  height: 165px;
   justify-self: flex-end;
+  grid-column: 1;
+  grid-row: 1;
 }
 .album__art-vinyl {
   width: 80px;
@@ -178,7 +196,7 @@ body {
   /* Hide it behind the cover */
   transform: translateX(-40px) translateY(-1px);
   z-index: -1;
-  transition: all 0.4s linear;
+  transition: all 0.4s cubic-bezier(0.4, 0, 1, 1);
 }
 /* button for see all  */
 .latest-work__see-all {
