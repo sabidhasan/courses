@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Arimo:400,700');
+
 body, html { box-sizing: border-box; margin: 0;}
 *, *:before, *:after { box-sizing: inherit; }
-@import url('https://fonts.googleapis.com/css?family=Arimo:400,700');
 body {
   font-family: 'Arimo', sans-serif;
 }
@@ -12,7 +13,7 @@ body {
 /* ------------------------------------------------------------- */
 
 .small-title {
-  grid-column: span 2;
+  /* grid-column: span 2; */
   text-transform: uppercase;
   font-size: 0.9rem;
 }
@@ -26,7 +27,6 @@ body {
   display: block;
 }
 .normal-button {
-  outline: none;
   text-transform: uppercase;
   border: 2px solid gray;
   background: transparent;
@@ -108,12 +108,17 @@ body {
   align-items: center;
   justify-items: center;
   color: #606368;
+  margin-top: 75px;
+}
+.about__title {
+  grid-column: span 2;
 }
 .about__quote {
   grid-column: span 2;
   font-family: cursive;
   font-size: 3.4rem;
   text-align: center;
+  margin: 20px;
 }
 .about__text {
   justify-self: right;
@@ -137,18 +142,17 @@ body {
 /* MAJOR ELEMENT -- latest work section */
 /* ------------------------------------ */
 .latest-work {
-  margin-top: 50px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   align-items: center;
   justify-items: center;
   color: #606368;
-  margin: 0 var(--banner-margin);
+  margin: 75px var(--banner-margin);
 }
 .latest-work__albums {
   grid-column: span 2;
   width: 100%;
-  margin-top: 75px;
+  margin-top: 20px;
   /*This is a grid itself*/
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
@@ -203,4 +207,64 @@ body {
   color: #283034;
   opacity: 0.6;
   grid-column: span 2;
+}
+
+/* ----------------------------- */
+/* MAJOR ELEMENT -- video player */
+/* ----------------------------- */
+.splash-video {
+  display: grid;
+  width: 100%;
+  color: white;
+  align-items: center;
+  justify-items: center;
+}
+/* Make all children on top of each other (close button and play button) */
+.splash-video > * {
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.splash-video__play {
+  z-index: 9999;
+  font-size: 4.0rem;
+  align-self: center;
+  justify-self: center;
+  width: 120px;
+  height: 120px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 100%;
+  padding: 30px 30px 30px 45px;
+}
+.splash-video__close {
+  font-size: 3rem;
+  z-index: 9999;
+  justify-self: flex-end;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  align-self: flex-start;
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+}
+.splash-video__video {
+  width: 70%;
+  max-height: 98vh;
+}
+.stopped .splash-video__close {
+  display: none;
+}
+
+/* ----------------------------- */
+/* MAJOR ELEMENT -- tour dates   */
+/* ----------------------------- */
+.tour-schedule {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  align-items: center;
+  justify-items: center;
+  color: #606368;
+  margin: 75px var(--banner-margin);
 }
