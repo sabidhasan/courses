@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Purrfect Match Landing Page</title>
+    <style type="text/css">
+      /* Imports and general selectors */
+      @import url('https://fonts.googleapis.com/css?family=Hind');
+      body, html {box-sizing: border-box;}
+      *: *:before, *::after {box-sizing: inherit;}
+      body {
+        font-family: "Hind", sans-serif;
+        padding: 80px 0 0 0;
+        height: calc(100vh - 80px);
+        overflow: hidden;
+        background: url(lesson80.jpg);
+        background-size: cover;
+        margin: 0;
+      }
+      hr {
+        width: 80%;
+        border: 0.5px solid rgba(255, 255, 255, 0.7);
+      }
+
+
+      /* Class selectors for nav bar */
+      .nav-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto 1fr 200px;
+        padding: 0 50px 0 50px;
+        box-sizing: border-box;
+        align-items: center;
+        align-content: center;
+        background: white;
+        color: black;
+      }
+      .nav-bar__title {align-items: center; margin: 20px 0!important;}
+      .nav-bar > * {
+        margin: 5px 20px;
+        padding: 0;
+        display: flex;
+        list-style-type: none;
+        height: 100%;
+      }
+      .nav-bar li {display: flex; align-items: center; padding: 0 20px;}
+      .active {background: white;}
+
+
+      /* Class selectors for content */
+      .content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        width: 100%;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+      }
+      .content__welcome {
+        color: white;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+      }
+      .content__button {
+        border-radius: 3px;
+        border: 1px solid gray;
+        outline: none;
+        margin: 0 auto;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+      .content__button:hover {
+        background-color: lightgray;
+      }
+
+
+
+
+
+/* .menu-button {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border: 2px solid gray;
+  background: #444e53;
+  border-radius: 3px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  margin: 5px;
+  outline: none;
+  padding: 6px 0;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.menu-button__line {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  transition: all 0.3s linear;
+  max-width: 100px;
+}
+.menu-button[aria-expanded="true"] > *:nth-child(1) {
+transform: rotate(45deg) translateY(5px) translateX(4px)
+}
+.menu-button[aria-expanded="true"] > *:nth-child(2) {
+  transform: rotate(-45deg) translateX(1px) translateY(-1px);
+}
+.menu-button[aria-expanded="true"] > *:nth-child(3) {
+  max-width: 0;
+} */
+
+
+
+
+/*
+    @media (max-width: 800px) {
+      .nav-bar__nav, .nav-bar__user {
+        flex-direction: column;
+        max-height: 0;
+        overflow: hidden;
+        grid-column: 2;
+      }
+      .menu-button {display: flex;}
+    } */
+    </style>
+  </head>
+
+  <body>
+    <nav class="nav-bar" role="navigation">
+      <h1 class="nav-bar__title">Purrfect Match</h1>
+      <ul class="nav-bar__nav">
+        <li class="active">Home</li>
+        <li>About</li>
+        <li>Contact</li>
+      </ul>
+      <ul class="nav-bar__user">
+        <li>Signup</li>
+        <li>Login</li>
+      </ul>
+      <!-- for nav bar mobile users -->
+      <!-- <button class="menu-button" aria-expanded="false">
+        <span class="menu-button__line"></span>
+        <span class="menu-button__line"></span>
+        <span class="menu-button__line"></span>
+      </button> -->
+    </nav>
+
+
+    <div class="content">
+      <div class="content__welcome">
+        <h1>Purrfect Match</h1>
+        <p>The Only Human-Feline Dating App</p>
+        <hr />
+        <button class="content__button">Get Started!</button>
+      </div>
+    </div>
+  </body>
+</html>
