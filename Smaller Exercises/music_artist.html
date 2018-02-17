@@ -16,6 +16,13 @@
         <li class="menu__nav-item"><a class="menu__nav-link" href="#">Contact</a></li>
         <li class="menu__nav-item"><a class="menu__nav-link" href="#">Buy</a></li>
       </nav>
+
+      <button class="menu-button" aria-expanded="false">
+        <span class="menu-button__line"></span>
+        <span class="menu-button__line"></span>
+        <span class="menu-button__line"></span>
+      </button>
+
       <div class="splash-banner">
         <h1 class="splash-banner__name">Artist Name</h1>
         <h2 class="splash-banner__tour">Name of Tour</h2>
@@ -92,40 +99,48 @@
     <div class="tour-schedule">
       <h1 class="tour-schedule__title small-title">Tour Schedule</h1>
 
-      <div class="tour-details">
-        <p class="tour-details__date">1</p>
-        <p class="tour-details__month">January 2018</p>
-        <hr class="tour-details__separator" />
-        <p class="tour-details__city">Toronto, Canada</p>
-        <p class="tour-details__venue">Some Venue Here</p>
+      <div class="tour-schedule__tours">
+        <div class="tour-details">
+          <p class="tour-details__date">1</p>
+          <p class="tour-details__month">January 2018</p>
+          <hr class="tour-details__separator" />
+          <p class="tour-details__city">Toronto, Canada</p>
+          <p class="tour-details__venue">Some Venue Here</p>
+        </div>
+        <div class="tour-details">
+          <p class="tour-details__date">1</p>
+          <p class="tour-details__month">January 2018</p>
+          <hr class="tour-details__separator" />
+          <p class="tour-details__city">Toronto, Canada</p>
+          <p class="tour-details__venue">Some Venue Here</p>
+        </div>
+        <div class="tour-details">
+          <p class="tour-details__date">1</p>
+          <p class="tour-details__month">January 2018</p>
+          <hr class="tour-details__separator" />
+          <p class="tour-details__city">Toronto, Canada</p>
+          <p class="tour-details__venue">Some Venue Here</p>
+        </div>
+        <div class="tour-details">
+          <p class="tour-details__date">1</p>
+          <p class="tour-details__month">January 2018</p>
+          <hr class="tour-details__separator" />
+          <p class="tour-details__city">Toronto, Canada</p>
+          <p class="tour-details__venue">Some Venue Here</p>
+        </div>
       </div>
-
-      <div class="tour-details">
-        <p class="tour-details__date">1</p>
-        <p class="tour-details__month">January 2018</p>
-        <hr class="tour-details__separator" />
-        <p class="tour-details__city">Toronto, Canada</p>
-        <p class="tour-details__venue">Some Venue Here</p>
-      </div>
-
-      <div class="tour-details">
-        <p class="tour-details__date">1</p>
-        <p class="tour-details__month">January 2018</p>
-        <hr class="tour-details__separator" />
-        <p class="tour-details__city">Toronto, Canada</p>
-        <p class="tour-details__venue">Some Venue Here</p>
-      </div>
-
-      <div class="tour-details">
-        <p class="tour-details__date">1</p>
-        <p class="tour-details__month">January 2018</p>
-        <hr class="tour-details__separator" />
-        <p class="tour-details__city">Toronto, Canada</p>
-        <p class="tour-details__venue">Some Venue Here</p>
-      </div>
-
-      <button class="tour-details__see-all normal-button"></button>
+      <button class="tour-details__see-all normal-button">See All</button>
     </div>
 
+<script>
+  const menuButton = document.querySelector(".menu-button");
+  menuButton.addEventListener("click", showHideMenu);
+
+  function showHideMenu() {
+    const newAttribute = !(this.getAttribute("aria-expanded") == 'true');
+    console.log(newAttribute)
+    this.setAttribute("aria-expanded", newAttribute);
+  }
+</script>
   </body>
 </html>
