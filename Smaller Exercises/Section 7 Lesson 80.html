@@ -14,6 +14,7 @@
         height: calc(100vh - 80px);
         overflow: hidden;
         background: url(lesson80.jpg);
+        background-position: center;
         background-size: cover;
         margin: 0;
       }
@@ -37,9 +38,10 @@
         align-content: center;
         background: white;
         color: black;
+        transition: all 1s;
       }
-      .nav-bar__title {align-items: center; margin: 20px 0!important;}
-      .nav-bar > * {
+      .nav-bar__title {align-items: center; margin: 20px 0;}
+      .nav-bar__title, .nav-bar__nav, .nav-bar__user {
         margin: 5px 20px;
         padding: 0;
         display: flex;
@@ -78,55 +80,83 @@
         background-color: lightgray;
       }
 
+      /* Button for mobile users */
+      .menu-button {
+        display: none;
+        width: 40px;
+        height: 40px;
+        border: 2px solid gray;
+        border-radius: 3px;
+        margin: 5px;
+        outline: none;
+        padding: 6px 0;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        justify-self: right;
+        grid-row: 1;
+        grid-column: 3;
+      }
+      .menu-button__line {
+        width: 25px;
+        height: 3px;
+        background-color: black;
+        transition: all 0.3s linear;
+        max-width: 100px;
+      }
+      .menu-button[aria-expanded="true"] > *:nth-child(1) {
+      transform: rotate(45deg) translateY(5px) translateX(4px)
+      }
+      .menu-button[aria-expanded="true"] > *:nth-child(2) {
+        transform: rotate(-45deg) translateX(1px) translateY(-1px);
+      }
+      .menu-button[aria-expanded="true"] > *:nth-child(3) {
+        max-width: 0;
+      }
 
 
 
 
-/* .menu-button {
-  display: none;
-  width: 40px;
-  height: 40px;
-  border: 2px solid gray;
-  background: #444e53;
-  border-radius: 3px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-  margin: 5px;
-  outline: none;
-  padding: 6px 0;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-.menu-button__line {
-  width: 25px;
-  height: 3px;
-  background-color: white;
-  transition: all 0.3s linear;
-  max-width: 100px;
-}
-.menu-button[aria-expanded="true"] > *:nth-child(1) {
-transform: rotate(45deg) translateY(5px) translateX(4px)
-}
-.menu-button[aria-expanded="true"] > *:nth-child(2) {
-  transform: rotate(-45deg) translateX(1px) translateY(-1px);
-}
-.menu-button[aria-expanded="true"] > *:nth-child(3) {
-  max-width: 0;
-} */
 
 
 
 
-/*
+
     @media (max-width: 800px) {
-      .nav-bar__nav, .nav-bar__user {
+        .nav-bar {
+          max-height: 50px;
+          overflow: hidden;
+          align-content: flex-start;
+        }
+        .menu-open .nav-bar {
+          max-height: 500px;
+        }
+        .nav-bar__title {margin: 0;}
+        .nav-bar__nav {
+          grid-row: 2;
+          grid-column: 1 / -1;
+          flex-direction: column;
+          justify-content: center;
+          margin-bottom: 0;
+        }
+        .nav-bar__user {
+          grid-column: 1 / -1;
+          flex-direction: column;
+          margin-top: 0;
+          justify-content: center;
+        }
+        .nav-bar li {padding: 10px 0;}
+        .menu-button {
+          display: flex;
+        }
+      /* .nav-bar__nav, .nav-bar__user {
         flex-direction: column;
         max-height: 0;
         overflow: hidden;
         grid-column: 2;
       }
-      .menu-button {display: flex;}
-    } */
+      .menu-button {display: flex;} */
+    }
     </style>
   </head>
 
@@ -143,11 +173,11 @@ transform: rotate(45deg) translateY(5px) translateX(4px)
         <li>Login</li>
       </ul>
       <!-- for nav bar mobile users -->
-      <!-- <button class="menu-button" aria-expanded="false">
+      <button class="menu-button" aria-expanded="false">
         <span class="menu-button__line"></span>
         <span class="menu-button__line"></span>
         <span class="menu-button__line"></span>
-      </button> -->
+      </button>
     </nav>
 
 
@@ -159,5 +189,31 @@ transform: rotate(45deg) translateY(5px) translateX(4px)
         <button class="content__button">Get Started!</button>
       </div>
     </div>
+
+
+
+
+
+
+
+
+
+    <script>
+      const menuButton = document.querySelector(".menu-button");
+      menuButton.addEventListener("click", showHideMenu);
+
+      function showHideMenu() {
+        const newAttribute = !(this.getAttribute("aria-expanded") == 'true');
+        this.setAttribute("aria-expanded", newAttribute);
+
+        //add class to body
+        if (newAttribute) {
+          document.body.classList.add("menu-open");
+        } else {
+          document.body.classList.remove("menu-open");
+        }
+      }
+    </script>
+
   </body>
 </html>
