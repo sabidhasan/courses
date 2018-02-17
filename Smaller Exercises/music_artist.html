@@ -135,12 +135,25 @@
 
 <script>
   const menuButton = document.querySelector(".menu-button");
+  const videoPlay = document.querySelector(".splash-video__play");
+
   menuButton.addEventListener("click", showHideMenu);
+  videoPlay.addEventListener("click", playVideo);
+
+  function playVideo() {
+    //hide play button, maximize video, start playing
+  }
 
   function showHideMenu() {
     const newAttribute = !(this.getAttribute("aria-expanded") == 'true');
-    console.log(newAttribute)
     this.setAttribute("aria-expanded", newAttribute);
+
+    //add class to body
+    if (newAttribute) {
+      document.body.classList.add("menu-open");
+    } else {
+      document.body.classList.remove("menu-open");
+    }
   }
 </script>
   </body>

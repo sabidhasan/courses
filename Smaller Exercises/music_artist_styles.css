@@ -4,6 +4,8 @@ body, html { box-sizing: border-box; margin: 0; background: #e5e7ea;}
 *, *:before, *:after { box-sizing: inherit; }
 body {
   font-family: 'Arimo', sans-serif;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 :root {
@@ -50,12 +52,11 @@ body {
   height: calc(100vh - (2 * var(--banner-margin)));
   min-height: 400px;
   margin: var(--banner-margin);
-  display: grid;
-  /* ******* */
-  grid-template-columns: 100px 1fr auto;
-  /* ******* */
-  grid-gap: 0 calc(var(--banner-margin));
   color: #e5e7ea;
+  transition: all 0.4s;
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  grid-gap: 0 calc(var(--banner-margin));
 }
 /* Logo image */
 .banner__logo {
@@ -68,6 +69,7 @@ body {
 }
 /* Styles for mobile menu button */
 .menu-button {
+  display: none;
   width: 40px;
   height: 40px;
   border: 2px solid gray;
@@ -80,8 +82,6 @@ body {
   padding: 6px 0;
   position: fixed;
   right: 0;
-  /* justify-self: flex-end; */
-  display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
@@ -110,7 +110,7 @@ transform: rotate(45deg) translateY(5px) translateX(4px)
   align-items: flex-start;
   justify-content: flex-end;
   z-index: 4;
-  transition: all 0.3s;
+  transition: all 0.4s;
 }
 .menu__nav-item {
   list-style-type: none;
@@ -218,6 +218,9 @@ transform: rotate(45deg) translateY(5px) translateX(4px)
   font-size: 0.8rem;
   font-weight: bold;
 }
+/* .album > * {
+  width: 110px;
+} */
 .album__art {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -376,15 +379,19 @@ transform: rotate(45deg) translateY(5px) translateX(4px)
 @media (max-width: 800px) {
   /* Reduce margin to 0 */
   :root { --banner-margin: 0px; }
-
+  /* Remove image from background - it is hard to read text */
+  .banner { background: linear-gradient(135deg, #a3bbc3 0%, #283034 100%); }
+  /* make banner occupy whole bottom of grid */
   .splash-banner {
     text-align: center;
-    grid-column: 1 / -1;
+    align-self: center;
+    grid-column: 1 / span 2;
+    justify-self: center;
   }
+  /* make menu bar vertical */
   .menu {
     flex-direction: column;
     justify-content: space-evenly;
-
     max-width: 0;
     position: fixed;
     right: 0;
@@ -394,8 +401,23 @@ transform: rotate(45deg) translateY(5px) translateX(4px)
     border-left: 2px solid #606368;
     background: linear-gradient(to right, #f4f6f7 0%, #edeff7 100%);
   }
-  [aria-expanded="true"] ~ .menu{
+  .menu-button { display: flex; }
+  /* For deailing with menu being open */
+  .menu-open .menu-button[aria-expanded="true"] ~ .menu{
     max-width: 100%;
+  }
+  .menu-open > *:not(.banner) {
+    transform: translateX(-45%);
+  }
+  .menu-open .banner {
+    width: 130%;
+    position: relative;
+    left: -30%;
+  }
+
+  .normal-button {
+    background: white;
+    color: #606368;
   }
   .menu__nav-item {
     margin: 5px 0;
@@ -405,14 +427,20 @@ transform: rotate(45deg) translateY(5px) translateX(4px)
   .menu__nav-link { color: #606368; }
 
   .album {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr 100px;
     align-content: center;
     align-items: center;
     margin: 0 10px;
     grid-template-rows: auto;
   }
-
+  .album__art {transform: scale(0.8)}
   .splash-video__video { width: 100%;}
 
   .about__image {display: none;}
+
+  .about__text {grid-column: span 2; margin: 0 10px;}
+
+  .about__quote { font-size: 1.7rem;}
+
+
 }
