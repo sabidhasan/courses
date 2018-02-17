@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link type="text/css" rel="stylesheet" href="music_artist_styles.css" /></style>
+  </head>
+  <body>
+    <div class="banner">
+      <img class="banner__logo" src="music_artist_logo.png" alt="Logo for Music Artist"/>
+      <button class="menu-button" aria-expanded="false">
+        <span class="menu-button__line"></span>
+        <span class="menu-button__line"></span>
+        <span class="menu-button__line"></span>
+      </button>
+
+      <nav class="menu">
+        <li class="menu__nav-item"><a class="menu__nav-link" href="#">Tour Dates</a></li>
+        <li class="menu__nav-item"><a class="menu__nav-link" href="#">Multimedia</a></li>
+        <li class="menu__nav-item"><a class="menu__nav-link" href="#">Music Videos</a></li>
+        <li class="menu__nav-item"><a class="menu__nav-link" href="#">Songs</a></li>
+        <li class="menu__nav-item"><a class="menu__nav-link" href="#">Contact</a></li>
+        <li class="menu__nav-item"><a class="menu__nav-link" href="#">Buy</a></li>
+      </nav>
+
+
+      <div class="splash-banner">
+        <h1 class="splash-banner__name">Artist Name</h1>
+        <h2 class="splash-banner__tour">Name of Tour</h2>
+        <h2 class="splash-banner__date">HAPPENING NOW</h2>
+        <button class="splash-banner__see-all normal-button">SEE DATES</button>
+      </div>
+    </div>
+
+    <div class="about">
+      <h1 class="about__title small-title">About</h1>
+      <blockquote class="about__quote">This is a page for an artist who likes to make art! Their name is Artist Name</blockquote>
+      <p class="about__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+      <figure class="about__image">
+        <img src="music_artist_cd.jpg" alt="CD of Music Artist" />
+      </figure>
+    </div>
+
+    <div class="latest-work">
+      <h1 class="latest-work__title small-title">Latest Work</h1>
+      <div class="latest-work__albums">
+        <div class="album">
+          <a class="album__art" href="#">
+            <img class="album__art-cover" src="music_artist_vinyl_1.png" alt="Album Number 1">
+            <img class="album__art-vinyl" src="music_artist_vinyl_1a.png" alt="Vinyl for ">
+          </a>
+          <p>Album 1</p>
+        </div>
+
+        <div class="album">
+          <a class="album__art" href="#">
+            <img class="album__art-cover" src="music_artist_vinyl_1.png" alt="Album Number 1">
+            <img class="album__art-vinyl" src="music_artist_vinyl_1a.png" alt="Vinyl for ">
+          </a>
+          <p>Lighter Side of the Monsoon</p>
+        </div>
+
+        <div class="album">
+          <a class="album__art" href="#">
+            <img class="album__art-cover" src="music_artist_vinyl_1.png" alt="Album Number 1">
+            <img class="album__art-vinyl" src="music_artist_vinyl_1a.png" alt="Vinyl for ">
+          </a>
+          <p>This is not a coincidence</p>
+        </div>
+
+        <div class="album">
+          <a class="album__art" href="#">
+            <img class="album__art-cover" src="music_artist_vinyl_1.png" alt="Album Number 1">
+            <img class="album__art-vinyl" src="music_artist_vinyl_1a.png" alt="Vinyl for ">
+          </a>
+          <p>Lost at Sea</p>
+        </div>
+
+        <div class="album">
+          <a class="album__art" href="#">
+            <img class="album__art-cover" src="music_artist_vinyl_1.png" alt="Album Number 1">
+            <img class="album__art-vinyl" src="music_artist_vinyl_1a.png" alt="Vinyl for ">
+          </a>
+          <p>Delicate Sound of Rockets</p>
+        </div>
+      </div>
+
+      <button class="latest-work__see-all normal-button">See All</button>
+    </div>
+
+    <div class="splash-video">
+      <span class="splash-video__play">▶</span>
+      <span class="splash-video__close">X</span>
+      <video src="music_artist_video.mp4" loop class="splash-video__video"></video>
+    </div>
+
+    <div class="tour-schedule">
+      <h1 class="tour-schedule__title small-title">Tour Schedule</h1>
+
+      <div class="tour-schedule__tours">
+        <div class="tour-details">
+          <p class="tour-details__date">1</p>
+          <p class="tour-details__month">January 2018</p>
+          <hr class="tour-details__separator" />
+          <p class="tour-details__city">Toronto, Canada</p>
+          <p class="tour-details__venue">Some Venue Here</p>
+        </div>
+        <div class="tour-details">
+          <p class="tour-details__date">1</p>
+          <p class="tour-details__month">January 2018</p>
+          <hr class="tour-details__separator" />
+          <p class="tour-details__city">Toronto, Canada</p>
+          <p class="tour-details__venue">Some Venue Here</p>
+        </div>
+        <div class="tour-details">
+          <p class="tour-details__date">1</p>
+          <p class="tour-details__month">January 2018</p>
+          <hr class="tour-details__separator" />
+          <p class="tour-details__city">Toronto, Canada</p>
+          <p class="tour-details__venue">Some Venue Here</p>
+        </div>
+        <div class="tour-details">
+          <p class="tour-details__date">1</p>
+          <p class="tour-details__month">January 2018</p>
+          <hr class="tour-details__separator" />
+          <p class="tour-details__city">Toronto, Canada</p>
+          <p class="tour-details__venue">Some Venue Here</p>
+        </div>
+      </div>
+      <button class="tour-details__see-all normal-button">See All</button>
+    </div>
+
+<script>
+  const menuButton = document.querySelector(".menu-button");
+  const videoDiv = document.querySelector(".splash-video");
+  const videoStop = document.querySelector(".splash-video__close")
+  const videoPlay = document.querySelector(".splash-video__play");
+  const videoElement = document.querySelector(".splash-video__video");
+
+  menuButton.addEventListener("click", showHideMenu);
+  videoPlay.addEventListener("click", toggleVideo);
+  videoStop.addEventListener("click", toggleVideo)
+
+  function toggleVideo() {
+    if (Array.from(videoDiv.classList).includes("playing")) {
+      //stop
+      videoDiv.classList.remove("playing");
+      videoElement.pause();
+      videoElement.currentTime = 0;
+    } else {
+      videoDiv.classList.add("playing");
+      videoElement.play();
+    }
+  }
+
+  function showHideMenu() {
+    const newAttribute = !(this.getAttribute("aria-expanded") == 'true');
+    this.setAttribute("aria-expanded", newAttribute);
+
+    //add class to body
+    if (newAttribute) {
+      document.body.classList.add("menu-open");
+    } else {
+      document.body.classList.remove("menu-open");
+    }
+  }
+</script>
+  </body>
+</html>
