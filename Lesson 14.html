@@ -7,9 +7,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  
+
   <div class="wrapper">
-    
+
     <header class="top">
       <h1><a href="#">What The Flexbox?!</a></h1>
     </header>
@@ -62,13 +62,17 @@
 
   </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script>
-    
-    $(function() {
-      $('.toggleNav').on('click',function() {
-        $('.flex-nav ul').toggleClass('open');
-      });
+  <script type="text/javascript">
+    const toggleNav = document.querySelector('.toggleNav');
+
+    toggleNav.addEventListener("click", function() {
+      const target = this.parentNode.querySelector("ul");
+
+      if (target.classList.contains("open")) {
+        target.classList.remove("open");
+      } else {
+        target.classList.add("open");
+      }
     });
 
   </script>
