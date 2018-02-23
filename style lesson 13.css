@@ -48,8 +48,8 @@ a:hover {
 .flex-nav ul li {
   flex: 3;
 }
-.social {
-  flex: 1!important;
+.flex-nav .social {
+  flex: 1;
 }
 
 @media all and (max-width:1000px) {
