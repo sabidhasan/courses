@@ -78,25 +78,46 @@
   </body>
   <script type="text/javascript">
     function Scorekeeper(){
-      this.p1 = 0;
-      this.p2 = 0;
+      //set basic parameters
+      var p1 = 0;
+      var p2 = 0;
       this.limit = 5;
+
+      Object.defineProperty(this, "p1", {
+        get: function(a) {return p1},
+        set: function(newScore) {
+          p1 = newScore
+          this.updateUI();
+        }
+      });
+
+      Object.defineProperty(this, "p2", {
+        get: function() {return p2},
+        set: function(newScore) {
+          p2 = newScore;
+          this.updateUI();
+        }
+      });
+
 
       this.updateUI = function() {
         //update p1 score (remove class), p2 score (remove class), limit and number box
         document.querySelector(".score-p1").innerHTML = this.p1;
         document.querySelector(".score-p2").innerHTML = this.p2;
-
         document.querySelector(".target-score").textContent = this.limit;
-        
+        document.querySelector("input[type='number']").value = this.limit;
       }
+      //update the UI
+      this.updateUI();
     }
-    var state = new Scorekeeper();
-    //event handler for reset
-    document.querySelector(".reset").addEventListener("click", reset)
 
-    function reset() {
-      state = new Scorekeeper();
-    }
+    var state = new Scorekeeper();
+
+    //event handler for reset
+    document.querySelector(".reset").addEventListener("click", function() {state = new Scorekeeper();})
+    document.querySelectorAll(".player").forEach(elem => elem.addEventListener("click", function() {
+      state["p" + this.dataset.player] += 1;
+
+    }))
   </script>
 </html>
