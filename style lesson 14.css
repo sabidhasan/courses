@@ -13,6 +13,7 @@ body {
   background-image: linear-gradient(260deg, #2376ae 0%, #c16ecf 100%);
 }
 
+h1 {margin: 0;}
 a {
   color:white;
   font-weight: 100;
@@ -23,7 +24,7 @@ a {
   display: inline-block;
   width: 100%;
   text-align: center;
-  transition:all 0.5s;
+  transition:all 0.2s;
 }
 
 a:hover {
@@ -40,12 +41,15 @@ img {
 
 .wrapper {
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
 }
 
 input {
   padding:10px;
   border:0;
+  margin: 0 20px;
 }
 
 
@@ -58,19 +62,61 @@ section, footer {
   font-weight: 100;
 }
 
+.signup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
 /* Flex Container */
+.flex-nav {
+  overflow: hidden;
+  margin-top: 20px;
+}
 .flex-nav ul {
   border:1px solid black;
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  transition: all 0.5s;
+}
+
+.flex-nav ul li {
+  flex: 3;
+}
+.flex-nav .social {
+  flex: 1;
 }
 
 @media all and (max-width:1000px) {
-
+  .flex-nav ul {
+    flex-wrap: wrap;
+  }
+  .flex-nav ul li {
+    flex-basis: 50%;
+  }
 }
 
 
 @media all and (max-width:500px) {
-  
+  .flex-nav {
+    order: -1;
+    margin: 0 0 20px 0;
+  }
+  .flex-nav ul {
+    flex-wrap: wrap;
+    max-height: 0;
+    border: none;
+  }
+
+  .flex-nav .open {
+    max-height: 1000px;
+    border:1px solid black;
+  }
+
+  .flex-nav ul li {
+    flex-basis: 100%;
+  }
+.toggleNav {display: block;}
 }
