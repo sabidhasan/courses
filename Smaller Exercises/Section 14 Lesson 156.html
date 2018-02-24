@@ -5,6 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href=lesson156.css” type=”text/css”>
     <title>Scorekeeper</title>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css?family=Mukta+Mahee');
+      html { box-sizing: border-box; height: 100vh; display: flex; align-items: center; justify-content: center;}
+      *, *:before, *:after { box-sizing: inherit; }
+      body {
+        font-family: 'Mukta Mahee', sans-serif;
+        background: linear-gradient(135deg, #f1e767 0%,#fc9700 100%);
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 50%;
+        text-align: center;
+      }
+      body > * { flex: 1 1 100%; }
+      h1 {font-size: 2.5rem;}
+      input[type="button"] {
+        border: 2px solid red;
+        padding: 8px;
+        margin: 8px;
+        border-radius: 5px;
+      }
+      input {
+        background: orange;
+        color: black;
+        font-weight: bold;
+        outline: none;
+      }
+      input[type="number"] {
+        border: 1px solid red;
+        font-size: 1.4rem;
+        padding: 0;
+        text-align: center;
+      }
+      .score {font-size: 2rem;}
+      .target {font-size: 1.5rem;}
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+      }
+      .controls input:nth-of-type(1) {
+        flex: 1 1 40%;
+      }
+      .controls label {
+        flex: 1 1 50%;
+      }
+    </style>
   </head>
 
   <body>
@@ -12,21 +60,43 @@
       <h1>Scorekeeper</h1>
     </header>
     <section class="score">
-        <span class="score-p1"></span>
+        <span class="score-p1">0</span>
         <span> to </span>
-        <span class="score-p2"></span>
+        <span class="score-p2">0</span>
     </section>
     <section class="target">
-       Playing to <span class="target-score"></span>
+       Playing to <span class="target-score">5</span>
     </section>
     <form class="controls">
       <label for="number">Playing to</label>
       <input type="number" name="number"/>
 
-      <input type="button" class="player" data-player="1">Player 1</input>
-      <input type="button" class="player" data-player="2">Player 1</input>
-      <input type="button" class="reset" >Reset</input>
+      <input type="button" class="player" data-player="1" value="Player 1">
+      <input type="button" class="player" data-player="2" value="Player 2">
+      <input type="button" class="reset" value="Reset">
     </form>
   </body>
+  <script type="text/javascript">
+    function Scorekeeper(){
+      this.p1 = 0;
+      this.p2 = 0;
+      this.limit = 5;
 
+      this.updateUI = function() {
+        //update p1 score (remove class), p2 score (remove class), limit and number box
+        document.querySelector(".score-p1").innerHTML = this.p1;
+        document.querySelector(".score-p2").innerHTML = this.p2;
+
+        document.querySelector(".target-score").textContent = this.limit;
+        
+      }
+    }
+    var state = new Scorekeeper();
+    //event handler for reset
+    document.querySelector(".reset").addEventListener("click", reset)
+
+    function reset() {
+      state = new Scorekeeper();
+    }
+  </script>
 </html>
