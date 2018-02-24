@@ -109,7 +109,9 @@ section, footer {
     max-height: 0;
     border: none;
   }
-
+  /* .top { order: 1}
+  .details { order: -1}
+  .signup { order: 3} */
   .flex-nav .open {
     max-height: 1000px;
     border:1px solid black;
