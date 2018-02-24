@@ -19,7 +19,7 @@
         text-align: center;
       }
       body > * { flex: 1 1 100%; }
-      h1 {font-size: 2.5rem;}
+      h1 {font-size: 3.5rem;}
       input[type="button"] {
         border: 2px solid red;
         padding: 8px;
@@ -38,7 +38,7 @@
         padding: 0;
         text-align: center;
       }
-      .score {font-size: 2rem;}
+      .score {font-size: 3rem;}
       .target {font-size: 1.5rem;}
       .controls {
         display: flex;
@@ -52,6 +52,10 @@
       .controls label {
         flex: 1 1 50%;
       }
+      .win {
+        color: darkred;
+        font-weight: bold;
+      }
     </style>
   </head>
 
@@ -60,9 +64,9 @@
       <h1>Scorekeeper</h1>
     </header>
     <section class="score">
-        <span class="score-p1">0</span>
+        <span class="score-data" data-player=1>0</span>
         <span> to </span>
-        <span class="score-p2">0</span>
+        <span class="score-data" data-player=2>0</span>
     </section>
     <section class="target">
        Playing to <span class="target-score">5</span>
@@ -81,30 +85,45 @@
       //set basic parameters
       var score = {1: 0, 2: 0};
       this.limit = 5;
+      //keeps track of end game
+      this.end = false;
 
       Object.defineProperty(this, "score", {
         get: function() {return score},
         set: function(player) {
           //update score if needed
-          if (score[player] < this.limit) score[player] += 1;
-          //update win condition
-          
+          if (score[player] < this.limit && this.end === false) score[player] += 1;
+          //if limit reached, call end game
+          if (score[player] == this.limit) this.end = true;
+
           this.updateUI();
         }
       });
 
-      // function getScore(player) {
-      //   return score[player]
-      // }
+      this.updateLimit = function(limit) {
+        if (!this.end) {
+          this.limit = limit;
+        }
+        this.updateUI();
+      }
 
       this.updateUI = function() {
         //update p1 score (remove class), p2 score (remove class), limit and number box
-        document.querySelector(".score-p1").innerHTML = score[1];
-        document.querySelector(".score-p2").innerHTML = score[2];
+        //check for win condition
+        document.querySelectorAll(".score-data").forEach(player => {
+          //update text for player
+          let currScore = score[player.dataset.player];
+          player.textContent = currScore;
+          //update style if win
+          if (currScore == this.limit) {
+            player.classList.add("win");
+          } else {
+            player.classList.remove("win")
+          }
+        });
         document.querySelector(".target-score").textContent = this.limit;
         document.querySelector("input[type='number']").value = this.limit;
       }
-
       //update the UI
       this.updateUI();
     }
@@ -112,9 +131,18 @@
     var state = new Scorekeeper();
 
     //event handler for reset
-    document.querySelector(".reset").addEventListener("click", function() {state = new Scorekeeper();})
-    document.querySelectorAll(".player").forEach(elem => elem.addEventListener("click", function() {
-      state["score"] = this.dataset.player;
-    }))
+    document.querySelector(".reset").addEventListener("click", function() {
+      state = new Scorekeeper();
+    });
+
+    document.querySelectorAll(".player").forEach(elem => {
+      elem.addEventListener("click", function() {
+        state["score"] = this.dataset.player;
+      })
+    });
+
+    document.querySelector("input[type='number']").addEventListener("change", function() {
+      state.updateLimit(this.value)
+    });
   </script>
 </html>
