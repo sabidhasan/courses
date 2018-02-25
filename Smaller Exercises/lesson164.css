@@ -1,0 +1,68 @@
+html { margin: 0; box-sizing: border-box; overflow: hidden;}
+*, *:before, *:after { box-sizing: inherit; }
+:root {
+  --active-color: skyblue;
+}
+body {
+  margin: 0;
+  height: 100vh;
+  background: black;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  text-transform: uppercase;
+}
+header {
+  padding: 15px 0;
+  text-align: center;
+  background: var(--active-color);
+}
+header > * {margin: 0;}
+header h1 { font-size: 3.5rem;}
+
+.options {
+  background: white;
+  display: flex;
+  padding: 0 18%;
+  justify-content: space-between;
+
+}
+.options div {
+  padding: 5px 0;
+}
+.options .options__difficulty {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0;
+}
+.options__difficulty span {
+  padding: 5px 10px;
+}
+.active {
+  background-color: var(--active-color);
+  color: white;
+}
+.square {
+  margin: 1.5%;
+  display: grid;
+  grid-template-columns: repeat(3, 150px);
+  grid-template-rows: repeat(2, 150px);
+  grid-gap: 15px;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+.square__box {
+  border-radius: 20px;
+  width: 145px;
+  height: 145px;
+  margin: 20px;
+  background-color: green;
+}
+
+@media (max-width: 500px) {
+  .square {
+    grid-gap: 0px;
+  }
+  .square__box {margin: 5px; width: 120px; height: 120px;}
+}
