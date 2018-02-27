@@ -1,9 +1,11 @@
 html { margin: 0; box-sizing: border-box; overflow: hidden;}
 *, *:before, *:after { box-sizing: inherit; }
 :root {
-  --active-color: skyblue;
+  --active-color: steelblue;
 }
 body {
+  font-family: "Avenir", "Montserrat", sans-serif;
+  text-align: center;
   margin: 0;
   height: 100vh;
   background: black;
@@ -17,10 +19,12 @@ header {
   background: var(--active-color);
 }
 header > * {margin: 0;}
-header h1 { font-size: 3.5rem;}
+header h1 { font-size: 4rem; font-weight: 100;}
 
 .options {
   background: white;
+  /* font-size: 1rem; */
+  letter-spacing: 0.05rem;
   display: flex;
   padding: 0 18%;
   justify-content: space-between;
@@ -34,19 +38,17 @@ header h1 { font-size: 3.5rem;}
   grid-template-columns: 1fr 1fr;
   padding: 0;
 }
-.options__new {
+.options__difficulty span, .options__new {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 5px 10px;
+  transition: all 0.4s;
 }
-.options__new:hover {
-  cursor: pointer;
-  background: var(--active-color);
-}
-.options__difficulty span {
-  padding: 5px 10px;
-}
-.options__difficulty span:hover {
+.options__new:hover, .options__difficulty span:hover {
   background: var(--active-color);
   cursor: pointer;
+  color: white;
 }
 .active {
   background-color: var(--active-color);
@@ -64,11 +66,30 @@ header h1 { font-size: 3.5rem;}
   justify-content: center;
 }
 .square__box {
+  transition: all 0.6s;
   border-radius: 20px;
   width: 145px;
   height: 145px;
   margin: 20px;
   background-color: green;
+}
+.square__box:not(.disabled):hover {
+  animation: jiggle 0.2s linear 0s infinite alternate;
+  border: 5px solid white;
+}
+.disabled {
+  background-color: black!important;
+}
+
+@keyframes jiggle {
+  from {
+    transform: rotateZ(0.5deg) scale(1.1);
+  }
+  to {
+    transform: rotateZ(-0.5deg) scale(1.1);
+  }
+  /* 0%   { opacity: 0; }
+  100% { opacity: 1; } */
 }
 
 @media (max-width: 500px) {
@@ -80,6 +101,7 @@ header h1 { font-size: 3.5rem;}
   .square__box {margin: 5px; width: 110px; height: 110px;}
   .options {
     padding: 0;
+    font-size: 0.8rem;
   }
   header h1 {
     font-size: 3rem;
