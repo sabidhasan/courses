@@ -24,18 +24,29 @@ header h1 { font-size: 3.5rem;}
   display: flex;
   padding: 0 18%;
   justify-content: space-between;
-
+  font-weight: bold;
 }
 .options div {
-  padding: 5px 0;
+  padding: 5px 10px;
 }
 .options .options__difficulty {
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 0;
 }
+.options__new {
+  padding: 5px 10px;
+}
+.options__new:hover {
+  cursor: pointer;
+  background: var(--active-color);
+}
 .options__difficulty span {
   padding: 5px 10px;
+}
+.options__difficulty span:hover {
+  background: var(--active-color);
+  cursor: pointer;
 }
 .active {
   background-color: var(--active-color);
