@@ -1,6 +1,5 @@
-//start color game (1 is easy 2 is hard)
-var level; //= getLevel();
-var game; // = new ColorGame(level);
+var level;
+var game;
 
 //new game button
 document.querySelector(".options__new").addEventListener("click", setupGame);
@@ -17,7 +16,6 @@ difficulties.forEach(val => val.addEventListener("click", function() {
 //launch Game
 setupGame();
 
-
 function setupGame() {
   level = parseInt(document.querySelector(".active").dataset["level"]);
   game = new ColorGame(level);
@@ -27,8 +25,8 @@ function ColorGame(difficulty) {
   //make colors
   this.squareNumber = difficulty * 3;
   this.colors = generateColors(this.squareNumber);
-  this.endGame = false;
-  _secretColor = this.colors[Math.floor(Math.random() * this.squareNumber)];
+  _secretIndex = Math.floor(Math.random() * this.squareNumber)
+  _secretColor = this.colors[_secretIndex];
 
   //bind functions
   updateUI = updateUI.bind(this)
@@ -50,9 +48,7 @@ function ColorGame(difficulty) {
       var square = document.createElement("div");
       setAttributes(square, {
         "class": "square__box",
-        "data-r": currentColor[0],
-        "data-g": currentColor[1],
-        "data-b": currentColor[2]
+        "data-index": i
       });
 
       //apply styles to color, add to DOM, and create event listener
@@ -94,8 +90,7 @@ function ColorGame(difficulty) {
 
   function checkAnswer(e) {
     //see if answer is right
-    let clicked = e.target.dataset;
-    if (_secretColor[0] == clicked["r"] && _secretColor[1] == clicked["g"] && _secretColor[2] == clicked["b"]) {
+    if (e.target.dataset.index == _secretIndex) {
       //guessed right, so change message,
       setMessage("Correct!");
       document.body.style.setProperty("--active-color", rgbFromArray(_secretColor))

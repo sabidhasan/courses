@@ -74,6 +74,14 @@ header h1 { font-size: 3.5rem;}
 @media (max-width: 500px) {
   .square {
     grid-gap: 0px;
+    grid-template-columns: repeat(3, 120px);
+    grid-template-rows: repeat(2, 120px);
   }
-  .square__box {margin: 5px; width: 120px; height: 120px;}
+  .square__box {margin: 5px; width: 110px; height: 110px;}
+  .options {
+    padding: 0;
+  }
+  header h1 {
+    font-size: 3rem;
+  }
 }
