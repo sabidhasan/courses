@@ -7,9 +7,8 @@ document.querySelector(".options__new").addEventListener("click", setupGame);
 //easy hard binder button
 const difficulties = document.querySelectorAll(".options__difficulty span");
 difficulties.forEach(val => val.addEventListener("click", function() {
-  //toggle active on all
+  //toggle active on all, launch game
   difficulties.forEach(val => {val.classList.toggle("active")});
-  //launch game
   setupGame();
 }));
 
@@ -98,7 +97,8 @@ function ColorGame(difficulty) {
     } else {
       //update message for wrong guess, turn square black
       setMessage("Guess again");
-      e.target.style.backgroundColor = rgbFromArray([0,0,0]);
+      e.target.classList.add("disabled");
+      // e.target.style.backgroundColor = rgbFromArray([0,0,0]);
     }
   }
 }
