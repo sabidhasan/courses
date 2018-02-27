@@ -1,24 +1,26 @@
 //start color game (1 is easy 2 is hard)
-var level = getLevel();
-var game = new ColorGame(level);
+var level; //= getLevel();
+var game; // = new ColorGame(level);
 
-//new color button binder TO--DO
-document.querySelector(".options__new").addEventListener("click", () => {
-  game = new ColorGame(level);
-});
+//new game button
+document.querySelector(".options__new").addEventListener("click", setupGame);
 
-//easy hard binder button TO--DO
+//easy hard binder button
 const difficulties = document.querySelectorAll(".options__difficulty span");
 difficulties.forEach(val => val.addEventListener("click", function() {
   //toggle active on all
   difficulties.forEach(val => {val.classList.toggle("active")});
-  //update difficulty
-  level = getLevel();
-  game = new ColorGame(level);
+  //launch game
+  setupGame();
 }));
 
-function getLevel() {
-  return parseInt(document.querySelector(".active").dataset["level"]);
+//launch Game
+setupGame();
+
+
+function setupGame() {
+  level = parseInt(document.querySelector(".active").dataset["level"]);
+  game = new ColorGame(level);
 }
 
 function ColorGame(difficulty) {
@@ -54,7 +56,7 @@ function ColorGame(difficulty) {
       });
 
       //apply styles to color, add to DOM, and create event listener
-      square.style.backgroundColor = `rgb(${currentColor[0]}, ${currentColor[1]}, ${currentColor[2]})`
+      square.style.backgroundColor = rgbFromArray(currentColor)
       square.addEventListener("click", (e) => {checkAnswer(e)})
       document.querySelector(".square").appendChild(square);
     }
@@ -65,6 +67,9 @@ function ColorGame(difficulty) {
     });
   }
 
+  function rgbFromArray(arr) {
+    return `rgb(${arr[0]}, ${arr[1]}, ${arr[2]})`;
+  }
   function setMessage(msg) {
     document.querySelector(".options__message").textContent = msg;
   }
@@ -91,12 +96,14 @@ function ColorGame(difficulty) {
     //see if answer is right
     let clicked = e.target.dataset;
     if (_secretColor[0] == clicked["r"] && _secretColor[1] == clicked["g"] && _secretColor[2] == clicked["b"]) {
-      //guessed right
-      setMessage("You Guessed Right!");
-      game = new ColorGame(2);
+      //guessed right, so change message,
+      setMessage("Correct!");
+      document.body.style.setProperty("--active-color", rgbFromArray(_secretColor))
+      setupGame();
     } else {
+      //update message for wrong guess, turn square black
       setMessage("Guess again");
-      e.target.style.backgroundColor = "rgb(0,0,0)"
+      e.target.style.backgroundColor = rgbFromArray([0,0,0]);
     }
   }
 }
