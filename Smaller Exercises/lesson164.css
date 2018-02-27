@@ -17,6 +17,7 @@ header {
   padding: 15px 0;
   text-align: center;
   background: var(--active-color);
+  transition: all 0.4s;
 }
 header > * {margin: 0;}
 header h1 { font-size: 4rem; font-weight: 100;}

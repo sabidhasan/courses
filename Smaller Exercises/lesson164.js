@@ -2,7 +2,10 @@ var level;
 var game;
 
 //new game button
-document.querySelector(".options__new").addEventListener("click", setupGame);
+document.querySelector(".options__new").addEventListener("click", () => {
+  setupGame();
+  document.body.style.setProperty("--active-color", "steelblue");
+});
 
 //easy hard binder button
 const difficulties = document.querySelectorAll(".options__difficulty span");
