@@ -9,9 +9,10 @@ function ToDoApp() {
   function markComplete() {
     //visually mark complete
     this.classList.toggle("done");
-    //mark checked
+    //mark complete in memory
     const elementToComplete = findToDoListIndex(this.dataset.id);
     app.todos[elementToComplete].state = !(app.todos[elementToComplete].state);
+    writeToStorage();
   }
 
   function handleDelete() {
@@ -25,14 +26,34 @@ function ToDoApp() {
     //remove from internal list (deleteID)
     const elementToRemove = findToDoListIndex(this.dataset.id);
     app.todos.splice(elementToRemove, 1);
+
+    //write to storage
+    writeToStorage();
+  }
+
+  this.addToDo = function (text) {
+    const newID = this.todos.length ? this.todos[this.todos.length - 1].id + 1 : 0
+    this.todos.push({
+      'id': newID,
+      'task': text,
+      'date': new Date(),
+      'state': false
+    });
+    updateUI();
+    writeToStorage();
   }
 
   function findToDoListIndex (elementID) {
     return app.todos.findIndex(val => val.id == elementID);
   }
+
   function loadFromLocalStorage() {
-    //TO--DO - load from local storage
-    return [{'id': 1, 'task': 'test task', 'date': '23232', 'state': false}];
+    try {
+      return JSON.parse(window.localStorage["todoApp"]);
+    } catch (e) {
+      window.localStorage = JSON.stringify([]);
+      return [];
+    }
   }
 
   function updateUI() {
@@ -48,23 +69,39 @@ function ToDoApp() {
     });
   }
 
-  this.addToDo = function (text) {
-    const newID = this.todos.length ? this.todos[this.todos.length - 1].id + 1 : 0
-    this.todos.push({
-      'id': newID,
-      'task': text,
-      'date': new Date(),
-      'state': false
-    });
-    updateUI();
-  }
-
   function parseToDo(todoObj) {
+    console.log((new Date(todoObj.date)))
     return `<li class="list__item">
       <div class="list__item-text ${todoObj.state ? 'done': ''}" data-id=${todoObj.id}>${todoObj.task}</div>
       <div class="list__item-delete" data-id=${todoObj.id}><i class="fas fa-trash"></i></div>
-      <div class="list__item-date">${todoObj.date}</div>
+      <div class="list__item-date">${stringifyDate(todoObj.date)}</div>
     </li>`
+  }
+
+  function stringifyDate(date) {
+    const dateDiff = (Date.now() - (new Date(date))) / 1000;
+
+    if (dateDiff < 5) {
+      return "just now"
+    } else if (dateDiff < 60) {
+      return `${Math.round(dateDiff)} sec ago`;
+    } else if (dateDiff < 3600) {
+      const tmp = Math.round(dateDiff / 60);
+      return tmp + ` min${tmp == 1 ? "" : "s"} ago`;
+    } else if (dateDiff < (6*60*60)) {
+      return Math.round(dateDiff / 60 * 60) + ' hrs ago';
+    } else if (dateDiff < (24 * 60 * 60)) {
+      return "today";
+    } else if (dateDiff < (48 * 60 * 60)) {
+      return "yesterday";
+    } else {
+      return Math.round(dateDiff / 60 / 60 / 24) + ' days ago'
+    }
+
+    console.log(  )
+  }
+  function writeToStorage() {
+    window.localStorage["todoApp"] = JSON.stringify(app.todos);
   }
 }
 
