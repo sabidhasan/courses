@@ -111,6 +111,14 @@ body {
   animation: shake 0.05s linear 4;
   animation-direction: alternate;
 }
+
+.delete {
+  transition: all .1s;
+  max-height: 0px;
+  /* overflow: hidden; */
+  padding: 0;
+}
+
 @keyframes shake {
   from {transform: translateX(-15px)}
   to {transform: translateX(15px)}
