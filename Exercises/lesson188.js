@@ -20,7 +20,8 @@ function ToDoApp() {
     this.parentElement.classList.add("delete");
     this.parentElement.addEventListener("transitionend", () => {
       const grandParent = this.parentElement.parentElement;
-     grandParent.removeChild(this.parentElement);
+      console.log('end')
+      grandParent.removeChild(this.parentElement);
     });
 
     //remove from internal list (deleteID)
@@ -29,6 +30,7 @@ function ToDoApp() {
 
     //write to storage
     writeToStorage();
+    updateUI();
   }
 
   this.addToDo = function (text) {
@@ -59,7 +61,7 @@ function ToDoApp() {
   function updateUI() {
     var tmp = this.todos.reduce((acc, val) => acc + parseToDo(val), "");
 
-    document.querySelector(".list").innerHTML = tmp;
+    document.querySelector(".list").innerHTML = tmp || "<span>:(</span>";
 
     document.querySelectorAll(".list__item-text").forEach(val => {
       val.addEventListener("click", markComplete)
@@ -70,7 +72,6 @@ function ToDoApp() {
   }
 
   function parseToDo(todoObj) {
-    console.log((new Date(todoObj.date)))
     return `<li class="list__item">
       <div class="list__item-text ${todoObj.state ? 'done': ''}" data-id=${todoObj.id}>${todoObj.task}</div>
       <div class="list__item-delete" data-id=${todoObj.id}><i class="fas fa-trash"></i></div>
@@ -89,7 +90,7 @@ function ToDoApp() {
       const tmp = Math.round(dateDiff / 60);
       return tmp + ` min${tmp == 1 ? "" : "s"} ago`;
     } else if (dateDiff < (6*60*60)) {
-      return Math.round(dateDiff / 60 * 60) + ' hrs ago';
+      return Math.round(dateDiff / 60 / 60) + ' hrs ago';
     } else if (dateDiff < (24 * 60 * 60)) {
       return "today";
     } else if (dateDiff < (48 * 60 * 60)) {
@@ -97,8 +98,6 @@ function ToDoApp() {
     } else {
       return Math.round(dateDiff / 60 / 60 / 24) + ' days ago'
     }
-
-    console.log(  )
   }
   function writeToStorage() {
     window.localStorage["todoApp"] = JSON.stringify(app.todos);
