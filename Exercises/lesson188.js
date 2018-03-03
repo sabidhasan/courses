@@ -11,7 +11,9 @@ function ToDoApp() {
     this.parentElement.classList.add("delete");
     this.parentElement.addEventListener("transitionend", () => {
       this.parentElement.parentElement.removeChild(this.parentElement);
-    })
+    });
+
+    //remove from
   }
 
   function loadFromLocalStorage() {
@@ -27,7 +29,14 @@ function ToDoApp() {
   }
 
   this.addToDo = function (a) {
+    //find missing ID - find the total length of array, take away each
+    //existing number until you get what must be missing
+    const total = (this.todos.length)*(this.todos.length+1) / 2;
+    const sum = this.todos.reduce((acc, val) => acc + parseInt(val.id), 0);
+    const missing = total - sum;
+     
     this.todos.push({
+      'id': missing,
       'task': a,
       'date': new Date(),
       'state': false
