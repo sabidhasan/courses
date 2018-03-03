@@ -113,7 +113,8 @@ body {
 }
 
 .delete {
-  transition: all .1s;
+  /* Padding top ensures the eventlistener only fires once */
+  transition: padding-top .2s;
   max-height: 0px;
   /* overflow: hidden; */
   padding: 0;
