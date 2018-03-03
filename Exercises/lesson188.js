@@ -6,38 +6,53 @@ function ToDoApp() {
   updateUI = updateUI.bind(this);
   updateUI();
 
+  function markComplete() {
+    //visually mark complete
+    this.classList.toggle("done");
+    //mark checked
+    const elementToComplete = findToDoListIndex(this.dataset.id);
+    app.todos[elementToComplete].state = !(app.todos[elementToComplete].state);
+  }
+
   function handleDelete() {
     //visually remove element
     this.parentElement.classList.add("delete");
     this.parentElement.addEventListener("transitionend", () => {
-      this.parentElement.parentElement.removeChild(this.parentElement);
+      const grandParent = this.parentElement.parentElement;
+     grandParent.removeChild(this.parentElement);
     });
 
-    //remove from
+    //remove from internal list (deleteID)
+    const elementToRemove = findToDoListIndex(this.dataset.id);
+    app.todos.splice(elementToRemove, 1);
   }
 
+  function findToDoListIndex (elementID) {
+    return app.todos.findIndex(val => val.id == elementID);
+  }
   function loadFromLocalStorage() {
     //TO--DO - load from local storage
-    return [{'id': '1', 'task': 'test task', 'date': '23232', 'state': false}];
+    return [{'id': 1, 'task': 'test task', 'date': '23232', 'state': false}];
   }
 
   function updateUI() {
     var tmp = this.todos.reduce((acc, val) => acc + parseToDo(val), "");
 
     document.querySelector(".list").innerHTML = tmp;
-    document.querySelectorAll(".list__item-delete").forEach(val=>val.addEventListener("click", handleDelete));
+
+    document.querySelectorAll(".list__item-text").forEach(val => {
+      val.addEventListener("click", markComplete)
+    });
+    document.querySelectorAll(".list__item-delete").forEach(val=>{
+      val.addEventListener("click", handleDelete)
+    });
   }
 
-  this.addToDo = function (a) {
-    //find missing ID - find the total length of array, take away each
-    //existing number until you get what must be missing
-    const total = (this.todos.length)*(this.todos.length+1) / 2;
-    const sum = this.todos.reduce((acc, val) => acc + parseInt(val.id), 0);
-    const missing = total - sum;
-     
+  this.addToDo = function (text) {
+    const newID = this.todos.length ? this.todos[this.todos.length - 1].id + 1 : 0
     this.todos.push({
-      'id': missing,
-      'task': a,
+      'id': newID,
+      'task': text,
       'date': new Date(),
       'state': false
     });
@@ -46,16 +61,12 @@ function ToDoApp() {
 
   function parseToDo(todoObj) {
     return `<li class="list__item">
-      <div class="list__item-text ${todoObj.state ? 'done': ''}">${todoObj.task}</div>
+      <div class="list__item-text ${todoObj.state ? 'done': ''}" data-id=${todoObj.id}>${todoObj.task}</div>
       <div class="list__item-delete" data-id=${todoObj.id}><i class="fas fa-trash"></i></div>
       <div class="list__item-date">${todoObj.date}</div>
     </li>`
   }
-
-
-
 }
-
 
 document.querySelector("input").addEventListener("keyup", handleKeyPress);
 
@@ -70,5 +81,3 @@ function handleKeyPress(e) {
     this.addEventListener("animationend", () => this.classList.remove("wrong"));
   }
 }
-
-//update local storage
