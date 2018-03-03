@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Slabo+27px');
 
+/* GENERAL SELECTORS */
 html {
   border: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Slabo 27px', serif;
+}
+
+:root {
   --yellow: #ffe500;
   --purple: #652bd8;
 }
@@ -24,6 +28,7 @@ body {
   min-height: 100vh;
 }
 
+/* CONTAINER  */
 .container {
   border: 2px solid var(--purple);
   border-radius: 6px;
@@ -39,16 +44,24 @@ body {
   padding: 8px 15px;
   background: var(--yellow);
   display: flex;
+  flex-wrap: wrap;
+  font-weight: bold;
   justify-content: space-between;
   align-items: center;
   font-size: 2.2rem;
-  font-weight: 100;
-  text-shadow: 0px 2px 1px rgba(0, 0, 0, 0.4)
+  text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4)
 }
 
 .container__title-logo {
   font-weight: bold;
   font-size: 2.5rem;
+}
+
+.container__title-subtext {
+  flex: 1 1 100%;
+  font-size: 0.8rem;
+  text-shadow: none;
+  font-weight: normal;
 }
 
 .container__input {
@@ -58,8 +71,15 @@ body {
   outline: none;
   border: none;
   border-bottom: 5px solid var(--yellow);
+  border-top: 5px solid var(--yellow);
   background-color: #f4f2dc;
   font-family: 'Slabo 27px', serif;
+  transition: all 0.4s;
+}
+
+.container__input:focus {
+  border-bottom: 5px solid var(--purple);
+  border-top: 5px solid var(--purple);
 }
 
 .list {
@@ -102,6 +122,9 @@ body {
   font-size: 0.85rem;
   opacity: 0.6;
   order: 3;
+  text-align: center;
+  border-left: 1px solid var(--yellow);
+  width: 22%;
 }
 
 .list__item:hover .list__item-delete {
@@ -113,12 +136,25 @@ body {
   font-weight: bold;
 }
 
+/* PSEUDO SELECTORS */
 .list__item-delete:hover {
   cursor: pointer;
+  color: var(--yellow);
 }
 
+.list__item-delete:hover svg{
+  animation: garbage 0.2s linear infinite;
+  animation-direction: alternate;
+}
+
+/* GENERIC CLASSES */
 .done {
   text-decoration: line-through;
+  opacity: 0.25;
+}
+
+.done ~ .list__item-date {
+  opacity: 0.2
 }
 
 .wrong {
@@ -128,14 +164,37 @@ body {
 }
 
 .delete {
-  /* Padding top ensures the eventlistener only fires once */
   transition: max-height .2;
   max-height: 0px;
-  /* overflow: hidden; */
   padding: 0;
 }
 
+/* MEDIA AND KEYFRAMES */
 @keyframes shake {
   from {transform: translateX(-15px)}
   to {transform: translateX(15px)}
+}
+
+@keyframes garbage {
+  from {transform: rotateZ(-5deg) scale(1.1)}
+  to {transform: rotateZ(5deg) scale(1.1)}
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  body {
+    align-items: flex-start;
+  }
+  .list__item-delete {
+    transform: none;
+  }
+  .list__item-text {
+    transform: none;
+  }
+  .list__item-date {
+    font-size: 0.7rem;
+  }
 }
