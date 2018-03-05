@@ -6,24 +6,68 @@
     <title>Patatap</title>
     <script type="text/javascript" src="node_modules/paper/dist/paper-full.js"></script>
     <script type="text/paperscript" canvas="canvas">
+      var circles = [];
+
+      var keyData = {
+        q: 'bubbles.mp3',
+        w: 'clay.mp3',
+        e: 'confetti.mp3',
+        r: 'corona.mp3',
+        t: 'dotted-spiral.mp3',
+        y: 'flash-1.mp3',
+        u: 'flash-2.mp3',
+        i: 'flash-3.mp3',
+        o: 'glimmer.mp3',
+        p: 'moon.mp3',
+        a: 'pinwheel.mp3',
+        s: 'piston-1.mp3',
+        d: 'piston-2.mp3',
+        f: 'prism-1.mp3',
+        g: 'prism-2.mp3',
+        h: 'prism-3.mp3',
+        j: 'splits.mp3',
+        k: 'squiggle.mp3',
+        l: 'strike.mp3',
+        z: 'suspension.mp3',
+        x: 'timer.mp3',
+        c: 'ufo.mp3',
+        v: 'veil.mp3',
+        b: 'wipe.mp3',
+        n: 'zig-zag.mp3',
+        m: 'moon.mp3'
+      }
+
+
       function onKeyDown(e) {
+
           var randWidth = Math.floor(Math.random() * view._bounds.width);
           var randHeight = Math.floor(Math.random() * view._bounds.height);
-          var origSize = (Math.random() * 350) +50;
+          var origSize = (Math.random() * 350) + 50;
           var circle = new Path.Circle(new Point(randWidth, randHeight), origSize);
-          circle.fillColor = 'purple';
+          circle.fillColor = new Color(Math.random(), Math.random(), Math.random());
           circle.origSize = origSize;
+          circle.sound = new Audio(keyData[e.key]);
+
+          circles.push(circle);
+          circle.sound.play();
       }
 
       function onFrame(e) {
          //make them smaller
-         for (var child in project.activeLayer.children) {
-           var currChild = project.activeLayer.children[child];
-           // //make smaller
+         for (var child in circles) {
+           var currChild = circles[child];
            var origSize = currChild.origSize;
            var scaleFactor = (origSize - 2266.4) / -2333;
-           project.activeLayer.children[child].scale(scaleFactor);
+           currChild.scale(scaleFactor);
+           currChild.fillColor.hue += 1;
+
+           // delete child (were at the end of the loop so its ok)
+           if (currChild._bounds["000"].rect.width + currChild._bounds["000"].rect.height < 10) {
+             currChild.remove();
+             circles.splice(child, 1);
+           }
          }
+       }
     </script>
     <style media="screen" type="text/css">
       * {box-sizing: border-box; margin: 0;}
