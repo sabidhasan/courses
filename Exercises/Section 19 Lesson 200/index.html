@@ -39,6 +39,7 @@
 
 
       function onKeyDown(e) {
+          if (!(e.key in keyData)) return;
 
           var randWidth = Math.floor(Math.random() * view._bounds.width);
           var randHeight = Math.floor(Math.random() * view._bounds.height);
