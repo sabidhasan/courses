@@ -49,11 +49,15 @@
         //set running to true
         running = true;
         var offset = 0;
-        circles.forEach(function(val) {
-          console.log(offset);
-          setTimeout(function(){console.log(val);}, offset)
-          //update the offset
-          offset += val.percentage;
+
+        //get latest ten circles
+        var latestTen = circles.slice(Math.max(circles.length - 10, 0));
+        //loop through them
+        latestTen.forEach(function(val, idx) {
+            setTimeout(function(){    console.log(val)    }, offset);
+              //update the offset
+            offset += totalTimeForLatestTen() * (val.percentage / 100);
+            if (idx === latestTen.length - 1) running = false;
         });
 
 
@@ -69,14 +73,14 @@
         return;
 
 
-        if (running || !circles.length) return;
-        var i = 0;
-        running = setInterval(function() {
-          console.log("\n\n" + i);
-          console.log(circles[i]);
-          i++;
-          if (i === circles.length) running = clearInterval(running);
-        }, 1000);
+        // if (running || !circles.length) return;
+        // var i = 0;
+        // running = setInterval(function() {
+        //   console.log("\n\n" + i);
+        //   console.log(circles[i]);
+        //   i++;
+        //   if (i === circles.length) running = clearInterval(running);
+        // }, 1000);
       }
 
       function onKeyDown(e) {
@@ -101,19 +105,24 @@
           //update UI
           var footer = document.querySelector("footer");
 
-          var latestTen = circles.slice(Math.max(circles.length - 10, 0));
-          var totalTime =  latestTen.map(function(val, idx) {
-            return latestTen[idx+1] ? parseFloat((latestTen[idx+1].time) - val.time) : 0;
-          }).reduce(function(acc, val) {return acc + val})
+
+          var totalTime = totalTimeForLatestTen();
 
           circles = circles.map(function(val, idx) {
-            val.percentage = latestTen[idx+1] ? parseFloat((latestTen[idx+1].time) - val.time) / totalTime * 100: 0
+            val.percentage = circles[idx+1] ? parseFloat((circles[idx+1].time) - val.time) / totalTime * 100: 0
             return val;
           });
 
           footer.innerHTML = circles.map(function(val) {
             return "<span style='flex: 1 1 " + val.percentage + "%'>" + val.key + "</span>";
           }).join("");
+      }
+
+      function totalTimeForLatestTen() {
+        var latestTen = circles.slice(Math.max(circles.length - 10, 0));
+        return latestTen.map(function(val, idx) {
+          return latestTen[idx+1] ? parseFloat((latestTen[idx+1].time) - val.time) : 0;
+        }).reduce(function(acc, val) {return acc + val});
       }
 
       function onFrame(e) {
