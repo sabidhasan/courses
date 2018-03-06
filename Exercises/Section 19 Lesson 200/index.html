@@ -6,10 +6,10 @@
     <title>Patatap</title>
     <script type="text/javascript">
       var circles = [];
-      var running;
     </script>
     <script type="text/javascript" src="node_modules/paper/dist/paper-full.js"></script>
     <script type="text/paperscript" canvas="canvas">
+      var running;
       //contains objects with key data (what key pressed, when etc.);
       var keyData = {
         q: {sound: 'bubbles.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
@@ -46,45 +46,39 @@
         //check if running already
         if (running) return;
 
-        //set running to true
+        //set running to true so cant run concurrently
         running = true;
+        //offset is the setTimeout interval counter; innerCounter is used to count
+        //which iteration of the timer we are on
         var offset = 0;
+        var innerCounter = 0;
 
         //get latest ten circles
         var latestTen = circles.slice(Math.max(circles.length - 10, 0));
-        //loop through them
-        latestTen.forEach(function(val, idx) {
-            setTimeout(function(){    console.log(val)    }, offset);
-              //update the offset
+        //loop through them setting the timer based on their percentage
+        latestTen.forEach(function(val) {
+            setTimeout(function() {
+              //play the value
+
+              //latest ten length - current iteration --- choose length of circles - that
+              var originalCircle = circles[circles.length - (latestTen.length - innerCounter)];
+              originalCircle.circle.sound.play();
+              // originalCircle.scale(500000000);
+
+
+
+              //if this is hte last iteration, update running to false
+              if (innerCounter === latestTen.length - 1) running = false;
+              innerCounter++;
+            }, offset);
+            //update time offset (percentage is how much % time this keypress took
+            // vs. total for last ten).
             offset += totalTimeForLatestTen() * (val.percentage / 100);
-            if (idx === latestTen.length - 1) running = false;
         });
-
-
-// setTimeout(function(){
-//   console.log(person);
-// }, 5000 + offset);
-// offset += 5000;
-
-
-
-        // })
-
-        return;
-
-
-        // if (running || !circles.length) return;
-        // var i = 0;
-        // running = setInterval(function() {
-        //   console.log("\n\n" + i);
-        //   console.log(circles[i]);
-        //   i++;
-        //   if (i === circles.length) running = clearInterval(running);
-        // }, 1000);
       }
 
       function onKeyDown(e) {
-          if (!(e.key in keyData)) return;
+          if (!(e.key in keyData) || running) return;
 
           var randWidth = Math.floor(Math.random() * view._bounds.width);
           var randHeight = Math.floor(Math.random() * view._bounds.height);
@@ -98,7 +92,10 @@
           var circleObj = {
             "circle": paperCircle,
             "time": new Date(),
-            "key": e.key
+            "key": e.key,
+            "origSize": origSize,
+            "width": randWidth,
+            "height": randHeight
           }
           circles.push(circleObj);
 
@@ -151,6 +148,12 @@
         font-size: 2rem; font-family: Baskerville, Times; text-transform: uppercase;
         background-repeat: no-repeat, repeat-x; background-size: contain;
         display: flex; padding-left: 30px;
+      }
+      footer span {
+        display: none;
+      }
+      footer span:nth-last-child(-n+10) {
+        display: inline;
       }
     </style>
     <!-- <link rel="stylesheet" href="styles.css" type="text/css"> -->
