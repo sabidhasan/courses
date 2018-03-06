@@ -4,39 +4,80 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Patatap</title>
+    <script type="text/javascript">
+      var circles = [];
+      var running;
+    </script>
     <script type="text/javascript" src="node_modules/paper/dist/paper-full.js"></script>
     <script type="text/paperscript" canvas="canvas">
-      var circles = [];
-
+      //contains objects with key data (what key pressed, when etc.);
       var keyData = {
-        q: 'bubbles.mp3',
-        w: 'clay.mp3',
-        e: 'confetti.mp3',
-        r: 'corona.mp3',
-        t: 'dotted-spiral.mp3',
-        y: 'flash-1.mp3',
-        u: 'flash-2.mp3',
-        i: 'flash-3.mp3',
-        o: 'glimmer.mp3',
-        p: 'moon.mp3',
-        a: 'pinwheel.mp3',
-        s: 'piston-1.mp3',
-        d: 'piston-2.mp3',
-        f: 'prism-1.mp3',
-        g: 'prism-2.mp3',
-        h: 'prism-3.mp3',
-        j: 'splits.mp3',
-        k: 'squiggle.mp3',
-        l: 'strike.mp3',
-        z: 'suspension.mp3',
-        x: 'timer.mp3',
-        c: 'ufo.mp3',
-        v: 'veil.mp3',
-        b: 'wipe.mp3',
-        n: 'zig-zag.mp3',
-        m: 'moon.mp3'
+        q: {sound: 'bubbles.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        w: {sound: 'clay.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        e: {sound: 'confetti.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        r: {sound: 'corona.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        t: {sound: 'dotted-spiral.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        y: {sound: 'flash-1.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        u: {sound: 'flash-2.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        i: {sound: 'flash-3.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        o: {sound: 'glimmer.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        p: {sound: 'moon.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        a: {sound: 'pinwheel.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        s: {sound: 'piston-1.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        d: {sound: 'piston-2.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        f: {sound: 'prism-1.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        g: {sound: 'prism-2.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        h: {sound: 'prism-3.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        j: {sound: 'splits.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        k: {sound: 'squiggle.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        l: {sound: 'strike.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        z: {sound: 'suspension.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        x: {sound: 'timer.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        c: {sound: 'ufo.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        v: {sound: 'veil.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        b: {sound: 'wipe.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        n: {sound: 'zig-zag.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        m: {sound: 'moon.mp3', color: new Color(Math.random(), Math.random(), Math.random())}
       }
 
+      document.querySelector("footer").addEventListener("click", recall);
+
+      function recall() {
+        //check if running already
+        if (running) return;
+
+        //set running to true
+        running = true;
+        var offset = 0;
+        circles.forEach(function(val) {
+          console.log(offset);
+          setTimeout(function(){console.log(val);}, offset)
+          //update the offset
+          offset += val.percentage;
+        });
+
+
+// setTimeout(function(){
+//   console.log(person);
+// }, 5000 + offset);
+// offset += 5000;
+
+
+
+        // })
+
+        return;
+
+
+        if (running || !circles.length) return;
+        var i = 0;
+        running = setInterval(function() {
+          console.log("\n\n" + i);
+          console.log(circles[i]);
+          i++;
+          if (i === circles.length) running = clearInterval(running);
+        }, 1000);
+      }
 
       function onKeyDown(e) {
           if (!(e.key in keyData)) return;
@@ -44,28 +85,48 @@
           var randWidth = Math.floor(Math.random() * view._bounds.width);
           var randHeight = Math.floor(Math.random() * view._bounds.height);
           var origSize = (Math.random() * 350) + 50;
-          var circle = new Path.Circle(new Point(randWidth, randHeight), origSize);
-          circle.fillColor = new Color(Math.random(), Math.random(), Math.random());
-          circle.origSize = origSize;
-          circle.sound = new Audio(keyData[e.key]);
+          var paperCircle = new Path.Circle(new Point(randWidth, randHeight), origSize);
+          paperCircle.fillColor = keyData[e.key].color;
+          paperCircle.origSize = origSize;
+          paperCircle.sound = new Audio(keyData[e.key].sound);
+          paperCircle.sound.play();
 
-          circles.push(circle);
-          circle.sound.play();
+          var circleObj = {
+            "circle": paperCircle,
+            "time": new Date(),
+            "key": e.key
+          }
+          circles.push(circleObj);
+
+          //update UI
+          var footer = document.querySelector("footer");
+
+          var latestTen = circles.slice(Math.max(circles.length - 10, 0));
+          var totalTime =  latestTen.map(function(val, idx) {
+            return latestTen[idx+1] ? parseFloat((latestTen[idx+1].time) - val.time) : 0;
+          }).reduce(function(acc, val) {return acc + val})
+
+          circles = circles.map(function(val, idx) {
+            val.percentage = latestTen[idx+1] ? parseFloat((latestTen[idx+1].time) - val.time) / totalTime * 100: 0
+            return val;
+          });
+
+          footer.innerHTML = circles.map(function(val) {
+            return "<span style='flex: 1 1 " + val.percentage + "%'>" + val.key + "</span>";
+          }).join("");
       }
 
       function onFrame(e) {
-         //make them smaller
          for (var child in circles) {
            var currChild = circles[child];
-           var origSize = currChild.origSize;
+           var origSize = currChild.circle.origSize;
            var scaleFactor = (origSize - 2266.4) / -2333;
-           currChild.scale(scaleFactor);
-           currChild.fillColor.hue += 1;
+           currChild.circle.scale(scaleFactor);
+           currChild.circle.fillColor.hue += 1;
 
            // delete child (were at the end of the loop so its ok)
-           if (currChild._bounds["000"].rect.width + currChild._bounds["000"].rect.height < 10) {
-             currChild.remove();
-             circles.splice(child, 1);
+           if (currChild.circle._bounds["000"].rect.width + currChild.circle._bounds["000"].rect.height < 10) {
+             currChild.circle.remove();
            }
          }
        }
@@ -73,13 +134,25 @@
     <style media="screen" type="text/css">
       * {box-sizing: border-box; margin: 0;}
       body, html {width: 100%; height: 100%; margin: 0; overflow: hidden;}
-
-      canvas[resize] {width: 100%; height: 100%; background: black;}
+      body {display: flex; flex-direction: column;}
+      canvas {width: 100%; flex: 1; background: black;}
+      footer {
+        height: 50px;  align-items: center; display: flex;
+        background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Do_Mayor_armadura.svg/240px-Do_Mayor_armadura.svg.png), url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Music-staff.svg/200px-Music-staff.svg.png);
+        font-size: 2rem; font-family: Baskerville, Times; text-transform: uppercase;
+        background-repeat: no-repeat, repeat-x; background-size: contain;
+        display: flex; padding-left: 30px;
+      }
     </style>
     <!-- <link rel="stylesheet" href="styles.css" type="text/css"> -->
   </head>
 
   <body>
-    <canvas id="canvas" resize></canvas>
+    <canvas id="canvas"></canvas>
+    <footer></footer>
+
+    <!-- <script type="text/javascript">
+
+    </script> -->
   </body>
 </html>
