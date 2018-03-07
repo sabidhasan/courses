@@ -40,7 +40,7 @@
         m: {sound: 'moon.mp3', color: new Color(Math.random(), Math.random(), Math.random())}
       }
 
-      document.querySelector("footer").addEventListener("click", recall);
+      document.querySelector(".replay").addEventListener("click", recall);
 
       function recall() {
         //check if running already
@@ -53,6 +53,8 @@
         var offset = 0;
         var innerCounter = 0;
 
+        document.querySelector(".footer__line").classList.add("active");
+
         //get latest ten circles
         var latestTen = circles.slice(Math.max(circles.length - 10, 0));
         var line = document.querySelector(".footer__line");
@@ -61,9 +63,11 @@
         var to = setInterval(function() {
           ms += 10;
           //update line
-
-          line.style.setProperty("left", (ms / totalTimeForLatestTen() * 100) + "%");
-          if (ms > totalTimeForLatestTen()) clearInterval(to);
+          line.style.setProperty("left", 3.5 + (ms / totalTimeForLatestTen() * 94.5) + "%");
+          if (ms > totalTimeForLatestTen()) {
+            clearInterval(to);
+            document.querySelector(".footer__line").classList.remove("active");
+          };
         }, 10)
 
         //loop through them setting the timer based on their percentage
@@ -152,40 +156,12 @@
          }
        }
     </script>
-    <style media="screen" type="text/css">
-      * {box-sizing: border-box; margin: 0;}
-      body, html {width: 100%; height: 100%; margin: 0; overflow: hidden;}
-      body {display: flex; flex-direction: column;}
-      canvas {width: 100%; flex: 1; background: black;}
-      footer {
-        height: 50px;  align-items: center;
-        background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Do_Mayor_armadura.svg/240px-Do_Mayor_armadura.svg.png), url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Music-staff.svg/200px-Music-staff.svg.png);
-        font-size: 2rem; font-family: Baskerville, Times; text-transform: uppercase;
-        background-repeat: no-repeat, repeat-x; background-size: contain;
-        padding-left: 30px;
-      }
-      .footer__line {
-        position: absolute;
-        width: 3px;
-        background: red;
-        height: 100%;
-      }
-      .footer__staff span {
-        display: none;
-      }
-      .footer__staff span:nth-last-child(-n+10) {
-        display: inline;
-      }
-      .footer__staff {
-        display: flex;
-        flex: 1 1 100%;
-      }
-    </style>
-    <!-- <link rel="stylesheet" href="styles.css" type="text/css"> -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
   </head>
 
   <body>
-    <canvas id="canvas"></canvas>
+    <canvas id="canvas" resize></canvas>
+    <button class="replay" type="button">Replay</button>
     <footer>
       <span class="footer__line"></span>
       <div class="footer__staff"></div>
