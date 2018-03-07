@@ -55,19 +55,30 @@
 
         //get latest ten circles
         var latestTen = circles.slice(Math.max(circles.length - 10, 0));
+        var line = document.querySelector(".footer__line");
+
+        var ms = 0;
+        var to = setInterval(function() {
+          ms += 10;
+          //update line
+
+          line.style.setProperty("left", (ms / totalTimeForLatestTen() * 100) + "%");
+          if (ms > totalTimeForLatestTen()) clearInterval(to);
+        }, 10)
+
         //loop through them setting the timer based on their percentage
         latestTen.forEach(function(val) {
             setTimeout(function() {
-              //play the value
-
-              //latest ten length - current iteration --- choose length of circles - that
+              //get list of original circles
               var originalCircle = circles[circles.length - (latestTen.length - innerCounter)];
+              //update color, set finished state back to false
+              originalCircle.circle.fillColor = keyData[val.key].color;
+              originalCircle.circle.finished = false;
+              //scale it to larger size (scale down is automatically handled by onFrame function)
+              originalCircle.circle.scale(val.origSize * 5);
+              //play sound
               originalCircle.circle.sound.play();
-              // originalCircle.scale(500000000);
-
-
-
-              //if this is hte last iteration, update running to false
+              //if this is the last iteration of the circles array, update running to false
               if (innerCounter === latestTen.length - 1) running = false;
               innerCounter++;
             }, offset);
@@ -95,12 +106,14 @@
             "key": e.key,
             "origSize": origSize,
             "width": randWidth,
-            "height": randHeight
+            "height": randHeight,
+            "scaleFactor": (origSize - 2266.4) / -2333,
+            "finished": false
           }
           circles.push(circleObj);
 
           //update UI
-          var footer = document.querySelector("footer");
+          var footer = document.querySelector(".footer__staff");
 
 
           var totalTime = totalTimeForLatestTen();
@@ -125,14 +138,16 @@
       function onFrame(e) {
          for (var child in circles) {
            var currChild = circles[child];
+           var state = currChild.circle.finished;
            var origSize = currChild.circle.origSize;
-           var scaleFactor = (origSize - 2266.4) / -2333;
-           currChild.circle.scale(scaleFactor);
-           currChild.circle.fillColor.hue += 1;
-
+           var scaleFactor = currChild.scaleFactor;
+           if (!state) {
+             currChild.circle.scale(scaleFactor);
+             currChild.circle.fillColor.hue += 1;
+           }
            // delete child (were at the end of the loop so its ok)
-           if (currChild.circle._bounds["000"].rect.width + currChild.circle._bounds["000"].rect.height < 10) {
-             currChild.circle.remove();
+           if (currChild.circle._bounds["000"].rect.width + currChild.circle._bounds["000"].rect.height < 1) {
+             currChild.circle.finished = true;
            }
          }
        }
@@ -143,17 +158,27 @@
       body {display: flex; flex-direction: column;}
       canvas {width: 100%; flex: 1; background: black;}
       footer {
-        height: 50px;  align-items: center; display: flex;
+        height: 50px;  align-items: center;
         background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Do_Mayor_armadura.svg/240px-Do_Mayor_armadura.svg.png), url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Music-staff.svg/200px-Music-staff.svg.png);
         font-size: 2rem; font-family: Baskerville, Times; text-transform: uppercase;
         background-repeat: no-repeat, repeat-x; background-size: contain;
-        display: flex; padding-left: 30px;
+        padding-left: 30px;
       }
-      footer span {
+      .footer__line {
+        position: absolute;
+        width: 3px;
+        background: red;
+        height: 100%;
+      }
+      .footer__staff span {
         display: none;
       }
-      footer span:nth-last-child(-n+10) {
+      .footer__staff span:nth-last-child(-n+10) {
         display: inline;
+      }
+      .footer__staff {
+        display: flex;
+        flex: 1 1 100%;
       }
     </style>
     <!-- <link rel="stylesheet" href="styles.css" type="text/css"> -->
@@ -161,7 +186,10 @@
 
   <body>
     <canvas id="canvas"></canvas>
-    <footer></footer>
+    <footer>
+      <span class="footer__line"></span>
+      <div class="footer__staff"></div>
+    </footer>
 
     <!-- <script type="text/javascript">
 
