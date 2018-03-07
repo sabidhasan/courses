@@ -1,0 +1,47 @@
+* {box-sizing: border-box; margin: 0;}
+body, html {width: 100%; height: 100%; margin: 0; overflow: hidden;}
+body {display: flex; flex-direction: column;}
+canvas {width: 100%; flex: 1; background: black;}
+footer {
+  height: 50px;  align-items: center;
+  background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Do_Mayor_armadura.svg/240px-Do_Mayor_armadura.svg.png), url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Music-staff.svg/200px-Music-staff.svg.png);
+  font-size: 2rem; font-family: Baskerville, Times; text-transform: uppercase;
+  background-repeat: no-repeat, repeat-x; background-size: contain;
+  padding-left: 30px;
+}
+.replay {
+  width: 50px;
+  align-self: flex-end;
+  border: 2px solid red;
+  border-radius: 5px;
+  padding: 3px;
+  margin: 4px 0;
+  outline: none;
+}
+.replay:active {
+  background: black;
+  color: red;
+}
+.footer__line {
+  visibility: hidden;
+  display: block;
+  position: relative;
+  width: 11px;
+  height: 11px;
+  background: red;
+  border-radius: 50%;
+  top: -3px;
+}
+.active {
+  visibility: visible;
+}
+.footer__staff span {
+  display: none;
+}
+.footer__staff span:nth-last-child(-n+10) {
+  display: inline;
+}
+.footer__staff {
+  display: flex;
+  flex: 1 1 100%;
+}
