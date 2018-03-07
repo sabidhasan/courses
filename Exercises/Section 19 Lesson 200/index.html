@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Patatap</title>
     <script type="text/javascript">
+      //global circles variable to hold all circles
       var circles = [];
     </script>
+    <!-- Import paper JS -->
     <script type="text/javascript" src="node_modules/paper/dist/paper-full.js"></script>
     <script type="text/paperscript" canvas="canvas">
+      //defines whether a playback is currently running
       var running;
-      //contains objects with key data (what key pressed, when etc.);
+      //constants for sounds and colors
       var keyData = {
         q: {sound: 'bubbles.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
         w: {sound: 'clay.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
@@ -40,37 +43,43 @@
         m: {sound: 'moon.mp3', color: new Color(Math.random(), Math.random(), Math.random())}
       }
 
+      //add event listener for replay button
       document.querySelector(".replay").addEventListener("click", recall);
 
+      //this function plays back the 10 most recent keys
       function recall() {
-        //check if running already
+        //check if running already, if so then do nothing
         if (running) return;
 
-        //set running to true so cant run concurrently
+        //update running variable to prevent double-running
         running = true;
-        //offset is the setTimeout interval counter; innerCounter is used to count
+
+        //offset is the setTimeout interval asynchronous counter; innerCounter is used to count
         //which iteration of the timer we are on
         var offset = 0;
         var innerCounter = 0;
+        //ballTime holds millisec counter for progress tracker ball
+        var ballTime = 0;
 
-        document.querySelector(".footer__line").classList.add("active");
-
-        //get latest ten circles
-        var latestTen = circles.slice(Math.max(circles.length - 10, 0));
+        //show the ball that tracks progress at the bottom
         var line = document.querySelector(".footer__line");
+        line.classList.add("active");
 
-        var ms = 0;
-        var to = setInterval(function() {
-          ms += 10;
-          //update line
-          line.style.setProperty("left", 3.5 + (ms / totalTimeForLatestTen() * 94.5) + "%");
-          if (ms > totalTimeForLatestTen()) {
-            clearInterval(to);
-            document.querySelector(".footer__line").classList.remove("active");
+        //get latest ten circles (if < 10, get whole array)
+        var latestTen = circles.slice(Math.max(circles.length - 10, 0));
+
+        var ballInterval = setInterval(function() {
+          ballTime += 10;
+          //update line left
+          line.style.setProperty("left", 3.5 + (ballTime / totalTimeForLatestTen() * 94.5) + "%");
+          //if we have gone over, then clear the timer, hide the ball
+          if (ballTime > totalTimeForLatestTen()) {
+            clearInterval(ballInterval);
+            line.classList.remove("active");
           };
         }, 10)
 
-        //loop through them setting the timer based on their percentage
+        //loop through latest ten setting the timer based on their percentage
         latestTen.forEach(function(val) {
             setTimeout(function() {
               //get list of original circles
@@ -92,6 +101,7 @@
         });
       }
 
+      //on keypress (paperJS provided function)
       function onKeyDown(e) {
           if (!(e.key in keyData) || running) return;
 
@@ -118,7 +128,6 @@
 
           //update UI
           var footer = document.querySelector(".footer__staff");
-
 
           var totalTime = totalTimeForLatestTen();
 
@@ -166,9 +175,5 @@
       <span class="footer__line"></span>
       <div class="footer__staff"></div>
     </footer>
-
-    <!-- <script type="text/javascript">
-
-    </script> -->
   </body>
 </html>
