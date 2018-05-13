@@ -21,6 +21,19 @@ var blogSchema = new mongoose.Schema({
 var Blog = mongoose.model("Blog", blogSchema)
 
 // Routing
+app.get("/", function(req, res) {
+  res.redirect("/blogs");
+})
+
+app.get("/blogs", function(req, res) {
+  Blog.find({}, function(err, blogs) {
+    if (err) {
+      console.log('error occured in fetching data for all blogs');
+    } else {
+      res.render("index", {blogs: blogs});
+    }
+  });
+});
 
 
 // Run the server
