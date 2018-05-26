@@ -1,7 +1,8 @@
-var express     = require("express"),
-    app         = express(),
-    bodyParser  = require("body-parser"),
-    mongoose    = require("mongoose");
+var express         = require("express"),
+    app             = express(),
+    bodyParser      = require("body-parser"),
+    mongoose        = require("mongoose");
+    methodOverride  = require("method-override")
 
 mongoose.connect("mongodb://localhost/restful_blog_app");
 
@@ -9,6 +10,8 @@ mongoose.connect("mongodb://localhost/restful_blog_app");
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+// For using PUT and DELETE requests on HTML forms
+app.use(methodOverride("_method"));
 
 // Create schema
 var blogSchema = new mongoose.Schema({
@@ -63,8 +66,14 @@ app.get("/blogs/:id", function(req, res) {
 });
 
 app.put("/blogs/:id", function(req, res) {
-  res.send()
-})
+  Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog) {
+      if (err) {
+        res.redirect("/blogs")
+      } else {
+        res.redirect("/blogs/" + req.params.id)
+      }
+  });
+});
 
 app.get("/blogs/:id/edit", function(req, res) {
   Blog.findById(req.params.id, function (err, foundBlog) {
@@ -74,6 +83,16 @@ app.get("/blogs/:id/edit", function(req, res) {
       res.render("edit", {blog: foundBlog});
     }
   });
+});
+
+app.delete("/blogs/:id", function(req, res) {
+  Blog.findByIdAndDelete(req.params.id, function(err) {
+    if (err) {
+      res.redirect("/blogs")
+    } else {
+      res.redirect("/blogs")
+    }
+  })
 });
 
 // Run the server
