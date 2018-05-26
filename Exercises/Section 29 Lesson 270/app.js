@@ -52,6 +52,22 @@ app.get("/blogs/new", function(req, res) {
 });
 
 
+app.get("/blogs/:id", function(req, res) {
+  Blog.findById(req.params.id, function (err, foundBlog) {
+    if (err) {
+      res.redirect("/blogs")
+    } else {
+      res.render("show", {blog: foundBlog})
+    }
+
+  })
+
+});
+
+app.get("/blogs/:id/edit", function(req, res) {
+  res.render("edit");
+});
+
 // Run the server
 app.listen(3002, function() {
   console.log('server is running', 3002);
