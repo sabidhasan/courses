@@ -3,6 +3,13 @@ i.icon {
   font-weight: normal
 }
 
+body {
+  margin-top: 5rem;
+}
 .container.main {
   margin-top: 7em;
+}
+
+form {
+  display: inline!important;
 }
