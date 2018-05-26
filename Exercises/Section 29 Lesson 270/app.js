@@ -59,13 +59,21 @@ app.get("/blogs/:id", function(req, res) {
     } else {
       res.render("show", {blog: foundBlog})
     }
-
-  })
-
+  });
 });
 
+app.put("/blogs/:id", function(req, res) {
+  res.send()
+})
+
 app.get("/blogs/:id/edit", function(req, res) {
-  res.render("edit");
+  Blog.findById(req.params.id, function (err, foundBlog) {
+    if (err) {
+      res.redirect("/blogs")
+    } else {
+      res.render("edit", {blog: foundBlog});
+    }
+  });
 });
 
 // Run the server
