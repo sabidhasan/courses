@@ -13,3 +13,11 @@ body {
 form {
   display: inline!important;
 }
+
+.image {
+  max-height: 150px;
+}
+
+.item {
+  overflow: hidden;
+}
