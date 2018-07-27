@@ -1,6 +1,10 @@
 <template>
   <div class="hello">
     <div class="holder">
+      <form @submit.prevent="addTodo">
+        <input type='text' placeholder="Enter a to do..." v-model="currentSkill">
+      </form>
+      {{ currentSkill }}
       <ul>
         <li v-for="(data, index) in skills" :key="index">{{ index + 1 }} {{ data.skill }}</li>
       </ul>
@@ -18,10 +22,18 @@ export default {
   },
   data() {
     return {
+      currentSkill: '',
       skills: [{"skill": "Skill 1"}, {"skill": "Skill 2"}],
       alertObj: {
         alerts: true
       }
+    }
+  },
+  methods: {
+    addTodo(e) {
+      if (!this.currentSkill) return;
+      this.skills.push({"skill": this.currentSkill});
+      this.currentSkill = '';
     }
   }
 }
@@ -44,5 +56,9 @@ p {
 }
 .container {
   box-shadow: 0 0 40px lightgray;
+}
+input {
+  width: calc(100% - 40px); border: 0; padding: 20px; font-size: 1.3em;
+  background-color: #323333; color: #687f7f;
 }
 </style>
