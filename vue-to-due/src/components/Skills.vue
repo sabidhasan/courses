@@ -22,7 +22,10 @@
           enter-active-class="animated bounceInUp"
           leave-active-class="animated bounceOutDown"
         >
-            <li v-for="(data, index) in skills" :key="index"> {{ data.skill }}</li>
+            <li v-for="(data, index) in skills" :key="index">
+              {{ data.skill }}
+              <i class="fa fa-minus-circle" v-on:click="remove(index)"></i>
+            </li>
         </transition-group>
       </ul>
 
@@ -57,6 +60,9 @@ export default {
             console.log('error!');
           }
         })
+    },
+    remove(id) {
+      this.skills.splice(id, 1);
     }
   }
 }
@@ -65,6 +71,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css');
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
 .holder {
     background: #fff;
 }
@@ -73,7 +81,8 @@ ul {
 }
 ul li {
   padding: 20px; font-size: 1.3em; background-color: #e0edf4;
-  border-left: 5px solid #3eb3f6; margin-bottom: 2px; color: #3e5252
+  border-left: 5px solid #3eb3f6; margin-bottom: 2px; color: #3e5252;
+  display: flex; align-items: center; justify-content: space-between;
 }
 p {
   text-align: center; padding: 30px 0; color: gray;
@@ -99,5 +108,8 @@ input {
   0% {transform: scale(0)}
   50% {transform: scale(1.5)}
   100% {transform: scale(1)}
+}
+i {
+  cursor: pointer; color: maroon;
 }
 </style>
