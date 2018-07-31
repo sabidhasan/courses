@@ -21,11 +21,11 @@
       </template>
     </div>
 
-    <ol>
+    <ul>
       <li v-for="(logItem, idx) in log" v-bind:class="logItem.actor" v-bind:key="idx">
         {{ logItem.action }}
       </li>
-    </ol>
+    </ul>
   </main>
 </template>
 
