@@ -17,11 +17,9 @@
     methods: {
       addQuote() {
         if (!this.inputQuote) {
-          alert('No quote entered!');
-          return;
+          return alert('No quote entered!');
         } else if (this.quotes.length === 10) {
-          alert('Too many quotes entered!')
-          return;
+          return alert('Too many quotes entered!')
         }
         this.quotes.push(this.inputQuote);
         this.inputQuote = '';

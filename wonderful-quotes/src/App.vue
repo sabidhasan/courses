@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+      <h1>Quotes</h1>
       <QuoteCounter :length="quotes.length"></QuoteCounter>
       <AddQuote :quotes="quotes"></AddQuote>
       <div class="quotes">
@@ -22,7 +23,7 @@
   export default {
     data() {
       return {
-        quotes: ['a', 'bb']
+        quotes: ['Camping is the best thing you can do ;)']
       }
     },
     methods: {
@@ -39,6 +40,9 @@
 </script>
 
 <style>
+  h1 {
+    text-align: center; margin: 0 0 25px 0; font-weight: 900; font-size: 5rem;
+  }
   .quotes {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
     grid-gap: 15px; margin: 10px 0;

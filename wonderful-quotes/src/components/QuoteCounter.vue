@@ -16,8 +16,8 @@
 
 <style scoped>
   div {
-    width: 100%; height: 3.5rem; background: red; border-radius: 5px; margin: 0;
-    padding: 0; overflow: hidden;
+    width: 100%; height: 3.5rem; background: lightgray; border-radius: 5px; margin: 0;
+    padding: 0; overflow: hidden; border: 1px solid gray; box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
   }
   div span {
     display: flex; background: orange; height: 100%; transition: width 0.5s;

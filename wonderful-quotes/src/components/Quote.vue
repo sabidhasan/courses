@@ -20,15 +20,19 @@
 </script>
 
 <style scoped>
+  @import url('https://fonts.googleapis.com/css?family=Dancing+Script');
+
   p {
     flex-grow: 1;
   }
   .delete {
-    font-weight: bold; font-size: 1.9rem; cursor: pointer;
+    font-weight: bold; font-size: 2.4rem; cursor: pointer;
+    align-self: flex-start; font-family: sans-serif;
   }
   div {
-    background: orange; border-radius: 4px; padding: 5px 10px;
-    display: flex; border: 2px solid coral;
+    background: orange; border-radius: 4px; padding: 5px 10px; font-size: 4rem;
+    display: flex; border: 2px solid coral; font-family: 'Dancing Script', cursive;
+    align-items: center;
   }
   div:hover {
     background: lightpink;
