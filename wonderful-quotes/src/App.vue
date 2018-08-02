@@ -1,8 +1,15 @@
 <template>
     <div class="container">
       <QuoteCounter :length="quotes.length"></QuoteCounter>
-      <AddQuote :addQuote="addQuote"></AddQuote>
-      <Quotes v-for="quote in quotes" :quote="quote"></Quotes>
+      <AddQuote :quotes="quotes"></AddQuote>
+      <div class="quotes">
+        <Quote
+          v-for="(quote, index) in quotes"
+          :quote="quote"
+          v-on:delete="deleteQuote(index)"
+        >
+        </Quote>
+      </div>
       <Footer></Footer>
     </div>
 </template>
@@ -10,8 +17,7 @@
 <script>
   import QuoteCounter from './components/QuoteCounter.vue'
   import AddQuote from './components/AddQuote.vue'
-  import Quotes from './components/Quotes.vue'
-  import Footer from './components/Footer.vue'
+  import Quote from './components/Quote.vue'
 
   export default {
     data() {
@@ -20,19 +26,24 @@
       }
     },
     methods: {
-      addQuote(quote) {
-        if (!quote) return;
-        this.quotes.push(quote);
+      deleteQuote(index) {
+        this.quotes.splice(index, 1);
       }
     },
     components: {
       QuoteCounter,
       AddQuote,
-      Quotes,
-      Footer
+      Quote,
     }
   }
 </script>
 
 <style>
+  .quotes {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+    grid-gap: 15px; margin: 10px 0;
+  }
+  .container {
+    margin: 50px auto; padding: 0;
+  }
 </style>
