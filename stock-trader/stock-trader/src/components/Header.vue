@@ -10,12 +10,19 @@
         <a>Save</a>
         <a>Load</a>
       </li>
+      <li>{{ funds }}</li>
     </ul>
   </nav>
 </template>
 
 <script>
-
+export default {
+  computed: {
+    funds() {
+      return this.$store.getters.funds;
+    }
+  }
+}
 </script>
 
 <style scoped>
