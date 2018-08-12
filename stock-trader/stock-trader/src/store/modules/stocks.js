@@ -22,7 +22,7 @@ const mutations = {
 
 const actions = {
   purchaseStock: (context, payload) => {
-    context.commit()
+    context.commit('BUY_STOCK', payload, { root: true })
   },
   initializeStocks: (context) => {
     context.commit('SET_STOCKS', stocks)

@@ -29,7 +29,7 @@
           stockPrice: this.currentPrice,
           quantity: this.quantity
         };
-        this.$store.dispatch('BUY_STOCK', order)
+        this.$store.dispatch('purchaseStock', order)
         this.quantity = 0;
       }
     },

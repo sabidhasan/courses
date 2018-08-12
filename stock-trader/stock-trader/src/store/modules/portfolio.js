@@ -4,18 +4,26 @@ const state = {
 }
 
 const getters = {
-
+  stockPortfolio(state, getters) {
+    return state.stocksOwned.map(stock => {
+      const record = getters.stocks.find(elem => elem.id === stock.id)
+      return {
+        id: stock.id,
+        quantity: stock.quantity,
+        name: record.name,
+        prices: record.prices
+      }
+    });
+  }
 }
 
 const mutations = {
   'BUY_STOCK'(state, order) {
     // check if already owned
-    console.log(order)
-    return;
     const oldStock = state.stocksOwned.find(elem => elem.id === order.stockID);
     if (oldStock) {
       // Update existing stock
-      oldStock.quantity += order.quantity
+      oldStock.quantity = parseInt(order.quantity) + parseInt(oldStock.quantity);
     } else {
       // new record
       state.stocksOwned.push({
@@ -24,25 +32,30 @@ const mutations = {
       })
     }
     // update funds
-    state.funds -= stockPrice * quantity;
+    state.funds -= order.stockPrice * order.quantity;
   },
   'SELL_STOCK' (state, order) {
     const oldStock = state.stocksOwned.find(elem => elem.id === order.stockID);
-    if (record.quantity > order.quantity) {
-      record.quantity -= order.quantity;
+    if (oldStock.quantity > order.quantity) {
+      oldStock.quantity = parseInt(oldStock.quantity) - parseInt(order.quantity);
     } else {
-      oldStockIndex = state.stocks.indexOf(record);
-      state.stocks.splice(oldStockIndex, 1)
+      const oldStockIndex = state.stocksOwned.indexOf(oldStock);
+      state.stocksOwned.splice(oldStockIndex, 1)
     }
     // Update funds
-    state.funds += stockPrice * quantity;
+    state.funds += parseInt(order.stockPrice) * parseInt(order.quantity);
   }
 }
 
+const actions = {
+  sellStock: (context, order) => {
+    context.commit('SELL_STOCK', order)
+  }
+}
 
 export default {
   state,
   getters,
   mutations,
-  // actions
+  actions
 }
