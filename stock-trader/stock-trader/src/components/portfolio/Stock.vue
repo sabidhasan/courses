@@ -7,9 +7,9 @@
     <input type="number" v-model="quantity" placeholder="Quantity">
     <button
       @click="sell"
-      :disabled="quantity <= 0 || !Number.isInteger(Number(quantity))"
+      :disabled="quantity <= 0 || !Number.isInteger(Number(quantity)) || !allowedToSell"
     >
-      Sell
+      {{ allowedToSell ? 'Sell' : 'Insufficient Amount' }}
     </button>
   </div>
 </template>
@@ -39,6 +39,9 @@
     computed: {
       currentPrice() {
         return this.stock.prices[this.stock.prices.length - 1]
+      },
+      allowedToSell() {
+        return (this.quantity <= this.stock.quantity)
       }
     }
   }
