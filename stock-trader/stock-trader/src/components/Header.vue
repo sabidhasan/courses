@@ -10,7 +10,7 @@
         <a>Save</a>
         <a>Load</a>
       </li>
-      <li>{{ funds }}</li>
+      <li>{{ funds | currencyFormat }}</li>
     </ul>
   </nav>
 </template>
@@ -20,6 +20,11 @@ export default {
   computed: {
     funds() {
       return this.$store.getters.funds;
+    }
+  },
+  filters: {
+    currencyFormat(funds) {
+      return '$' + funds.toLocaleString()
     }
   }
 }
