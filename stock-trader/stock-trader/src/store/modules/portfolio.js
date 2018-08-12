@@ -14,6 +14,9 @@ const getters = {
         prices: record.prices
       }
     });
+  },
+  funds(state) {
+    return state.funds;
   }
 }
 
@@ -27,7 +30,7 @@ const mutations = {
     } else {
       // new record
       state.stocksOwned.push({
-        quantity: order.quantity,
+        quantity: parseInt(order.quantity),
         id: order.stockID
       })
     }
@@ -36,7 +39,13 @@ const mutations = {
   },
   'SELL_STOCK' (state, order) {
     const oldStock = state.stocksOwned.find(elem => elem.id === order.stockID);
-    if (oldStock.quantity > order.quantity) {
+    // console.log('old stock is');
+    // console.log(oldStock);
+    // console.log('state is');
+    // console.log(order);
+    // console.log(parseInt(oldStock.quantity) > parseInt(order.quantity));
+    // return;
+    if (parseInt(oldStock.quantity) > parseInt(order.quantity)) {
       oldStock.quantity = parseInt(oldStock.quantity) - parseInt(order.quantity);
     } else {
       const oldStockIndex = state.stocksOwned.indexOf(oldStock);
