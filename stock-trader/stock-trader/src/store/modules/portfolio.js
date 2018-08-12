@@ -22,8 +22,11 @@ const getters = {
 
 const mutations = {
   'BUY_STOCK'(state, order) {
-    // check if already owned
+    // Check for enough funds
     const oldStock = state.stocksOwned.find(elem => elem.id === order.stockID);
+    const cost = order.stockPrice * order.quantity;
+
+    // check if already owned
     if (oldStock) {
       // Update existing stock
       oldStock.quantity = parseInt(order.quantity) + parseInt(oldStock.quantity);
@@ -35,16 +38,10 @@ const mutations = {
       })
     }
     // update funds
-    state.funds -= order.stockPrice * order.quantity;
+    state.funds -= cost;
   },
   'SELL_STOCK' (state, order) {
     const oldStock = state.stocksOwned.find(elem => elem.id === order.stockID);
-    // console.log('old stock is');
-    // console.log(oldStock);
-    // console.log('state is');
-    // console.log(order);
-    // console.log(parseInt(oldStock.quantity) > parseInt(order.quantity));
-    // return;
     if (parseInt(oldStock.quantity) > parseInt(order.quantity)) {
       oldStock.quantity = parseInt(oldStock.quantity) - parseInt(order.quantity);
     } else {

@@ -7,9 +7,9 @@
     <input type="number" v-model="quantity" placeholder="Quantity">
     <button
       v-on:click="buy"
-      :disabled="quantity <= 0 || !Number.isInteger(Number(quantity))"
+      :disabled="quantity <= 0 || !Number.isInteger(Number(quantity)) || enoughFunds"
     >
-      Buy
+      {{ enoughFunds ? 'Not enough funds' : 'Buy'}}
     </button>
   </div>
 </template>
@@ -39,6 +39,9 @@
     computed: {
       currentPrice() {
         return this.stock.prices[this.stock.prices.length - 1]
+      },
+      enoughFunds() {
+        return (this.quantity > 0 && this.$store.getters.funds < (this.currentPrice * this.quantity))
       }
     }
 
