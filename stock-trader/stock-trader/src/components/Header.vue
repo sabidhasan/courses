@@ -4,7 +4,7 @@
       <li><router-link exact to="/" class="nav__brand">Stock Trader</router-link></li>
       <li><router-link exact to="/stocks">Stocks</router-link></li>
       <li><router-link exact to="/portfolio">Portfolio</router-link></li>
-      <li><a>End Day</a></li>
+      <li @click="endDay">End Day</li>
       <li>
         <a>Save & Load v</a>
         <a>Save</a>
@@ -16,18 +16,21 @@
 </template>
 
 <script>
-export default {
-  computed: {
-    funds() {
-      return this.$store.getters.funds;
-    }
-  },
-  filters: {
-    currencyFormat(funds) {
-      return '$' + funds.toLocaleString()
+  import { mapActions } from 'vuex';
+
+  export default {
+    computed: {
+      funds() {
+        return this.$store.getters.funds;
+      }
+    },
+    methods: {
+      ...mapActions(['randomizeStocks']),
+      endDay() {
+        this.randomizeStocks();
+      }
     }
   }
-}
 </script>
 
 <style scoped>

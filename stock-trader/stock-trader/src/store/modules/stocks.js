@@ -16,7 +16,13 @@ const mutations = {
     state.stocks = stock;
   },
   'RANDOM_STOCKS' (state) {
-
+    // Loop through stocks, and mutate prices
+    state.stocks.forEach((stock, index) => {
+      const currStock = state.stocks[index].prices
+      const oldPrice = currStock[currStock.length - 1]
+      const newPrice = Math.floor(Math.random() * 10) - 4 + 100;
+      currStock.push(Math.max(0, Math.floor(oldPrice * newPrice / 100)));
+    })
   }
 }
 
