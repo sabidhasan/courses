@@ -21,6 +21,11 @@
 </script>
 
 <style>
+  @import url('https://fonts.googleapis.com/css?family=Lato');
+
+  * {
+    box-sizing: border-box; font-family: 'Lato', sans-serif;
+  }
   body {
     padding: 30px;
   }
