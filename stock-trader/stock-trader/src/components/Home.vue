@@ -13,11 +13,6 @@ export default {
     funds() {
       return this.$store.getters.funds;
     }
-  },
-  filters: {
-    currencyFormat(funds) {
-      return '$' + funds.toLocaleString()
-    }
   }
 }
 </script>

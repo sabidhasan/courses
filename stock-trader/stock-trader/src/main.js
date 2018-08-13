@@ -7,6 +7,11 @@ import { store } from './store/store'
 
 Vue.config.productionTip = false
 
+// Define global filter
+Vue.filter("currencyFormat", (funds) => {
+  return '$' + funds.toLocaleString()
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
