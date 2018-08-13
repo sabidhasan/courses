@@ -1,7 +1,9 @@
 <template>
   <div id="container">
     <Header />
-    <router-view/>
+    <transition name="router" mode="out-in" appear>
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -21,5 +23,15 @@
 <style>
   body {
     padding: 30px;
+  }
+  .router-enter-active {
+    animation: move-in 50ms ease-out forwards;
+  }
+  .router-leave-active {
+    animation: move-in 50ms reverse;
+  }
+  @keyframes move-in {
+    from {transform: translateY(-100%); opacity: 1}
+    to {transform: translateY(0%); opacity: 0}
   }
 </style>
