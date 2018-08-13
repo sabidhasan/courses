@@ -11,15 +11,21 @@
     >
       {{ enoughFunds ? 'Not enough funds' : 'Buy'}}
     </button>
+    <Chart :chartData="chartData" :options="chartOptions"></Chart>
   </div>
 </template>
 
 <script>
+  import Chart from '../Chart.js'
+
   export default {
     data() {
       return {
         quantity: 0
       }
+    },
+    components: {
+      Chart
     },
     methods: {
       buy() {
@@ -42,9 +48,41 @@
       },
       enoughFunds() {
         return (this.quantity > 0 && this.$store.getters.funds < (this.currentPrice * this.quantity))
+      },
+      chartOptions() {
+        return {
+          responsive: true,
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [
+              {
+                scaleLabel: {labelString: 'Days', display: true},
+              }
+            ],
+            yAxes: [
+              {
+                scaleLabel: {labelString: 'Price ($)', display: true},
+              }
+            ]
+          }
+        }
+      },
+      chartData() {
+        return {
+          labels: this.stock.prices.map((v, i) => i + 1),
+          datasets: [
+            {
+              label: `${this.stock.name} Stock Prices`,
+              borderColor: '#f87979',
+              fill: false,
+              data: this.stock.prices
+            }
+          ]
+        }
       }
     }
-
   }
 </script>
 

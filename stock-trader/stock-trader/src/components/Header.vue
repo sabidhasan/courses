@@ -65,6 +65,9 @@
   .nav__logo {
     font-size: 1.5rem; letter-spacing: 0.5px; flex: 1;
   }
+  .nav__logo:hover {
+    background: none;
+  }
   .nav__dropdown {
     max-height: 1.1em; overflow: hidden; transition: all 0.1s; z-index: 99;
     padding: 0 15px; display: flex; flex-direction: column;
