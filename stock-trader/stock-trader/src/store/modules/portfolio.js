@@ -50,6 +50,10 @@ const mutations = {
     }
     // Update funds
     state.funds += parseInt(order.stockPrice) * parseInt(order.quantity);
+  },
+  'SET_PORTFOLIO' (state, data) {
+    state.funds = data.funds;
+    state.stocksOwned = data.stocksOwned ? data.stocksOwned : [];
   }
 }
 
