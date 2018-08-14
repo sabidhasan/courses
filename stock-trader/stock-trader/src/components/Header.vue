@@ -52,7 +52,7 @@
         this.randomizeStocks();
       },
       loadData() {
-
+        this.$store.dispatch('loadData')
       },
       saveData() {
         if (this.saving) return;
@@ -72,6 +72,10 @@
         })
         .then(data => data.json())
         .then(() => this.saving = false)
+        .catch(e => {
+          alert('Could not save data at this time.');
+          this.saving = false;
+        })
       }
     }
   }
