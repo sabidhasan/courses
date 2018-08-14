@@ -1,7 +1,7 @@
 <template>
   <nav>
     <ul>
-      <li class="nav__logo"><router-link exact to="/">Stock Trader</router-link></li>
+      <router-link tag="li" class="nav__logo" exact to="/">Stock Trader</router-link>
       <router-link tag="li" exact to="/stocks">Stocks</router-link>
       <router-link tag="li" exact to="/portfolio">Portfolio</router-link>
       <li @click="endDay">End Day</li>
@@ -97,6 +97,9 @@
   }
   ul > li {
     list-style: none; padding: 5px 10px;
+  }
+  .nav__logo.router-link-exact-active {
+    border-bottom: none;
   }
   .nav__logo {
     font-size: 1.5rem; letter-spacing: 0.5px; flex: 1; font-weight: bold;

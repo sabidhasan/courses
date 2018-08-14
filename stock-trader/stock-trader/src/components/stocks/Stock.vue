@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="stock-holder">
     <div class="stock-header">
       <span class="title">{{ stock.name }}</span>
-      <span>Price: {{ currentPrice }}</span>
+      <span class="price">Price: {{ currentPrice | currencyFormat }}</span>
     </div>
     <input type="number" v-model="quantity" placeholder="Quantity">
     <button
@@ -11,6 +11,7 @@
     >
       {{ enoughFunds ? 'Not enough funds' : 'Buy'}}
     </button>
+    <h2>History for {{ stock.name }} Stock</h2>
     <Chart :chartData="chartData" :options="chartOptions"></Chart>
   </div>
 </template>
@@ -87,10 +88,28 @@
 </script>
 
 <style scoped>
+  .stock-holder {
+    border: 1px solid crimson;
+    border-radius: 5px;
+  }
   .stock-header {
-
+    background: salmon; padding: 10px; display: flex; font-size: 1.3rem; align-items: center;
   }
   .title {
-    text-transform: capitalize;
+    text-transform: capitalize; flex: 1; font-weight: bold; letter-spacing: 3px
+  }
+  .price {
+    font-size: .85rem;
+  }
+  input {
+    font-size: 1.4rem; padding: 2px 5px; border: 1px solid black; border-radius: 4px;
+    margin: 8px 10px; height: 35px;
+  }
+  button {
+    padding: 5px 10px; background: gray; color: black; font-weight: bold; font-size: 1.1rem;
+    border-radius: 4px; margin: 8px 5px; height: 35px; float: right;
+  }
+  h2 {
+    text-align: center; font-weight: 100; font-size: 1.3rem;
   }
 </style>

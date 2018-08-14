@@ -20,7 +20,7 @@
 
 <style scoped>
   .stocks-container {
-    display: grid; grid-gap: 45px;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: grid; grid-gap: 45px; margin: 15px 0;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   }
 </style>
