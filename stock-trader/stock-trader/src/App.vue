@@ -30,13 +30,17 @@
     padding: 30px;
   }
   .router-enter-active {
-    animation: move-in 50ms ease-out forwards;
+    animation: move-in 80ms ease-out forwards;
   }
   .router-leave-active {
-    animation: move-in 50ms reverse;
+    animation: move-out 80ms ease-out forwards;
   }
   @keyframes move-in {
-    from {transform: translateY(-100%); opacity: 1}
-    to {transform: translateY(0%); opacity: 0}
+    from {transform: translateX(100%);}
+    to {transform: translateX(0%);}
+  }
+  @keyframes move-out {
+    from {transform: translateX(0%);}
+    to {transform: translateX(-100%);}
   }
 </style>

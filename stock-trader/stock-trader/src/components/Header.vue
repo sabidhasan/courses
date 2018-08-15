@@ -96,7 +96,7 @@
     cursor: pointer; background: darkgray;
   }
   ul > li {
-    list-style: none; padding: 5px 10px;
+    list-style: none; padding: 5px 10px; transition: all 0.2s;
   }
   .nav__logo.router-link-exact-active {
     border-bottom: none;

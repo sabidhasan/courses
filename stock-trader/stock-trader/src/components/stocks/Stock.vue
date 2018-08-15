@@ -12,12 +12,12 @@
       {{ enoughFunds ? 'Not enough funds' : 'Buy'}}
     </button>
     <h2>History for {{ stock.name }} Stock</h2>
-    <Chart :chartData="chartData" :options="chartOptions"></Chart>
+    <LineChart :chartData="chartData" :options="chartOptions"></LineChart>
   </div>
 </template>
 
 <script>
-  import Chart from '../Chart.js'
+  import { LineChart } from '../charts.js';
 
   export default {
     data() {
@@ -26,7 +26,7 @@
       }
     },
     components: {
-      Chart
+      LineChart
     },
     methods: {
       buy() {
@@ -89,8 +89,7 @@
 
 <style scoped>
   .stock-holder {
-    border: 1px solid crimson;
-    border-radius: 5px;
+    border: 1px solid crimson; border-radius: 5px; overflow: hidden;
   }
   .stock-header {
     background: salmon; padding: 10px; display: flex; font-size: 1.3rem; align-items: center;
@@ -109,7 +108,11 @@
     padding: 5px 10px; background: gray; color: black; font-weight: bold; font-size: 1.1rem;
     border-radius: 4px; margin: 8px 5px; height: 35px; float: right;
   }
+  button:disabled {
+    background: lightgray; opacity: .5
+  }
   h2 {
-    text-align: center; font-weight: 100; font-size: 1.3rem;
+    text-align: center; font-weight: 100; font-size: 1.3rem; padding-top: 10px;
+    border-top: 1px solid salmon;
   }
 </style>
