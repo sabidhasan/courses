@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="stock">
     <div class="stock-header">
       <span class="title">{{ stock.name }}</span>
-      <span>Price: {{ currentPrice }} | Quantity: {{ stock.quantity }}</span>
+      <span class="price">Price: {{ currentPrice | currencyFormat }} | Quantity: {{ stock.quantity }}</span>
     </div>
     <input type="number" v-model="quantity" placeholder="Quantity">
     <button
@@ -48,10 +48,17 @@
 </script>
 
 <style scoped>
+  .stock {
+    margin: 15px 5px; background: lightgreen; padding: 10px 5px;
+    border-radius: 5px; font-size: 1.25rem; border: 1px solid darkgreen;
+  }
   .stock-header {
-
+    display: flex; justify-content: space-between; align-items: center;
   }
   .title {
-    text-transform: capitalize;
+    text-transform: capitalize; font-weight: bold;
+  }
+  .price {
+    font-size: 0.85rem;
   }
 </style>

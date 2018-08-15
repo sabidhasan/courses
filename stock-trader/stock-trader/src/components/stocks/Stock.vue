@@ -100,17 +100,6 @@
   .price {
     font-size: .85rem;
   }
-  input {
-    font-size: 1.4rem; padding: 2px 5px; border: 1px solid black; border-radius: 4px;
-    margin: 8px 10px; height: 35px;
-  }
-  button {
-    padding: 5px 10px; background: gray; color: black; font-weight: bold; font-size: 1.1rem;
-    border-radius: 4px; margin: 8px 5px; height: 35px; float: right;
-  }
-  button:disabled {
-    background: lightgray; opacity: .5
-  }
   h2 {
     text-align: center; font-weight: 100; font-size: 1.3rem; padding-top: 10px;
     border-top: 1px solid salmon;
