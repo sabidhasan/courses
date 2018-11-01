@@ -1,5 +1,5 @@
 function comments(state = [], action) {
-  console.log('ssss');
+  console.log('running');
   return state
 }
 
