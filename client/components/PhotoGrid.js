@@ -5,13 +5,16 @@ class PhotoGrid extends React.Component {
   render() {
     return (
       <div className='photo-grid'>
-        {this.props.posts.map((photo, index) => (
+        {this.props.posts.map((post, index) => (
           <Photo
+            {...this.props}
             key={index}
             index={index}
-            link={photo.code}
-            src={photo.display_src}
-            caption={photo.caption}
+            link={post.code}
+            src={post.display_src}
+            caption={post.caption}
+            likes={post.likes}
+            comments={this.props.comments[post.code]}
           />
         ))}
       </div>
