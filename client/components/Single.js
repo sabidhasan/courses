@@ -16,7 +16,7 @@ class Single extends React.Component {
         <Photo index={i} src={post.display_src} caption={post.caption}
           link={post.code} likes={post.likes} {...this.props}
         />
-        <Comments postComments={postComments}/>
+        <Comments postComments={postComments} {...this.props} />
       </div>
     )
   }
