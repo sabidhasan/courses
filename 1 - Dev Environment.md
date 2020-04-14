@@ -1,5 +1,7 @@
 # Dev Tools
 
+## IDE Setup
+
 **Java Development Kit** is the SDK for Java.
 **IntelliJ** is their IDE of choice.
 
@@ -27,3 +29,21 @@ Three major IDEs:
 
 A **Java package** is a namespace for a bunch of classes (classes are to methods what a package is to classes).
 Use reverse DNS notation for package names, by tradition.
+
+
+
+## Packaging Java Apps
+
+Java applications are bundled for distribution in JAR files (**Java Archive**). These are ZIP archives consisting of `.class` files.
+
+The Java SDK ships with a `jar` util for making JAR files, which can be run using the `java` command on the command line:
+
+```bash
+jar cvmf manifest-input.mf <Output>.jar .
+```
+
+To make the JAR launchable though, a `manifest.mf` file (this tells the JVM which class to use as the entry point) must be specified.
+
+However, in the real world, the build process will be automated, to orchestrate all the different JAR files, running unit tests, code coverage and other analytics, etc.
+
+**Maven** and **Gradle** are the most well known Java build tools.
