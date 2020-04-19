@@ -3,10 +3,17 @@ package com.abidhasan.calcengine;
 import static java.lang.Double.NaN;
 
 public class MathEquation {
-    public double leftVal;
-    public double rightVal;
-    public char opCode;
-    public double result;
+    private double leftVal, rightVal, result;
+    private char opCode;
+
+    public MathEquation() {
+        // If class is instantiated with nothing, default to basic params
+        this(0.0d, 0.0d, 'a');
+    }
+
+    public MathEquation(char opCode) {
+        this(0.0d, 0.0d, opCode);
+    }
 
     public MathEquation(double leftVal, double rightVal, char opCode) {
         this.leftVal = leftVal;

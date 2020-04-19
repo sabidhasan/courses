@@ -3,14 +3,11 @@ package com.abidhasan.calcengine;
 import com.abidhasan.calcengine.MathEquation;
 
 public class Main {
-    public static double[] doCalcs(double[] leftVals, double[] rightVals, char[] opCodes) {
-        double[] ret = new double[leftVals.length];
+    public static MathEquation[] doCalcs(double[] leftVals, double[] rightVals, char[] opCodes) {
+        MathEquation[] ret = new MathEquation[leftVals.length];
 
         for (int i = 0; i < leftVals.length; i++) {
-            double leftVal = leftVals[i];
-            double rightVal = rightVals[i];
-            char opCode = opCodes[i];
-            ret[i] = new MathEquation(leftVal, rightVal, opCode).doCalc();
+             ret[i] = new MathEquation(leftVals[i], rightVals[i], opCodes[i]);
         }
 
         return ret;
@@ -21,10 +18,10 @@ public class Main {
         double[] rightVals = { 90.0d, 15.0d, 25.0d, 2.0d };
         char[] opCodes = { 'a', 's', 'd', 'm' };
 
-        double[] results = doCalcs(leftVals, rightVals, opCodes);
+            MathEquation[] results = doCalcs(leftVals, rightVals, opCodes);
 
-        for (double result : results) {
-            System.out.println("The result is " + result);
+        for (MathEquation result : results) {
+            System.out.println("The result is " + result.doCalc());
         }
     }
 }
