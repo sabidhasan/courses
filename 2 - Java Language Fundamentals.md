@@ -224,5 +224,81 @@ Java includes `this` to refer to the current object, or to itself. For propertie
 **Acessors/Getters and Mutators/Setters**
 Typically called `get<Name>` and `set<Name>` ; the setter returns `void` 
 
+## Class Initializers and Constructors
+
+There are three ways to set initial state for an object upon instantiation:
+
+1. **Field initializers** - set an initial value for a field
+2. **Constructors** - set via passed parameters
+3. **Initialization Blocks** - init code that can be shared between classes
+
+**Field initializers**:
+
+​	A field takes an inital state based on its data type:
+
+- Byte, short, int, long are `0`
+- Float and double are `0.0`
+- Char are `\u0000`
+- Booleans are `false`
+- Reference types are `null`
+
+```java
+public class Earth {
+  long diameterInMiles = 1234;
+  // Can call functions and other fields, to initialize values
+  long diameterInKilometers = Math.round(diameterInMiles * 1.6d);
+}
+```
 
 
+
+**Constructors**
+
+Every class must have a constructor, and if you don't give one, Java will provide one that does nothing. If you provide a constructor, you need to provide ALL constructors.
+
+Can have **multiple constructors** - each must have a different signature, and when class is instantiated, Java call the constructor with the matching signature. One constructor can call another, by instantiating itself with `this` (this is like super, but for the same class).
+
+A constructor can be marked `private`, so that it can only be called from within the class.
+
+```java
+public class Passenger {
+  public Passenger(int freeBags) {
+    // Can instantiate class with one int
+		this.freeBags = freeBags;
+  }
+  
+  public Passenger(int freeBags, int paidBags) {
+    // can instantiate class with two ints
+		this(freeBags);				// instantiate this class with constructor above
+    this.paidBags = paidBags;
+  }
+  
+  private Passenger(double bagFee) {
+    // this can only be called from within the class, not from outside
+  }
+}
+```
+
+
+
+**Initialization Blocks**
+
+This allows shared code between all constructors in a class. To create an initialization block, simply define a block (with no name) where the fields/properties are initialized:
+
+```java
+public class InitBlock {
+  int someField;
+  {
+    // This will run when class is instantiated
+    someField = 1234;
+  }
+}
+```
+
+
+
+The order in which this all occurs:
+
+1. Field initializers (literally field is set when defined)
+2. Initialization block (code defined below field initializers)
+3. Constructor methods
