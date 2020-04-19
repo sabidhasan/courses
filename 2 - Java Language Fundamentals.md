@@ -169,3 +169,60 @@ for (int i : myArray) {
 
 Java supports **switch statements** similar to JS, but only `char` and `int` can be used.
 
+
+
+## Classes
+
+**File names** are conventionally is the same as the class name, and must be so for public classes.
+Class names are in **PascalCase**
+Properties are declared in the beginning of the class.
+Constructors in Java have the same name as the class.
+Java refers to functions as **methods** and properties as **fields**.
+
+To create a class, use the `new` keyword; objects are stored and passed by reference (they are a **reference type**, unlike primitives).
+
+**Access modifiers** define who can see a property/method:
+
+| Modifier    | VIsibility | Usable on Classes          | Usable on Members |
+| ----------- | ---------- | -------------------------- | ----------------- |
+| No modifier | In package | Y                          | Y                 |
+| `public`    | Everywhere | Y                          | Y                 |
+| `private`   | In class   | N (only in nested classes) | Y                 |
+
+
+
+```java
+public class Flight {
+  // these are instance variables
+  private int passengers
+  private int seats;
+  
+  public Flight() {
+    seats = 150;
+    passengers = 0;
+  }
+  
+  public void addOnePassenger() {
+    if (passengers < seats) passengers += 1;
+  }
+  
+  private void someMethod() { 
+    // this can't be called from outside
+  }
+}
+```
+
+
+
+**Special References** (`null` and `this`):
+Java includes `this` to refer to the current object, or to itself. For properties, you can optionally prefix with `this`, or if there is disambiguity for the variable names, `this` will explicitly refer to the obj itself.
+
+`Null` refers to an uncreated object - an object reference that hasn't been instantiated is **null**.
+
+
+
+**Acessors/Getters and Mutators/Setters**
+Typically called `get<Name>` and `set<Name>` ; the setter returns `void` 
+
+
+
