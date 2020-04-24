@@ -302,3 +302,32 @@ The order in which this all occurs:
 1. Field initializers (literally field is set when defined)
 2. Initialization block (code defined below field initializers)
 3. Constructor methods
+
+
+
+## Parameters
+
+Java passes parameters by value, so any changes made in a method to a parameter is not reflected outside (for a primitve/immutable). **Parameters are immutable**. However, if you affect an object field/property inside an object, it will be reflected outside.
+
+**Overloading** allows the same method to be defined in different ways. Each implementation must differ in **call signature**. The signature determines which implementation of a method gets called. Overloaded methods must differ in one or more of:
+
+- *Number* of parameters
+- *Type* of each parameter. Java does **auto casting** if possible to find an overloaded method that meets the call signature.
+- *Method name* (all overloaded methods have the same name)
+
+Sometimes, overloading are used for convenience, to avoid the user having to do work before passing a param to a method.
+
+When passing **multiple (indefinite) number of arguments**, you can define a method to accept any number of arguments using the **elipses** notation - this can only be used for the last parameter. Java auto-creates the array for you, and calls the function with it:
+
+```java
+public void addPassenger(Passenger... list) { 
+	/* list is an array of Passengers, can access length, iterate over it, etc */
+};
+
+addPassenger(pass1, pass2, pass3, pass4); // Java makes the array when calling addPassenger
+// This is equivalent to the above
+addPassenger(new Passenger[] { pass1, pass2, pass3, pass4 });
+```
+
+
+
