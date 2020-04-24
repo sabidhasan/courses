@@ -15,26 +15,55 @@ public class MathEquation {
         this(0.0d, 0.0d, opCode);
     }
 
+    public void setLeftVal(double leftVal) {
+        this.leftVal = leftVal;
+    }
+
+    public void setRightVal(double rightVal) {
+        this.rightVal = rightVal;
+    }
+
     public MathEquation(double leftVal, double rightVal, char opCode) {
         this.leftVal = leftVal;
         this.rightVal = rightVal;
         this.opCode = opCode;
     }
 
+    public double doCalc(double leftVal, double rightVal) {
+        // Overloaded version of doCalc that takes takes new values
+        this.leftVal = leftVal;
+        this.rightVal = rightVal;
+        return doCalc();
+    }
+
+    public int doCalc(int leftVal, int rightVal) {
+        // Overloaded version of doCalc that takes takes new values
+        this.leftVal = leftVal;
+        this.rightVal = rightVal;
+
+        this.result = (int) doCalc();
+        return (int) result;
+    }
+
     public double doCalc() {
         switch (this.opCode) {
             case 'a':
-                return leftVal + rightVal;
+                this.result = leftVal + rightVal;
+                break;
             case 's':
-                return leftVal - rightVal;
+                this.result = leftVal - rightVal;
+                break;
             case 'd':
-                return leftVal / rightVal;
+                this.result = leftVal / rightVal;
+                break;
             case 'm':
-                return leftVal * rightVal;
+                this.result = leftVal * rightVal;
+                break;
             default:
-                return NaN;
+                this.result = NaN;
+                break;
         }
 
+        return result;
     }
-
 }

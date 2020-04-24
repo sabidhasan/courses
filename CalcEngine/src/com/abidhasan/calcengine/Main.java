@@ -18,7 +18,7 @@ public class Main {
         double[] rightVals = { 90.0d, 15.0d, 25.0d, 2.0d };
         char[] opCodes = { 'a', 's', 'd', 'm' };
 
-            MathEquation[] results = doCalcs(leftVals, rightVals, opCodes);
+        MathEquation[] results = doCalcs(leftVals, rightVals, opCodes);
 
         for (MathEquation result : results) {
             System.out.println("The result is " + result.doCalc());
