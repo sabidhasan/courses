@@ -217,7 +217,7 @@ public class Flight {
 **Special References** (`null` and `this`):
 Java includes `this` to refer to the current object, or to itself. For properties, you can optionally prefix with `this`, or if there is disambiguity for the variable names, `this` will explicitly refer to the obj itself.
 
-`Null` refers to an uncreated object - an object reference that hasn't been instantiated is **null**.
+`Null` refers to an uncreated object - an object reference that hasn't been instantiated is **null**. Likewise, an array of objects of a type is initialized with `null`s.
 
 
 
@@ -330,4 +330,83 @@ addPassenger(new Passenger[] { pass1, pass2, pass3, pass4 });
 ```
 
 
+
+## Class Inheritance
+
+The `extends` keyword indicates a class is subclassing from a parent. You can instantiate the child class as a parent class. When instantiating this way, the child class will ONLY have the <u>fields</u> of the parent:
+
+```java
+public class CargoFlight extends Flight {
+  
+}
+
+// Can have a CargoFlight in Flight array, if the CargoFlight created as Flight type
+Flight[] myFlights = new Flight[2];
+
+Flight flight = new Flight();
+// Type flight, but creating CargoFlight - this is valid but it only has stuff from Flight
+Flight cargoFl = new CargoFlight();
+
+myFlights[0] = flight;
+myFlights[1] = cargoFl;
+```
+
+You have to be <u>VERY</u> careful here, as only the fields are hidden, not the methods. A child class casted as parent (as in above) will use the child class' method, but the parent classes fields. Thus, getters and setters are important!!
+
+Java provides an `@Override` annotation for **overriding**, which will make the compiler yell if you don't override the method (i.e. misnamed).
+
+
+
+The **Object Class** is the base class for all objects. Some methods:
+
+- `hashCode` - for hashing
+- `getClass` - type of class
+- `clone` - duplicates the object
+- `toString` - stringify
+- `equals` - comparing objects
+
+An implication of this is that you can make an array of Objects, and hold multiple types of Objects. They won't any non-Object-like capabilities, but can be re-cast to their native classes:
+
+```java
+Object o = new CargoFlight();
+o.add1Package(1, 2, 3);				// this doesn't work, as Object doesn't have add1Package method
+
+// Cast to CargoFlight - auto-casting can't work as compiler doesn't know how to cast:
+CargoFlight cf = (CargoFlight) o;
+```
+
+
+
+**Equality** check is done by reference check, so it only works on primitives or objects that are actually the same. The built in `equals` method cannot be used for custom objects as it also just checks object ID:
+
+```java
+@Override
+public boolean equals(Object o) {
+  if (!(o instanceof <this class>)) return false;
+  // do logic to determine if equal; likely want to cast `o` to this class' type
+  // to access methods, as they are not accessible for type Object
+}
+```
+
+
+
+**Super** gives access to an object's base class, and its methods. Super, like the `this` callable, must be the first line in a constructor.
+
+
+
+**Controlling Inheritance** - if you want to prevent class from being extended to a child class use `final` on the class definition. Use `final` on a method to allow only the method to not be overridden.
+To **require inheritance** and make an abstract class, use the `abstract` keyword. If the method is abstract, the class MUST be marked abstract.
+
+```java
+public final class CargoFlight extends Flight {
+  // this class cant be overridden
+}
+
+public abstract class CargoFlight extends Flight {
+  // this method MUST be overridden
+	public abstract boolean canAccept(Flight f);
+}
+```
+
+**Constructors are not inherited**. If you instantiate a child class, Java will use the default constructor (one that takes no arguments and does nothing), but won't inherit the parents' specialized constructors. However, a base class constructor MUST be called. If not provided, it will use the parent's default constructor.
 
