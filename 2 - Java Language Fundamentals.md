@@ -42,7 +42,7 @@ For a package, the built Bytecode also includes the package name. So to run the 
 
 ## Variables, Data Types, and Math Operators
 
-Java is strongly typed - a variable can only hold one type of data, but the value can be modified. To declare a variable:
+Java is **strongly typed** - a variable can only hold one type of data, but the value can be modified. To declare a variable:
 
 ```java
 // <type> <name> = <inital_value>;
@@ -149,7 +149,6 @@ There are three loops in Java
 
 ```java
 int[] myArray = new int[20];
-
 int[] myArray = {1, 2, 3, 4};
 ```
 
@@ -194,8 +193,7 @@ To create a class, use the `new` keyword; objects are stored and passed by refer
 ```java
 public class Flight {
   // these are instance variables
-  private int passengers
-  private int seats;
+  private int passengers, seats;
   
   public Flight() {
     seats = 150;
@@ -215,14 +213,16 @@ public class Flight {
 
 
 **Special References** (`null` and `this`):
-Java includes `this` to refer to the current object, or to itself. For properties, you can optionally prefix with `this`, or if there is disambiguity for the variable names, `this` will explicitly refer to the obj itself.
+Java includes `this` to refer to the current object itself. For properties, you can optionally prefix with `this`, or if there is disambiguity for the variable names, `this` will explicitly refer to the obj itself.
 
-`Null` refers to an uncreated object - an object reference that hasn't been instantiated is **null**. Likewise, an array of objects of a type is initialized with `null`s.
+`Null` refers to an uncreated object - an object reference that hasn't been instantiated is **null**. Likewise, an array of objects is initialized with `null`s. This is unlike other types, which *have* a default value (e.g. `false`, `0`, `0.0f`, `0L`, etc.).
 
 
 
 **Acessors/Getters and Mutators/Setters**
 Typically called `get<Name>` and `set<Name>` ; the setter returns `void` 
+
+
 
 ## Class Initializers and Constructors
 
@@ -408,5 +408,87 @@ public abstract class CargoFlight extends Flight {
 }
 ```
 
+A field marked `final` cannot be changed after object instantiation. It MUST be set in the `constructor`, and changing it leads to compile errors.
+A field marked `static final` is essentially a constant and cannot be changed PERIOD. Static final fields are named using capital snake case.
+
+
+
 **Constructors are not inherited**. If you instantiate a child class, Java will use the default constructor (one that takes no arguments and does nothing), but won't inherit the parents' specialized constructors. However, a base class constructor MUST be called. If not provided, it will use the parent's default constructor.
+
+
+
+## Data Types
+
+The **String** is a sequence of characters, and it is an object (not a primitive):
+
+- Create by using double quotes
+- Concatenate strings by using `+` and `+=`
+- String objects are **immutable**
+
+Major string methods:
+
+- `length`
+- `valueOf` (for converting non-string to a string)
+- `concat`, `replace`, `toLowerCase`, `toUpperCase`, `trim`, `split`
+- `charAt`, `substring`
+- `contains`, `indexOf`, `startsWith`, `endsWith`, `lastIndexOf`
+- `compareTo`, `equals`, `isEmpty`, `equalsIgnoreCase`
+
+
+
+As strings are objects, String objects cannot be compared by `==` operator. To do this there are two options:
+
+1. Use the `stringOne.equals(stringTwo)` to check for equality
+2. Call the `.intern()` method, which returns the same object for two strings that have the same value
+
+
+
+The `toString` method of an object is called (for example by `System.out.println`) to get a string representation of a class.
+
+
+
+For mutating strings, a new string object must be created for each change, so the **StringBuilder** class is more useful. This class provides a mutable string buffer:
+
+```java
+// the `40` limit is soft, and it'll get auto-extended, but helps JVM.
+StringBuilder sb = new StringBuilder(40);
+sb.append("Start of a");
+sb.append(" a string.");
+sb.insert(0, "Inserted ");
+System.out.println(sb.toString()); // "Inserted Start of a a string"
+```
+
+
+
+All primitives provide **primitive wrapper classes**, which are immutable object wrappers for primitives. Though immutable, they are still objects and so for comparison `.equals` should be used. Wrapper classes exist for all 8 primitives:
+
+- Boolean
+- Character
+- Number (which is the parent class for Byte, Short, Integer, Long, Float, Double)
+
+They provide a `valueOf` method to ingest a primitive, and an `xxxValue` (such as `intValue`) to put out a primitive. For *strings*, there is `parseXxx` and `String.valueOf()`. Converting primitive to wrapper is called **boxing**, and converting wrapper to primitive is called **unboxing**. These aren't required in practice, as the following are equivalent:
+
+```java
+Integer i = 100;
+Integer i2 = Integer.valueOf(100);
+```
+
+The wrapper classes provide all the benefits of `null`able values. When not set, unlike primitives that default to `0` or `0.0` or `false`, the wrapper classes default to `null`.
+
+
+
+**Enums**
+An **enumeration** or enum type is used to define a list of possible discrete constant values. An enum is basically a list of named constants, normally with no value. Create using `enum` and declare values in the body:
+
+```java
+public enum FlightCrewJob {
+  Pilot,
+  Copilot,
+}
+
+public class CrewMember {
+  // Can only have one of the 2 values above
+  private FlightCrewJob job = FlightCrewJob.Pilot;
+}
+```
 
