@@ -492,3 +492,74 @@ public class CrewMember {
 }
 ```
 
+
+
+
+
+## Exceptions and Error Handling
+
+Try...catch...finally:
+
+```java
+try {
+  System.out.println(0 / 0);
+} catch(Exception e) {
+  System.out.println(e.getMessage());
+}
+```
+
+Exception objects have the base class `Throwable`:
+
+- Object
+  - Throwable
+    - Error (these are internal JVM exceptions, generally not caught)
+    - Exception (these are run time errors)
+      - RuntimeException (such as `NullPointerException`) - all **unchecked exceptions**
+      - IOException, (such as `FileNotFoundException`) etc. - all **checked exceptions**
+
+A **Checked Exception** must be caught, otherwise compiler won't compile.
+An **Unchecked Exception** may be ignored, but will crash application at runtime.
+
+
+
+**Throwing Exceptions**
+A `throws` clause is used in a method definition to tell the caller what exceptions need to be caught. It lists all the possible errors that a method can throw. This is *REQUIRED* for a method that can throw something (e.g. builtin methods from BufferedReader throw `IOExceptions`, so anything using it must add `throws IOException` if it doesn't catch them itself).
+
+For an overridden method, the `throws` clause must be compatible with the parent class' throws clause, to ensure users that are using a parent-casted version of the child class don't break:
+
+1. it throws the same exceptions
+2. it throws no exceptions
+3. it throws a more specific exception than the parent class
+
+A **custom exception** inherits from the `Exception` class:
+
+```java
+public class MyException extends Exception {
+  public MyException(String reason, String statement, Throwable cause) {
+    super(reason + " - " + statement, cause);
+  }
+  
+  public MyException(String reason, String statement) {
+		super(reason + " - " + statement);
+  }
+}
+```
+
+
+
+To throw an exception, use the `throw` keyword.
+
+
+
+
+To read a file from a stream, use a **BufferedReader** object:
+
+```java
+BufferedReader reader = new BufferedReader(new FileReader("/Path/t.txt"));
+String line;
+while ((line = reader.readLine()) != null) {
+  System.out.println(line);
+}
+reader.close();
+```
+
