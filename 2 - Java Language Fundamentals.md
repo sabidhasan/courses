@@ -182,11 +182,12 @@ To create a class, use the `new` keyword; objects are stored and passed by refer
 
 **Access modifiers** define who can see a property/method:
 
-| Modifier    | VIsibility | Usable on Classes          | Usable on Members |
-| ----------- | ---------- | -------------------------- | ----------------- |
-| No modifier | In package | Y                          | Y                 |
-| `public`    | Everywhere | Y                          | Y                 |
-| `private`   | In class   | N (only in nested classes) | Y                 |
+| Modifier    | VIsibility                       | Usable on Classes          | Usable on Members |
+| ----------- | -------------------------------- | -------------------------- | ----------------- |
+| No modifier | In package (**package private**) | Y                          | Y                 |
+| `public`    | Everywhere                       | Y                          | Y                 |
+| `private`   | In class                         | N (only in nested classes) | Y                 |
+| `protected` | In class and subclasses          | N (only in nested classes) | Y                 |
 
 
 
@@ -562,4 +563,33 @@ while ((line = reader.readLine()) != null) {
 }
 reader.close();
 ```
+
+
+
+## Packages
+
+A **package** is a group of related files. Each file lists what package it is a part of using the `package` keyword. Benefits:
+
+- Name Spacing
+- Access control (the concept of package private)
+- Distribution and building a package
+
+Package name becomes a part of the class name. Thus, to keep the uniqueness globally, reverse domain names used. Names coming from the following sources don't need the full package name before them:
+
+1. Any types in the **current package** 
+2. Any **core Java methods** in `java.lang` package (`String`, `StringBuilder`, `Object`, etc.)
+3. Any **explicitly imported** things
+
+Import doesn't *actually* import anything. It is just a mapping for the compiler so it knows where to access a type from. To import a classes, use this syntax. Import a single class, or use `.*` to specify *any* class from package:
+
+```java
+import com.pluralsight.travel.Flight;
+import com.anotherpackage.sub.*;
+```
+
+If there are multiple packages that reference the same files, the `import *` syntax will fail to compile.
+
+**Distribution**
+Building a package leads to a predictable structure based on the package name, which gets compressed into a JAR file (this is a compressed version of the elaborate folder structure).
+To build a **JAR file**, use the Artifacts section in IntelliJ.
 
