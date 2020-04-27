@@ -9,17 +9,30 @@ public class CalculateHelper {
     MathCommand command;
     double leftVal, rightVal, result;
 
-    public void process(String statement) {
+    public void process(String statement) throws InvalidStatementException {
         // "add 1.0 2.0" -> "1.0 + 2.0"
         String[] parts = statement.split(" ");
 
-        leftVal = Double.parseDouble(parts[1]);
-        rightVal = Double.parseDouble(parts[2]);
+        if (parts.length != 3) {
+            throw new InvalidStatementException("Incorrect number of fields", statement);
+        }
+
+        try {
+            leftVal = Double.parseDouble(parts[1]);
+            rightVal = Double.parseDouble(parts[2]);
+        } catch (NumberFormatException e) {
+            throw new InvalidStatementException("Non Numeric Data", statement, e);
+        }
 
         String commandString = parts[0];
         setCommandFromString(commandString);
 
-        CalculateBase calculator;
+        if (command == null) {
+            throw new InvalidStatementException("Invalid command", statement);
+        }
+
+        CalculateBase calculator = null;
+
         switch(command) {
             case Add:
                 calculator = new Adder(leftVal, rightVal);
@@ -31,7 +44,6 @@ public class CalculateHelper {
                 calculator = new Multiplier(leftVal, rightVal);
                 break;
             case Divide:
-            default:
                 calculator = new Divider(leftVal, rightVal);
                 break;
         }
@@ -70,6 +82,7 @@ public class CalculateHelper {
     }
 
     private void setCommandFromString(String commandString) {
+        command = null;
         // "add" -> MathCommand.Add
         if (commandString.equalsIgnoreCase(MathCommand.Add.toString())) {
             command = MathCommand.Add;
