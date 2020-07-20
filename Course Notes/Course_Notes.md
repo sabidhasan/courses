@@ -89,3 +89,19 @@ createTask(@Body() createTaskDto: CreateTaskDto) {
 
 
 
+## Parameters
+
+### URL Parameters
+
+To grab parameters in a controller, use the `@Param` decorator, along with providing a colon based name. If passed no arguments, it returns all parsed parameters in an object. Otherwise, pass it a string to get a specific named parameter:
+
+```typescript
+@Get('/:id')
+getTaskById(@Param('id') myId: string) {
+	// do something
+}
+```
+
+### Query Parameters
+
+To grab query parameters, use the `@Query` parameter. This can extract one or more query parameters from the URL.
