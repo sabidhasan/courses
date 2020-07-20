@@ -56,12 +56,36 @@ export class TasksController {
 
 ## Models
 
-A model is the way that data is expected to be on a server. Models can be defined in two ways:
+A model is the way that data is expected to be on a server. Models can be defined in two ways, and in either case, they are POJOs:
 
 1. Classes
 2. Interfaces
 
-An interface is easier/simpler to define, but it is lost after compilation.
+An interface is easier/simpler to define, but it is lost after compilation. To define something as a model, nothing special is needed; rather, the model is there to help in typing things coming from the DB.
+
+## 
+
+## Data Transfer Objects (DTOs)
+
+Data transfer objects (note they are not mandatory but super helpful) make it easy to group data coming into the API from the outside, so that the shape of the data coming in is defined in one place and data validation can be easily done. Definition:
+
+> A data transfer object is an object that encapsulates data and sends it between different subsystems of software.
+
+DTOs represent the shape of data for a specific case so they **are not models** - e.g. when creating a task, we have a Create-Task-DTO, but the task model may have many more fields than the DTO.
+
+DTOs can be defined via two ways, but same as models, it is recommended to define them as classes:
+
+1. Classes
+2. Interfaces
+
+To use the DTO, extract it in controller methods with Body decorator. The body will be parsed into the shape of the DTO:
+
+```typescript
+@Post
+createTask(@Body() createTaskDto: CreateTaskDto) {
+  // do something
+}
+```
 
 
 
