@@ -1,0 +1,117 @@
+class Quiz extends React.Component {
+  constructor(props) {
+    //Needed for inheritance
+    super(props)
+    //generate initial state
+    this.state = generateNewQuestions();
+    //bind the function so it can use 'this'
+    this.checkAnswer = this.checkAnswer.bind(this)
+  }
+  
+  render() {
+    //to hold the buttons
+    var q = []
+    //loop through adding Button react elements
+    for (var i = 0; i < 4; i++) {
+      q.push(<Button value={this.state.options[i]} ansFunc = {this.checkAnswer} id = {i}/>)
+    }
+    
+    return (
+      <div>
+        <Question questions = {this.state.question} operator = {this.state.operator} />
+        <div className = "buttons">{q}</div>
+        <Marks correct = {this.state.correct} incorrect = {this.state.incorrect} />
+      </div>
+    )
+  }
+
+  checkAnswer(index) {
+    //If answer on the button matches the answer
+    if (this.state.answer == this.state.options[index]) {
+      //update the state
+      this.setState((prevState, props) => {
+        var x = generateNewQuestions(prevState)
+        x.correct++
+        return x
+      })
+    } else {
+      //answer is wrong, so update the state with that
+      this.setState({incorrect: this.state.incorrect + 1})
+    }
+  }  
+}
+
+//Options React element
+function Options(props) {
+  return (
+    <div className = "options">
+      <input type="range" min="3" max="6" value="6" onChange = {() => {props.optionsChange(event)}} />
+      <p>{props.optVal}</p>
+    </div>
+  )
+}
+
+//Generates marks div
+function Marks(props) {
+  return (
+    <div className = "marks">
+      <h2>Correct <span> {props.correct} </span></h2>
+      <h2>Incorrect <span> {props.incorrect}</span></h2>
+    </div>
+  )
+}
+
+//Generate new questions
+function generateNewQuestions(prevState) {
+  var incorrect = prevState == undefined ? 0 : prevState.incorrect
+  var correct = prevState == undefined ? 0 : prevState.correct
+  
+  //how many numbers 25 means 0-25
+  var numLimit = 25
+  
+  var operator = ["*", "+", "-", "%"][Math.floor(Math.random() * 4)]
+
+  function genRanNum(numberLimit) {
+    return Math.floor(Math.random() * numberLimit)
+  }
+  function evaluate(num1, num2) {
+    if (num1 == undefined) {
+      num1 = genRanNum(numLimit)
+      num2 = genRanNum(numLimit)
+    }
+    return eval(num1 + operator + num2)
+  }
+  
+  var a1 = genRanNum(numLimit)
+  var a2 = genRanNum(numLimit)
+  var options = (new Array(3).fill(0).map(() => {return evaluate()}))
+  options.splice(genRanNum(3), 0, evaluate(a1, a2))
+
+  return {question: [a1, a2], operator: operator, options: options , answer: evaluate(a1, a2), incorrect: incorrect, correct: correct} 
+}
+
+function Question(props) {
+  return <h1>Question<br /> What is {props.questions[0]} {props.operator} {props.questions[1]}?</h1>
+}
+
+function Button(props) {
+  return <button onClick = {() => {props.ansFunc(props.id)}}>{props.value}</button>
+}
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
+  }
+
+  return array;
+}
+
+
+ReactDOM.render(<Quiz />, document.getElementById("root"))

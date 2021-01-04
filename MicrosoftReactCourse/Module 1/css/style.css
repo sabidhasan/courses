@@ -1,0 +1,66 @@
+body {
+  background-color: #191919;
+}
+
+#root {
+  width: 70%;
+  margin: 3rem auto;
+  background-color: #DF3D82;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  padding: 1%;
+  font-family: arial;
+}
+
+h1, td, th, h2 {
+  text-align: center;
+  font-weight: normal;
+  color: #191919;
+}
+
+h3 {
+  text-transform: capitalize;
+  margin-top: 3.5rem;
+  font-size: 1.7rem;
+}
+
+div p, div table {
+  margin-left: 4rem;
+  width: 80%;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 0.4rem 0;
+  font-size: 1.3rem;
+}
+
+td {
+  color: #191919;
+}
+
+th {
+  background-color: #191919;
+  color: #fff;
+}
+
+tr:nth-child(n+2) {
+  border-bottom: 2px dotted #fff;
+  line-height: 2rem;
+}
+
+button {
+  background-color: pink;
+  padding: 8px;
+  border: none;
+  outline: none;
+}
+
+select {
+  font-size: 1.5rem;
+  margin: 0 5%;
+  padding: 0.3rem;
+  color: #fff;
+  background-color: #191919;
+  border: 0;
+}

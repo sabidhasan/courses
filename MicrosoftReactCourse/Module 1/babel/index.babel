@@ -1,0 +1,67 @@
+var appTitle = "React Transportation";
+var inventory = {"cars": [{year: 2013, model: "A", price: 32000}, {year: 2011, model: "B", price: 4400}, {year: 2016, model: "C", price: 15500}],
+         "trucks": [{year: 2014, model: "D", price: 18000}, {year: 2013, model: "E", price: 5200}],    
+                 "convertibles": [{year: 2009, model: "F", price: 2000}, {year: 2010, model: "G", price: 6000}, {year: 2012, model: "H", price: 12500}, {year: 2017, model: "M", price: 50000}]
+                };
+                                 
+function ShowTitle(props) {
+  return (
+    <div>
+      <h1>Welcome to {props.title}</h1>
+      <h2>The best place to buy vehicles online</h2>
+    </div>
+  );
+}
+function ShowOptions() {
+  return (
+    <div>
+      <h3>Choose Options</h3>
+      <p><input type="checkbox" id="new" /><label for="new">New Only</label></p>
+      <p>Select Type
+         <select> 
+           <option value="all">All</option>
+           <option value="cars">Cars</option>
+           <option value="trucks">Trucks</option>
+           <option value="convertibles">Convertibles</option>
+        </select>
+      </p>
+    </div>
+  )
+}
+function ShowVehicles(props) {
+  var ret = props.vehicles.map((val) => {
+    return (
+      <tr>
+        <td>{val.year}</td>
+        <td>{val.model}</td>
+        <td>{val.price}</td>
+        <td><button>Buy Now</button></td>
+      </tr>)});
+
+  return (
+    <div>
+      <h3>{props.type}</h3>
+      <table>
+        <tr>
+          <th>Year</th>
+          <th>Model</th>
+          <th>Price</th>
+          <th>Buy</th>
+        </tr>
+        {ret}
+      </table>  
+    </div>);
+}
+function ReactTransportApp(props) {
+  var ret = [<ShowTitle title={appTitle} />, <ShowOptions />];
+
+  for (var car in inventory) {
+    ret.push(<ShowVehicles vehicles={inventory[car]} type={car} />)
+  }
+ 
+  return (<div>
+    {ret}
+    </div>);
+}
+
+ReactDOM.render(<ReactTransportApp />, document.getElementById("root"));
