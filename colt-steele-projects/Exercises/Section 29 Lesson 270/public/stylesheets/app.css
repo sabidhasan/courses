@@ -1,0 +1,23 @@
+i.icon {
+  font-size: 2em;
+  font-weight: normal
+}
+
+body {
+  margin-top: 5rem;
+}
+.container.main {
+  margin-top: 7em;
+}
+
+form {
+  display: inline!important;
+}
+
+.image {
+  max-height: 150px;
+}
+
+.item {
+  overflow: hidden;
+}

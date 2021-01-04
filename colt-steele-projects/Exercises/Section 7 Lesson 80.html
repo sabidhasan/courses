@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Purrfect Match Landing Page</title>
+    <link type="text/css" rel="stylesheet" href="lesson80.css">
+    <!-- FontAwesome script -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  </head>
+
+  <body>
+    <nav class="nav-bar" role="navigation">
+      <h1 class="nav-bar__title">Purrfect Match</h1>
+      <ul class="nav-bar__nav">
+        <li class="active">Home</li>
+        <li>About</li>
+        <li>Contact</li>
+      </ul>
+      <ul class="nav-bar__user">
+        <li>Signup <i class="fas fa-user-plus"></i></li>
+        <li>Login <i class="fas fa-user"></i></li>
+      </ul>
+      <!-- for nav bar mobile users -->
+      <button class="menu-button" aria-expanded="false">
+        <span class="menu-button__line"></span>
+        <span class="menu-button__line"></span>
+        <span class="menu-button__line"></span>
+      </button>
+    </nav>
+
+
+    <div class="content">
+      <div class="content__welcome">
+        <h1>Purrfect Match</h1>
+        <p>The Only Human-Feline Dating App</p>
+        <hr />
+        <button class="content__button"><i class="fas fa-paw"></i> Get Started!</button>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <script>
+      const menuButton = document.querySelector(".menu-button");
+      menuButton.addEventListener("click", showHideMenu);
+
+      function showHideMenu() {
+        const newAttribute = !(this.getAttribute("aria-expanded") == 'true');
+        this.setAttribute("aria-expanded", newAttribute);
+
+        //add class to body
+        if (newAttribute) {
+          document.body.classList.add("menu-open");
+        } else {
+          document.body.classList.remove("menu-open");
+        }
+      }
+    </script>
+
+  </body>
+</html>

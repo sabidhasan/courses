@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Patatap</title>
+    <script type="text/javascript">
+      //global circles variable to hold all circles
+      var circles = [];
+    </script>
+    <!-- Import paper JS -->
+    <script type="text/javascript" src="node_modules/paper/dist/paper-full.js"></script>
+    <script type="text/paperscript" canvas="canvas">
+      //defines whether a playback is currently running
+      var running;
+      //constants for sounds and colors
+      var keyData = {
+        q: {sound: 'bubbles.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        w: {sound: 'clay.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        e: {sound: 'confetti.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        r: {sound: 'corona.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        t: {sound: 'dotted-spiral.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        y: {sound: 'flash-1.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        u: {sound: 'flash-2.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        i: {sound: 'flash-3.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        o: {sound: 'glimmer.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        p: {sound: 'moon.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        a: {sound: 'pinwheel.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        s: {sound: 'piston-1.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        d: {sound: 'piston-2.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        f: {sound: 'prism-1.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        g: {sound: 'prism-2.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        h: {sound: 'prism-3.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        j: {sound: 'splits.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        k: {sound: 'squiggle.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        l: {sound: 'strike.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        z: {sound: 'suspension.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        x: {sound: 'timer.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        c: {sound: 'ufo.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        v: {sound: 'veil.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        b: {sound: 'wipe.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        n: {sound: 'zig-zag.mp3', color: new Color(Math.random(), Math.random(), Math.random())},
+        m: {sound: 'moon.mp3', color: new Color(Math.random(), Math.random(), Math.random())}
+      }
+
+      //add event listener for replay button
+      document.querySelector(".replay").addEventListener("click", recall);
+
+      //this function plays back the 10 most recent keys
+      function recall() {
+        //check if running already, if so then do nothing
+        if (running) return;
+
+        //update running variable to prevent double-running
+        running = true;
+
+        //offset is the setTimeout interval asynchronous counter; innerCounter is used to count
+        //which iteration of the timer we are on
+        var offset = 0;
+        var innerCounter = 0;
+        //ballTime holds millisec counter for progress tracker ball
+        var ballTime = 0;
+
+        //show the ball that tracks progress at the bottom
+        var line = document.querySelector(".footer__line");
+        line.classList.add("active");
+
+        //get latest ten circles (if < 10, get whole array)
+        var latestTen = circles.slice(Math.max(circles.length - 10, 0));
+
+        var ballInterval = setInterval(function() {
+          ballTime += 10;
+          //update line left
+          line.style.setProperty("left", 3.5 + (ballTime / totalTimeForLatestTen() * 94.5) + "%");
+          //if we have gone over, then clear the timer, hide the ball
+          if (ballTime > totalTimeForLatestTen()) {
+            clearInterval(ballInterval);
+            line.classList.remove("active");
+          };
+        }, 10)
+
+        //loop through latest ten setting the timer based on their percentage
+        latestTen.forEach(function(val) {
+            setTimeout(function() {
+              //get list of original circles
+              var originalCircle = circles[circles.length - (latestTen.length - innerCounter)];
+              //update color, set finished state back to false
+              originalCircle.circle.fillColor = keyData[val.key].color;
+              originalCircle.circle.finished = false;
+              //scale it to larger size (scale down is automatically handled by onFrame function)
+              originalCircle.circle.scale(val.origSize * 5);
+              //play sound
+              originalCircle.circle.sound.play();
+              //if this is the last iteration of the circles array, update running to false
+              if (innerCounter === latestTen.length - 1) running = false;
+              innerCounter++;
+            }, offset);
+            //update time offset (percentage is how much % time this keypress took
+            // vs. total for last ten).
+            offset += totalTimeForLatestTen() * (val.percentage / 100);
+        });
+      }
+
+      //on keypress (paperJS provided function)
+      function onKeyDown(e) {
+          if (!(e.key in keyData) || running) return;
+
+          var randWidth = Math.floor(Math.random() * view._bounds.width);
+          var randHeight = Math.floor(Math.random() * view._bounds.height);
+          var origSize = (Math.random() * 350) + 50;
+          var paperCircle = new Path.Circle(new Point(randWidth, randHeight), origSize);
+          paperCircle.fillColor = keyData[e.key].color;
+          paperCircle.origSize = origSize;
+          paperCircle.sound = new Audio(keyData[e.key].sound);
+          paperCircle.sound.play();
+
+          var circleObj = {
+            "circle": paperCircle,
+            "time": new Date(),
+            "key": e.key,
+            "origSize": origSize,
+            "width": randWidth,
+            "height": randHeight,
+            "scaleFactor": (origSize - 2266.4) / -2333,
+            "finished": false
+          }
+          circles.push(circleObj);
+
+          //update UI
+          var footer = document.querySelector(".footer__staff");
+
+          var totalTime = totalTimeForLatestTen();
+
+          circles = circles.map(function(val, idx) {
+            val.percentage = circles[idx+1] ? parseFloat((circles[idx+1].time) - val.time) / totalTime * 100: 0
+            return val;
+          });
+
+          footer.innerHTML = circles.map(function(val) {
+            return "<span style='flex: 1 1 " + val.percentage + "%'>" + val.key + "</span>";
+          }).join("");
+      }
+
+      function totalTimeForLatestTen() {
+        var latestTen = circles.slice(Math.max(circles.length - 10, 0));
+        return latestTen.map(function(val, idx) {
+          return latestTen[idx+1] ? parseFloat((latestTen[idx+1].time) - val.time) : 0;
+        }).reduce(function(acc, val) {return acc + val});
+      }
+
+      function onFrame(e) {
+         for (var child in circles) {
+           var currChild = circles[child];
+           var state = currChild.circle.finished;
+           var origSize = currChild.circle.origSize;
+           var scaleFactor = currChild.scaleFactor;
+           if (!state) {
+             currChild.circle.scale(scaleFactor);
+             currChild.circle.fillColor.hue += 1;
+           }
+           // delete child (were at the end of the loop so its ok)
+           if (currChild.circle._bounds["000"].rect.width + currChild.circle._bounds["000"].rect.height < 1) {
+             currChild.circle.finished = true;
+           }
+         }
+       }
+    </script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+  </head>
+
+  <body>
+    <canvas id="canvas" resize></canvas>
+    <button class="replay" type="button">Replay</button>
+    <footer>
+      <span class="footer__line"></span>
+      <div class="footer__staff"></div>
+    </footer>
+  </body>
+</html>
