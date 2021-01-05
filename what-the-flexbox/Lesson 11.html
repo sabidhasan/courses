@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FlexBox Tutorial</title>
+  <link rel="stylesheet" href="style.css">
+  <style media="screen">
+    .container {
+      display: flex;
+       /* flex-wrap: wrap; */
+       flex-direction: column;
+       height: 100vh;
+       overflow: hidden;
+     }
+    .box {
+      font-size: 6px;
+
+      flex-basis: 500px;
+    }
+    .box2 {flex-shrink: 1}
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="box box1">one 😎</div>
+    <div class="box box2">two 🍕</div>
+    <div class="box box1">one 😎</div>
+    <div class="box box2">two 🍕</div>
+    <div class="box box1">one 😎</div>
+    <div class="box box2">two 🍕</div>
+  </div>
+
+</body>
+</html>
