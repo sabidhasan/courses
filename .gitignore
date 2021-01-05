@@ -37,3 +37,9 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Default ignored files for Java
+/shelf/
+/workspace.xml
+*/.idea/*
+*.iml
