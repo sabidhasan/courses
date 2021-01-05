@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, HttpException, NotFoundException } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
@@ -44,33 +44,28 @@ export class TasksService {
   }
 
   getTaskById(id: string): Task {
-    const existingTask = this.tasks.find((task) => task.id === id);
-    if (!existingTask) {
-      throw new HttpException(`Cannot find task ${id}`, 404);
-    }
-
-    return existingTask;
+    return this.tasks[this.getTaskIndex(id)];
   }
 
-  deleteTaskById(id: string): Task[] {
+  getTaskIndex(id: string): number {
     const existingTaskIndex = this.tasks.findIndex((task) => task.id === id);
 
     if (existingTaskIndex === -1) {
-      throw new HttpException(`Cannot find task ${id}`, 404);
+      throw new NotFoundException(`Cannot find task ${id}`);
     }
 
+    return existingTaskIndex;
+  }
+
+  deleteTaskById(id: string): Task[] {
+    const existingTaskIndex = this.getTaskIndex(id);
     this.tasks.splice(existingTaskIndex, 1);
     return this.tasks;
   }
 
   updateTaskStatus(id: string, status: TaskStatus): Task {
-    for (const task of this.tasks) {
-      if (task.id === id) {
-        task.status = status;
-        return task;
-      }
-    }
-
-    throw new HttpException(`Cannot find task ${id}`, 404);
+    const taskToUpdate = this.tasks[this.getTaskIndex(id)];
+    taskToUpdate.status = status;
+    return taskToUpdate;
   }
 }

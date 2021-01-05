@@ -105,3 +105,56 @@ getTaskById(@Param('id') myId: string) {
 ### Query Parameters
 
 To grab query parameters, use the `@Query` parameter. This can extract one or more query parameters from the URL.
+
+
+
+## Pipes
+
+**Pipes** handle a request before it is passed to a handler in the controller. They perform:
+
+- *Data transformation* (transform JSON data into an instantiated class)
+- *Data validation* (reject the request if it is not valid)
+
+
+
+Pipes can throw errors, return data, modify incoming data, etc. all before the request is passed to the handler. Some common pipes built-in to NestJS:
+
+- **ValidationPipe**: validate incoming DTO for missing/extra fields and types
+- **ParseIntPipe**: since everything coming is a string, it can parse them into integers
+
+In addition, **custom pipes** can be made. These are classes decorated with `@Injectable`, and implement the `PipeTransform` interface. This means it has a transform method:
+
+```typescript
+transform(value, metadata) { }
+```
+
+To use a pipe, there are several ways:
+
+1. Before a controller's handler, by the `UsePipe` decorator, to handle all requests to that handler. This is preferred.
+
+2. For a specific parameter in one handler for a controller:
+
+   ```typescript
+   @Post
+   createTask(
+   	@Body(createTaskDto: CreateTaskDto, SomeCoolPipe)
+     // or @Query(ValidationPipe) query: queryDto // validates using class-validator
+   ) {}
+```
+   
+3. App-level pipes used for all requests configured when starting app instance.
+
+To validate data in a very simple manner, use the **ValidationPipe** built into Nest.
+This means doing two things:
+
+1. Decorate fields in the DTO with one or more validators from the package `class-validator`'s method, e.g. `@IsNotEmpty`. 
+2. Tell the controller's handler(s) to use the `ValidationPipe` (by using `UsePipes` decorator, or passing it into the `@Body`/`@Query` parameters)
+
+
+
+
+
+
+
+
+
