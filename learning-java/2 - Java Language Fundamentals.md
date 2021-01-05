@@ -593,3 +593,28 @@ If there are multiple packages that reference the same files, the `import *` syn
 Building a package leads to a predictable structure based on the package name, which gets compressed into a JAR file (this is a compressed version of the elaborate folder structure).
 To build a **JAR file**, use the Artifacts section in IntelliJ.
 
+
+
+## Interfaces
+
+An **interface** is a type that defines a **contract**. An interface doesn't provide any implementation (unlike an abstract class that could give concrete methods), and provides methods and fields (unlike an enum that just has properties), and a class can have multiple interfaces (Java doesn't have multiple inheritance).
+
+Examples of interfaces:
+
+1. **Comparable<T>**
+   used for sorting by `Array.sort`. A method this interface has is `compareTo`, which returns a negative value, positive, or zero, depending on sort order.
+2. **Iterable<T>**
+   used for supporting `foreach` loops.
+
+Some interfaces require type information (e.g. comparable's implementation). This can be provided via the **Generics** angled bracket notation.
+
+```java
+public class Passenger implements Comparable<Flight> {
+  public int compareTo(Flight o) {
+		// do the work
+  }
+}
+```
+
+To declare a custom interface, use the `interface` keyword. Methods in interfaces only require name, parameters, and return type. Fields in interfaces are effectively constants, and are always `public static final`. An interface can also extend another interface.
+
