@@ -77,12 +77,14 @@ nest generate service <name>
 
 ## Models
 
-A model is the way that data is expected to be on a server. Models can be defined in two ways, and in either case, they are POJOs:
+A model is a simple non-database way that data is expected to be on a server. Models can be defined in two ways, and in either case, they are POJOs:
 
 1. Classes
 2. Interfaces
 
 An interface is easier/simpler to define, but it is lost after compilation. To define something as a model, nothing special is needed; rather, the model is there to help in typing things coming from the DB.
+
+For persistent data, we use **entities** and **repositories** to interact with the database.
 
 
 
@@ -170,4 +172,22 @@ To use a pipe, there are several ways:
 
 3. Global app-level pipes used for all requests configured when starting app instance
 
-To validate data, the built in `ValidationPipe` can be used at the route handler level, along with installing `class-validator` and `class-transform` packages .
+To validate data, the built in `ValidationPipe` can be used at the route handler level, along with installing `class-validator` and `class-transform` packages.
+
+
+
+## Object Relational Mapping - Entities and Repositories
+
+TypeORM is the preferred ORM for NestJS, due to its strong Typescript support. NestJS TypeORM module must be installed for working with TypeORM. There are two classes for ORM:
+
+- An **entity**, which is a class decorated by `@Entity()` from type-orm and extends `BaseEntity` represents the entity in the database
+
+- A **repository** is a class decorated by `EntityRepository` and extends `Repository` is a helper class for doing actual DB operations with an entity from the Service
+
+Repository can be injected into the service via dependency injection, and added as an import in the module.
+
+The separation of concerns is:
+
+- **Controller** - handles requests and calls service methods
+- **Service** - orchestrates logic for dealing with DB operations, throws exceptions, handles high level business logic, etc. and calls the repository methods
+- **Repository** - represents the core CRUD database operations (has access to querybuilder, etc. as it extends the `Repository` class)
