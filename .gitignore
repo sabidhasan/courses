@@ -4,7 +4,7 @@ package-lock.json
 *lock*
 
 # compiled output
-*/dist
+*dist*
 */node_modules
 
 # Logs
