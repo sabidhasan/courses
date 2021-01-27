@@ -1,11 +1,11 @@
-import { TaskStatus } from '../task.model';
-import { IsOptional, IsIn } from 'class-validator';
+import { TaskStatus } from '../taskStatus';
+import { IsEnum, IsOptional } from 'class-validator';
 
 export class GetTasksFilterDto {
   @IsOptional()
-  @IsIn()
+  @IsEnum(TaskStatus, { message: 'Invalid task status' })
   status: TaskStatus;
   
   @IsOptional()
-  searchTerm: string;
+  search: string;
 }
