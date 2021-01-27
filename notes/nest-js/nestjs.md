@@ -26,10 +26,10 @@ nest generate module <name>
 
 Each module has four properties:
 
-1. **Imports**: other *modules* that this module utilizes. Importing will expose the exported functionality from the other modules into this module
+1. **Imports**: anything that needs to be injected that ISN'T decorated with `@Injectable` goes in here (Injectables go into Providers below). Example is TypeORM `Repository` class, which is not directly `@Injectable`.
 2. **Exports**: providers that this module wishes to export
 3. **Controllers**: the route handlers for this module
-4. **Providers**: providers (possibly services) that this module will rely on
+4. **Providers**: providers (possibly services but also other injectable providers) that this module will rely on. Services are special because they can be CLI-generated and are generally meant for business logic.
 
 
 
@@ -164,7 +164,7 @@ To use a pipe, there are several ways:
    ```typescript
    @Post
    createTask(
-   	@Body(createTaskDto: CreateTaskDto, SomeCoolPipe)
+   	@Body(SomeCoolPipe) createTaskDto: CreateTaskDto
    ) {}
    ```
 
@@ -182,7 +182,7 @@ TypeORM is the preferred ORM for NestJS, due to its strong Typescript support. N
 
 - An **entity**, which is a class decorated by `@Entity()` from type-orm and extends `BaseEntity` represents the entity in the database
 
-- A **repository** is a class decorated by `EntityRepository` and extends `Repository` is a helper class for doing actual DB operations with an entity from the Service
+- A **repository** is a class decorated by `EntityRepository` and extends `Repository` is a helper class for doing actual DB operations with an entity, and is called from a Service method
 
 Repository can be injected into the service via dependency injection, and added as an import in the module.
 
@@ -191,3 +191,11 @@ The separation of concerns is:
 - **Controller** - handles requests and calls service methods
 - **Service** - orchestrates logic for dealing with DB operations, throws exceptions, handles high level business logic, etc. and calls the repository methods
 - **Repository** - represents the core CRUD database operations (has access to querybuilder, etc. as it extends the `Repository` class)
+
+
+
+## Authentication
+
+JWT tokens contain header, a payload (which should not contain sensitive information) and signature created from the payload+header+secret. On authentication, verify that the payload+header that are incoming combined with secret produce the same signature as the incoming JWT.
+
+`UseGuard` decorator from nestjs allows guarding a controller or method. The `PassportModule` is passportJS wrapper for Nest, and a custom JwtStrategy class can be injected as a provider into any other class.
