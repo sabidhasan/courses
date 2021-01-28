@@ -199,3 +199,15 @@ The separation of concerns is:
 JWT tokens contain header, a payload (which should not contain sensitive information) and signature created from the payload+header+secret. On authentication, verify that the payload+header that are incoming combined with secret produce the same signature as the incoming JWT.
 
 `UseGuard` decorator from nestjs allows guarding a controller or method. The `PassportModule` is passportJS wrapper for Nest, and a custom JwtStrategy class can be injected as a provider into any other class.
+
+
+
+## Logging
+
+NestJS ships with a logger supporting different levels: verbose, debug, log, warning, error. 
+
+
+
+## Testing
+
+NestJS uses Jest for testing. In addition, there are testing helpers that create mock modules with mocked dependencies.
