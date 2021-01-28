@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { TaskStatus } from './taskStatus';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
@@ -9,6 +9,8 @@ import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class TasksService {
+  private logger = new Logger('TasksService');
+
   constructor(
     @InjectRepository(TaskRepository) private taskRepository: TaskRepository
   ) {}
@@ -16,6 +18,7 @@ export class TasksService {
   public async getTaskById(id: number, user: User): Promise<Task> {
     const task = await this.taskRepository.findOne({ where: { id, userId: user.id } });
     if (!task) {
+      this.logger.error(`Could not find task ${id} for user ${user.username}`);
       throw new NotFoundException(`Could not find task with id ${id}`);
     }
 
@@ -32,6 +35,7 @@ export class TasksService {
 
   public async deleteTaskById(id: number, user: User): Promise<void> {
     if (!(await this.taskRepository.deleteTaskById(id, user))) {
+      this.logger.error(`Could not delete task ${id} for user ${user.username}`);
       throw new BadRequestException('Could not delete');
     }
   }
