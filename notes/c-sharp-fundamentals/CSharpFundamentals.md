@@ -12,7 +12,7 @@ The C# code runs on top of a `.NET` framework. There are two different types of 
 The .NET framework is broken down into two pieces:
 
 1. CLR - common language **runtime**, which manages memory, makes processor calls, garbage collects, etc.
-2. FCL - framework class library or base class library - this provides common library functions (network requests, opening file, etc.)
+2. FCL - **framework class library** or base class library - this provides common library functions (network requests, opening file, etc.)
 
 
 
@@ -24,6 +24,8 @@ dotnet run				// does a restore then builds, then runs the project
 
 dotnet restore			// restore external dependencies into `obj` (similar to node_modules)
 dotnet build			// compile the project into bin folder as a dll
+
+dotnet add package <name>		// add a package from NuGet
 ```
 
 
@@ -34,6 +36,8 @@ dotnet build			// compile the project into bin folder as a dll
 - `dotnet build` is run to compile
 
 The output of `dotnet build` is a dll file containing the binary of the application. It doesn't have the .NET runtime in this file, so can't run standalone. To run an individual file, you can run `dotnet <dll-file>` directly.
+
+The **csproj** file contains references to packages installed - it is like the package.json file.
 
 
 
@@ -54,7 +58,7 @@ class Program {
 
 ## C# Syntax
 
-For debugging and running in VSCode, you can use the `.vscode/lanuch.json` to modify 
+For debugging and running in VSCode, you can use the `.vscode/launch.json` to modify CLI parameters passed into the app while it is being run.
 
 
 
@@ -78,7 +82,7 @@ var numbers = new [] { 1.2, 44, 54.4 };
 To iterate, the `foreach` **foreach...in** loop can be used (alternatively, use the `var` keyword to let compiler infer the type):
 
 ```c#
-foreach(int number in numbers) {
+foreach (int number in numbers) {
 	// ... do something
 }
 ```
@@ -126,5 +130,33 @@ There are a few different **access modifiers**:
 - `public` - code outside the class can have access to the method/field
 - `private` - the default access modifier - implies that only the class can access the method/field
 
-The **static** keyword makes something a static, non-instance member of the class. 
+The **static** keyword makes something a static, non-instance member of the class.
+
+
+
+## Unit Tests
+
+**xUnit** is a unit test assertion library - you still need a test runner of some sort to run tests
+
+Convention in C# is to write unit tests in a **separate project** to the source code. Directory structure:
+
+```
+parent-dir
+	--- src (initiate new C# project in here)
+		--- ProjectName
+	--- test (initiate new C# project in here)
+		--- ProjectName
+```
+
+
+
+To tell xUnit what tests should be run, they should be decorated with the `[Fact]` **attribute**. Attributes are like decorators.
+
+You can run test suite in a few ways
+
+1. Use the dotnet CLI `dotnet test` in the test directory
+2. Use VSCode .NET Test Explorer add in
+3. Use Visual Studio, which has a built in test runner 
+
+To reference another package from a package (for example, to import the main program classes into the test class), use `dotnet add`. This takes the path to the package (or it can also be used to add stuff from nUnit).
 

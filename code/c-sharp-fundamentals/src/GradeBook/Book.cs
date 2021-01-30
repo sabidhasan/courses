@@ -3,10 +3,16 @@ using System.Collections.Generic;
 
 namespace GradeBook
 {
-    class Book
+    public class Book
     {
         List<double> Grades;
         public string Name;
+        public BookStatistics Statistics {
+            get
+            {
+                return new BookStatistics(this.Average, this.MaxGrade, this.MinGrade);
+            }
+        }
 
         public Book(string name)
         {
@@ -19,13 +25,8 @@ namespace GradeBook
             Grades.Add(grade);
         }
 
-        public void ShowStatistics()
+        private double Average
         {
-            System.Console.WriteLine($"Avg Grade: {this.Average:N2}%");
-            System.Console.WriteLine($"Max Grade: {this.MaxGrade:N2}%");
-        }
-
-        private double Average {
             get {
                 var sum = 0.0;
                 foreach (var grade in Grades)
@@ -37,14 +38,31 @@ namespace GradeBook
             }
         }
 
-        private double MaxGrade {
-            get {
+        private double MaxGrade
+        {
+            get
+            {
                 var max = Double.MinValue;
-                foreach (var grade in Grades) {
+                foreach (var grade in Grades)
+                {
                     max = Math.Max(grade, max);
                 }
                 return max > Double.MinValue ? max : Double.NaN;
             }
         }
+    
+        private double MinGrade
+        {
+            get
+            {
+                var min = Double.MaxValue;
+                foreach (var grade in Grades)
+                {
+                    min = Math.Min(grade, min);
+                }
+                return min < Double.MaxValue ? min : Double.NaN;
+            }
+        }
     }
+
 }

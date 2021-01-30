@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GradeBook;
+﻿using GradeBook;
 
 namespace System
 {
@@ -12,7 +10,8 @@ namespace System
             myBook.AddGrade(78);
             myBook.AddGrade(86.77);
             myBook.AddGrade(94);
-            myBook.ShowStatistics();
+            // Show stats
+            myBook.Statistics.Print();
         }
     }
 }
