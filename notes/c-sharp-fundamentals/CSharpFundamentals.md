@@ -64,7 +64,8 @@ For debugging and running in VSCode, you can use the `.vscode/lanuch.json` to mo
 
 **Strings** can be concatenated with `+` or use a template literal `$"Hello {location}"`.
 
-**Numbers** - some types are `int`, `double`, and `float`
+**Numbers** - some types are `int`, `double`, and `float`. 
+To format numbers in string interpolation, use formatters: `$"This is {number:N3}"` to format to 3 decimal places.
 
 To instantiate an empty **array**: `double[] myArr = new double[10];` If you know the array members, you can use the array initialization syntax with the literal members:
 
@@ -96,5 +97,34 @@ List<int> myList = new List<int>();
 var myList = new List<int>();
 ```
 
+We can also initialize a list:
 
+```c#
+var myList = new List<int>() { 1, 2, 4 };
+```
+
+
+
+## Classes and Objects
+
+Everything needs to be in a class, which defines a **type** for future variables.
+
+If you are defining classes outside of a **namespace**, this is very dangerous though doable - could clash with an existing class definition. Namespace names can have periods as well.
+
+Generally, convention is to define **one class per file**
+
+**Fields/properties** are defined bare in the class, outside of methods. These cannot use `var` for their definition.
+
+The `NullReferenceException` is the null pointer exception in C#. This occurs when you are calling a method ot index (like for an array) on an **uninitialized object**, which is `null` by default. `Null` is a keyword that represents the lack of an object, and any type can be `null`.
+
+To define a **constructor**, define a method with the same name as the class, with no return type.
+
+The **this** `this` keyword refers to current object. Generally `this` is not required to be supplied.
+
+There are a few different **access modifiers**:
+
+- `public` - code outside the class can have access to the method/field
+- `private` - the default access modifier - implies that only the class can access the method/field
+
+The **static** keyword makes something a static, non-instance member of the class. 
 
