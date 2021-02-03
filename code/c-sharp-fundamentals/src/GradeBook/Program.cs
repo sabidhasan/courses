@@ -6,12 +6,31 @@ namespace System
     {
         public static void Main(string[] args)
         {   
-            var myBook = new Book("Alice in Wonderland");
-            myBook.AddGrade(78);
-            myBook.AddGrade(86.77);
-            myBook.AddGrade(94);
+            Console.Write("Enter a name for the book: ");
+            string userBookName = Console.ReadLine();
+            var myBook = new Book(userBookName);
+
+            string userInput;
+            while (true)
+            {
+                Console.Write("Enter a grade, or press q to show statistics: ");
+                userInput = Console.ReadLine();
+                if (userInput.ToLower() == "q")
+                {
+                    break;
+                }
+                try {
+                    myBook.AddGrade(Double.Parse(userInput));
+                } catch (Exception ex) {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            };
+
             // Show stats
-            myBook.Statistics.Print();
+            if (myBook.GradeCount != 0)
+            {
+                myBook.Statistics.Print();
+            }
         }
     }
 }

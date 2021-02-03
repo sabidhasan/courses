@@ -10,7 +10,14 @@ namespace GradeBook
         public BookStatistics Statistics {
             get
             {
-                return new BookStatistics(this.Average, this.MaxGrade, this.MinGrade);
+                return new BookStatistics(this.Average, this.MaxGrade, this.MinGrade, this.LetterGrade);
+            }
+        }
+
+        public int GradeCount {
+            get
+            {
+                return Grades.Count;
             }
         }
 
@@ -22,7 +29,14 @@ namespace GradeBook
 
         public void AddGrade(double grade)
         {
-            Grades.Add(grade);
+            if (grade >= 0 && grade <= 100)
+            {
+                Grades.Add(grade);
+            }
+            else
+            {
+                throw new ArgumentException($"Invalid {nameof(grade)} - {grade} is not valid!");
+            }
         }
 
         private double Average
@@ -61,6 +75,26 @@ namespace GradeBook
                     min = Math.Min(grade, min);
                 }
                 return min < Double.MaxValue ? min : Double.NaN;
+            }
+        }
+
+        private char LetterGrade
+        {
+            get
+            {
+                switch (this.Average)
+                {
+                    case var d when d >= 90.0:
+                        return 'A';
+                    case var d when d >= 80.0:
+                        return 'B';
+                    case var d when d >= 70.0:
+                        return 'C';
+                    case var d when d >= 60.0:
+                        return 'D';
+                    default:
+                        return 'F';
+                }
             }
         }
     }
