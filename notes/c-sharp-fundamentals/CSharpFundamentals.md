@@ -117,15 +117,17 @@ var myList = new List<int>() { 1, 2, 4 };
 
 ## Classes and Objects
 
+### Basics
+
 Everything needs to be in a class, which defines a **type** for future variables.
 
 If you are defining classes outside of a **namespace**, this is very dangerous though doable - could clash with an existing class definition. Namespace names can have periods as well.
 
 Generally, convention is to define **one class per file**
 
-**Fields/properties** are defined bare in the class, outside of methods. These cannot use `var` for their definition.
+**Fields** are defined bare in the class, outside of methods. These cannot use `var` for their definition.
 
-The `NullReferenceException` is the null pointer exception in C#. This occurs when you are calling a method ot index (like for an array) on an **uninitialized object**, which is `null` by default. `Null` is a keyword that represents the lack of an object, and any type can be `null`.
+The `NullReferenceException` is the null pointer exception in C#. This occurs when you are calling a method tp index (like for an array) on an **uninitialized object**, which is `null` by default. `Null` is a keyword that represents the lack of an object, and any type can be `null`.
 
 To define a **constructor**, define a method with the same name as the class, with no return type.
 
@@ -137,6 +139,35 @@ There are a few different **access modifiers**:
 - `private` - the default access modifier - implies that only the class can access the method/field. Private fields start with **lowercase**
 
 The **static** keyword makes something a static, non-instance member of the class.
+
+### More Advanced
+
+**Method Overloading** is similar to Java, and can be done if the **method signature** is different (name + parameter types + number of parameters). The return type is not a part of the method signature.
+
+Unlike fields which are either fully public or private, **properties** are fields with getters/setters defined. The implicit keyword **value** holds the value of the incoming value:
+
+```C#
+public string Name
+{
+    get { return name; }
+    set { name = value; }
+}
+```
+
+An **auto-property** can be used for the code above, meaning the compiler will generate the getter and setter. This has the power to make one of getter/setter private:
+
+```C#
+public string Name { get; private set; }
+```
+
+
+
+There are two ways for making something unchangeable:
+
+- **Readonly** with the `readonly` keyword prevents a variable/property from being written to other than at definition OR in a constructor
+- **Const** can be used with the `const` keyword to mark a variable as unchangeable except at definition. A constant field in a class is automatically made Static - meaning it can only be accessed from the class, not instances.
+
+
 
 
 
@@ -230,4 +261,48 @@ switch (SomeValue)
 - C# does not have a `throws` keyword for method signatures
 
 
+
+## Building **Types - Events**
+
+Events are not used often in modern frameworks, but they were historically used extensively (e.g. Xamarin, WPF, ASP.net Forms). Events are built on top of **delegates**.
+
+A **delegate** is a type, and much like a function signature in Typescript - it defines the signature for a method. The name of the delegate, or its parameter names don't matter for the implementing code. Delegates can be defined outside of classes in a namespace. Also, delegates  can be **multi-cast** - a delegate-type variable can be added to (`log += AnotherImplementation`), and all methods that have been added will run when the delegate is called:
+
+```c#
+public delegate string GradeAddedDelegate(double grade);
+
+public class MyClass {
+    public static void Main(string[] args)
+    {
+        // Point delegate to a concrete implementation
+        GradeAddedDelegate log = ConcreteImplemetation;
+        log += ConcreteImplemetation;
+        // Will call ALL the methods added to delegate in succession
+        Console.WriteLine(log(66.9));
+    }
+
+    public string ConcreteImplementation(double input) { return input.ToString(); }
+}
+```
+
+
+
+The purpose of delegates is that when an event occurs in the app, delegates can notify all attached listeners. Conventionally, delegate signatures are: `public delegate void GradeAddedDelegate(object sender, EventArgs args)`. Here is how to create and listen to delegates:
+
+1. In event sending class: Define delegate signature: `public delegate void GradeAddedDelegate(object sender, EventArgs args);`
+2. In event sending class: Create an event in the class for allowing others to attach to delegates: `public GradeAddedDelegate GradeAdded;` 
+3. In event sending class: Call the delegate when the target event occurs
+4. In caller class: In a caller class define a method `OnGradeAdded` with the correct signature
+5. In caller class: Create an instance of the target class, and subscribe to the delegate list (`targetClass.GradeAdded += OnGradeAdded`)
+
+When implementing an event delegate, use the event keyword for the field in the class :
+
+```C#
+public event GradeAddedDelegate GradeAdded;
+
+public void MyMethod()
+{
+    GradeAdded(this, new EventArgs());
+}
+```
 

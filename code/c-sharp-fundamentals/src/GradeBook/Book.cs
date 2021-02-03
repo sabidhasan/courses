@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace GradeBook
 {
+    public delegate void GradeAddedDelegate(object sender, EventArgs args);
+
     public class Book
     {
         List<double> Grades;
@@ -32,12 +34,18 @@ namespace GradeBook
             if (grade >= 0 && grade <= 100)
             {
                 Grades.Add(grade);
+                if (GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
             }
             else
             {
                 throw new ArgumentException($"Invalid {nameof(grade)} - {grade} is not valid!");
             }
         }
+
+        public event GradeAddedDelegate GradeAdded;
 
         private double Average
         {

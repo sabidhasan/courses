@@ -10,6 +10,9 @@ namespace System
             string userBookName = Console.ReadLine();
             var myBook = new Book(userBookName);
 
+            // Subscribe to event delegate
+            myBook.GradeAdded += OnGradeAdded;
+
             string userInput;
             while (true)
             {
@@ -31,6 +34,11 @@ namespace System
             {
                 myBook.Statistics.Print();
             }
+        }
+
+        public static void OnGradeAdded(object sender, EventArgs e)
+        {
+            System.Console.WriteLine("Added");
         }
     }
 }
