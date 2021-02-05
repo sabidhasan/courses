@@ -6,11 +6,11 @@ namespace c_sharp_collections
     {
         static void Main(string[] args)
         {
-            var daysOfWeek = new[] { "Test" };
-
-            foreach (var day in daysOfWeek)
+            string path = @".\countries.csv";
+            var countries = CSVReader.ParseCountries(path);
+            foreach (var country in countries)
             {
-                System.Console.WriteLine(day);
+                Console.WriteLine($"Country: {country.Name} has {country.Population} people");
             }
         }
     }
