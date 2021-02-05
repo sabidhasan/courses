@@ -5,14 +5,24 @@ namespace System
     class Program
     {
         public static void Main(string[] args)
-        {   
+        {
             Console.Write("Enter a name for the book: ");
             string userBookName = Console.ReadLine();
-            var myBook = new Book(userBookName);
+            var myBook = new DiskBook(userBookName);
 
-            // Subscribe to event delegate
+            // Subscribe to event delegate and read user input
             myBook.GradeAdded += OnGradeAdded;
+            ParseInput(myBook);
 
+            // Show stats
+            if (myBook.GradeCount != 0)
+            {
+                myBook.Statistics.Print();
+            }
+        }
+
+        private static void ParseInput(IBook myBook)
+        {
             string userInput;
             while (true)
             {
@@ -22,18 +32,15 @@ namespace System
                 {
                     break;
                 }
-                try {
+                try
+                {
                     myBook.AddGrade(Double.Parse(userInput));
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Console.WriteLine($"Error: {ex.Message}");
                 }
             };
-
-            // Show stats
-            if (myBook.GradeCount != 0)
-            {
-                myBook.Statistics.Print();
-            }
         }
 
         public static void OnGradeAdded(object sender, EventArgs e)

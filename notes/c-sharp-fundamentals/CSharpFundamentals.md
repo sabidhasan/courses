@@ -140,7 +140,9 @@ There are a few different **access modifiers**:
 
 The **static** keyword makes something a static, non-instance member of the class.
 
-### More Advanced
+
+
+### Intermediate
 
 **Method Overloading** is similar to Java, and can be done if the **method signature** is different (name + parameter types + number of parameters). The return type is not a part of the method signature.
 
@@ -166,6 +168,44 @@ There are two ways for making something unchangeable:
 
 - **Readonly** with the `readonly` keyword prevents a variable/property from being written to other than at definition OR in a constructor
 - **Const** can be used with the `const` keyword to mark a variable as unchangeable except at definition. A constant field in a class is automatically made Static - meaning it can only be accessed from the class, not instances.
+
+
+
+### Advanced
+
+A class can **inherit** from **one other class** with a `:` character and specifying parent. Every class has a base class of `System.Object`, which provides some basic methods. The `System.Object` is identical to `object` (with a lowercase)
+
+The way to call a parent's constructor:
+
+```c#
+public class SomeClass : BaseClass
+{
+    public SomeClass(string param) : base(param)
+    { /* ... other code */ }
+}
+```
+
+
+
+An **abstract class** is like a regular class, but cannot be instantiated (use `abstract` keyword).
+
+An abstract class can contain **abstract** methods marked with the `abstract` keyword, containing no implementation. To override an abstract method, the `override` keyword must be used, otherwise the compiler will complain about method hiding. An abstract method MUST be overridden.
+
+Also, there are **virtual** methods, which contain an implementation, but that implementation can be optionally overridden with the `override` keyword.
+
+
+
+An  **interface** contains no implementation details - cannot have methods, nor does it have access levels (public/private/protected). Typically, the naming convention for these is `I<Name>`. Basically, an interface provides the method signatures and field getters/setters. An unlimited number of interfaces can be implemented:
+
+```C#
+public interface ITest {
+    string Name;					// a field
+    string Method(int number);		// method
+    string Field { get; }			// a property
+}
+
+public class MyClass : BaseClass, ITest, ITest2 { ... } // can extend one base class, and many interfaces 
+```
 
 
 
@@ -290,12 +330,12 @@ public class MyClass {
 The purpose of delegates is that when an event occurs in the app, delegates can notify all attached listeners. Conventionally, delegate signatures are: `public delegate void GradeAddedDelegate(object sender, EventArgs args)`. Here is how to create and listen to delegates:
 
 1. In event sending class: Define delegate signature: `public delegate void GradeAddedDelegate(object sender, EventArgs args);`
-2. In event sending class: Create an event in the class for allowing others to attach to delegates: `public GradeAddedDelegate GradeAdded;` 
-3. In event sending class: Call the delegate when the target event occurs
-4. In caller class: In a caller class define a method `OnGradeAdded` with the correct signature
-5. In caller class: Create an instance of the target class, and subscribe to the delegate list (`targetClass.GradeAdded += OnGradeAdded`)
+2. In event sending class: Create a public field for allowing others to attach to delegates: `public event GradeAddedDelegate GradeAdded;` 
+3. In event sending class: Call the public delegate field (`this.GradeAdded(this, new EventArgs())`, when the target event as needed (eg a grade is added).
+4. In caller class: define a method `OnGradeAdded` with the correct signature.
+5. In caller class: Create an instance of the target class, and subscribe to the delegate list (`targetClass.GradeAdded += OnGradeAdded`).
 
-When implementing an event delegate, use the event keyword for the field in the class :
+When implementing an event delegate, use the `event` keyword for the field in the class. This keyword restricts assignment to the event from outside the class where it was defined:
 
 ```C#
 public event GradeAddedDelegate GradeAdded;
@@ -306,3 +346,6 @@ public void MyMethod()
 }
 ```
 
+
+
+C# 8 is better at checking for potential null pointer exceptions. You can make reference types into non-nullable types, and the compiler will warn you when a field that is non nullable is not initialized. This is optional and can be enabled with `# nullable enable` or in the csproj file. The `?` can be used to mark a reference type as nullable when working in this "strict mode". 
