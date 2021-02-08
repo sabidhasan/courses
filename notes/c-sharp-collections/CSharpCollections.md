@@ -6,7 +6,7 @@ In C# **Arrays** have a **fixed number** of items in a definite, zero-indexed or
 
 Accessing an element out of index throws an `IndexOutOfRangeException`. Get the length of an array using `.Length`.
 
-Arrays are normal reference types - they can be **nullable**. To create an array, we can do one of two things, both of which require a size when creating the array. New arrays are full of their type's default values when initialized - `null` for reference types and 0 for int for example.
+Arrays are normal reference types - they can be **nullable**. To create an array, we can do one of two things, both of which require a size when creating the array. New arrays are full of their type's default values when initialized - `null` for reference types and 0 for `int` for example.
 
 1. **Collection Initializer** - for example `string[] myArr = { "A", "B" };`
 2. **New keyword**: `string[] myArr = new[10];`
@@ -24,16 +24,13 @@ var myArr5 = new[] { 1, 3, 4 };
 
 
 
-The `params` keyword is syntactic sugar for variable number of **parameters**. It allows passing parameters individually when calling a method:
+An array of arrays is in C# is called a **jagged array**. This is an array where each element of the array is another array.
+
+In contrast, C# also has a concept of a **multidimensional** array which allow accessing elements by multiple indices. Unlike jagged arrays where each row can be any size, multidimensional arrays must be a rectangle/square:
 
 ```C#
-public void Add(params int[] nums) { /* ... */ }
-Add(1, 2, 34);
+var myArr = new int[3,3]; // creates a 3x3 array
 ```
-
-
-
-To **read a file**, you can use the `File` class or the `StreamReader` class.
 
 
 
@@ -93,7 +90,9 @@ The **foreach** loop is generally for **reading data only**. It doesn't give bac
 
 ## LINQ - Language Integrated Query
 
-LINQ allows querying some data source (`IEnumerable<T>`) that supplies objects, in a database query-style syntax. Further, LINQ is a functional programming style approach, as it is read only and cannot modify collections. Generally, LINQ queries are used with a `foreach` loop.
+LINQ allows querying some data source (`IEnumerable<T>`) that supplies objects, in a database query-style syntax - databases or collections.
+
+Further, LINQ is a functional programming style approach, as it is read only and cannot modify collections. Generally, LINQ queries are used with a `foreach` loop.
 
 To use LINQ, first import it`using System.Linq`. Some sample LINQ methods:
 
@@ -114,4 +113,35 @@ select country;
 ```
 
 
+
+## Other Random Things
+
+The `params` keyword is syntactic sugar for variable number of **parameters**. It allows passing parameters individually when calling a method:
+
+```C#
+public void Add(params int[] nums) { /* ... */ }
+Add(1, 2, 34);
+```
+
+
+
+To **read a file**, you can use the `File` class or the `StreamReader` class.
+
+
+
+Other interesting collections in `System.Collections.Generic`:
+
+- `SortedDictionary`
+- `SortedList`
+- `LinkedList`
+
+The `IList<T>` interface is followed by all enumerable types - arrays and lists and defines accessors, setters, and enumeration, etc. This allows coding to **interfaces rather than concrete types**.
+
+
+
+There are **immutable** equivalents of the other collections - array, list, dictionary, etc. which offer thread safety and code robustness.
+
+
+
+**Concurrent collections** are similar to standard collections, but they are **thread safe**. Accessing standard collections from different threads can cause corruption issues.
 
