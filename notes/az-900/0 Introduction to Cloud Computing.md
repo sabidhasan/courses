@@ -167,6 +167,3 @@ Rather than deploying manually using CLI/portal/PowerShell, Azure supports infra
 - Operational excellence
 - Performance
 
-
-
-## 
