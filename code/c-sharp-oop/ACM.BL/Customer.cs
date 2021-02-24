@@ -1,26 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Acme.Common;
 
 namespace ACM.BL
 {
-    public class Customer
+    public enum CustomerType
+    {
+        BUSINESS,
+        RESIDENTIAL,
+        GOVERNMENT
+    }
+    
+    public abstract class Customer : EntityClass, ILoggable
     {
         public Customer()
         {
             this.CustomerId = Guid.NewGuid().ToString();
+            this.AddressList = new List<Address>();
         }
 
         public Customer(string customerId)
         {
             this.CustomerId = customerId;
+            this.AddressList = new List<Address>();
         }
 
-        public string CustomerId { get; private set; }
+        public string CustomerId { get; protected set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
-        public string MailingAddress { get; set; }
+        public Address MailingAddress { get; set; }
+        public List<Address> AddressList { get; set; }
+        public abstract CustomerType type { get; }
 
         public string FullName
         {
@@ -32,22 +44,15 @@ namespace ACM.BL
             }
         }
 
-        public bool IsValid()
+        public string Log()
+        {
+            return $"{this.FirstName} {this.LastName}";
+        }
+
+        public override bool Validate()
         {
             return !String.IsNullOrWhiteSpace(LastName) && !String.IsNullOrWhiteSpace(FirstName) &&
-                !String.IsNullOrWhiteSpace(EmailAddress) && !String.IsNullOrWhiteSpace(MailingAddress);
-        }
-
-        public static Customer Retrieve(string id)
-        {
-            // TODO: actually get the customer
-            return new Customer();
-        }
-
-        public static List<Customer> Retrieve()
-        {
-            // TODO: actually get all customers
-            return new List<Customer>();
+                !String.IsNullOrWhiteSpace(EmailAddress) && MailingAddress != null;
         }
     }
 }

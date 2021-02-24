@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Acme.Common;
 
 namespace ACM.BL
 {
-    public class OrderItem
+    public class OrderItem : ILoggable
     {
         public OrderItem(int orderItemId)
         {
@@ -25,6 +25,11 @@ namespace ACM.BL
         {
             // TODO: actually get all customers
             return new List<Order>();
+        }
+
+        public string Log()
+        {
+            return this.OrderItemId.ToString();
         }
     }
 }
