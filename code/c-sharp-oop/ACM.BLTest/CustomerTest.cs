@@ -9,15 +9,23 @@ namespace ACM.BLTest
         [TestMethod]
         public void GeneratesFullName()
         {
-            Customer customer = new Customer() { FirstName = "Test", LastName = "Last" };
+            Customer customer = new BusinessCustomer() { FirstName = "Test", LastName = "Last" };
             string expected = "Test Last";
             Assert.AreEqual(expected, customer.FullName);
         }
 
         [TestMethod]
+        public void AddressList()
+        {
+            Customer customer = new BusinessCustomer() { FirstName = "Test", LastName = "Last" };
+            Assert.IsNotNull(customer.AddressList);
+            Assert.AreEqual(0, customer.AddressList.Count);
+        }
+
+        [TestMethod]
         public void WithOmittedLastName()
         {
-            Customer customer = new Customer() { FirstName = "First" };
+            Customer customer = new BusinessCustomer() { FirstName = "First" };
             string expected = "First";
             Assert.AreEqual(expected, customer.FullName);
         }
@@ -25,7 +33,7 @@ namespace ACM.BLTest
         [TestMethod]
         public void WithOmittedFirstName()
         {
-            Customer customer = new Customer() { LastName = "Last" };
+            Customer customer = new BusinessCustomer() { LastName = "Last" };
             string expected = "Last";
             Assert.AreEqual(expected, customer.FullName);
         }
@@ -33,36 +41,39 @@ namespace ACM.BLTest
         [TestMethod]
         public void AssignsUuid()
         {
-            Customer customer = new Customer();
+            Customer customer = new BusinessCustomer();
             Assert.AreEqual(false, System.String.IsNullOrEmpty(customer.CustomerId));
         }
 
         [TestMethod]
         public void InstantiateWithCustomerId()
         {
-            Customer customer = new Customer("1234");
+            Customer customer = new BusinessCustomer("1234");
             Assert.AreEqual("1234", customer.CustomerId);
         }
 
         [TestMethod]
         public void ValidatesProperCustomer()
         {
-            Customer customer = new Customer() { FirstName = "A", LastName = "B", EmailAddress = "2@f.com", MailingAddress = "123 Main" };
-            Assert.AreEqual(true, customer.IsValid());
+            var address = new Address("123 Main", AddressType.HOME);
+            Customer customer = new BusinessCustomer() { FirstName = "A", LastName = "B", EmailAddress = "2@f.com", MailingAddress = address };
+            Assert.AreEqual(true, customer.IsValid);
         }
 
         [TestMethod]
         public void ValidatesNoFirstName()
         {
-            Customer customer = new Customer() { LastName = "B", EmailAddress = "S@f.com", MailingAddress = "123 Main" };
-            Assert.AreEqual(false, customer.IsValid());
+            var address = new Address("123 Main", AddressType.HOME);
+            Customer customer = new BusinessCustomer() { LastName = "B", EmailAddress = "S@f.com", MailingAddress = address };
+            Assert.AreEqual(false, customer.IsValid);
         }
 
         [TestMethod]
         public void ValidateHandlesEmptyFields()
         {
-            Customer customer = new Customer() { FirstName = "", LastName = "B", EmailAddress = "2@f.com", MailingAddress = "123 Main" };
-            Assert.AreEqual(false, customer.IsValid());
+            var address = new Address("123 Main", AddressType.HOME);
+            Customer customer = new BusinessCustomer() { FirstName = "", LastName = "B", EmailAddress = "2@f.com", MailingAddress = address };
+            Assert.AreEqual(false, customer.IsValid);
         }
     }
 }
