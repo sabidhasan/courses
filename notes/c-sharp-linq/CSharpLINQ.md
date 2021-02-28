@@ -94,3 +94,61 @@ var query2 = from dev in developers
 
 
 
+# LINQ Queries
+
+## Immediate
+
+The most basic LINQ queries are **immediate**. They query the underlying data source right away and exhaust it until it is done before returning data. LINQ has `ToArray`, `ToList`, or `ToDictionary` or even `Count`  as such methods.
+
+
+
+## Non Streaming Deferred Execution
+
+LINQ performs some of its queries in a **deferred execution** (like `.Where`). Instead of performing the operation and returning a compiled list, it instead returns an enumerator that can be polled on demand.
+
+This is done by `yield return`ing from the code, and this gets consumed on demand. Until data is accessed, the actual query is not performed.
+
+```C#
+var enumerator = query.GetEnumerator();
+
+while (enumerator.MoveNext())
+{
+  Console.WriteLine(enumerator.Current);
+}
+```
+
+
+
+Deferred execution is not always good - for example, if you want a count and then iterate over the query items, the `.Count()` will iterate over the list once (to give a count as it is **immediate**) and then the loop will iterate yet again. In these cases, you want to create a concrete List/Array first (`ToList`).
+
+Also, if there is an `Exception` in the lambda function, the code can fail later on for deferred queries because the lambda function callback is only executed later (on demand).
+
+
+
+## Streaming Deferred Execution
+
+Something that is run as deferred execution can be either **streaming** or **non streaming**. Streaming means it pulls data as needed (for example, the `Where` or `Take` pull data one at a time).
+
+A example of a **non-streaming operator** is `OrderBy`, which will examine ALL the data before coming up with something. Unlike **immediate execution**, underlying data still *isn't accessed* until it is demanded (`ToList` or `foreach`, etc) but once demanded, it must look at all elements in the data source to perform the operation.
+
+Streaming deferred execution can create infinite sources (like Fibonacci sequence):
+
+```C#
+public static IEnumerable<double> Random()
+{
+  var randomGenerator = new Random();
+  while (true)
+  {
+    yield return randomGenerator.NextDouble();
+  }
+}
+
+public static void Main()
+{
+  // Doesn't cause infinite list, as Where and Take are streaming deferred
+  var randNums = Random().Where(n => n > 0.4).Take(15).ToList();
+}
+```
+
+
+
