@@ -152,3 +152,39 @@ public static void Main()
 
 
 
+# Filter, Sort and Project
+
+`.Skip` operator skips a certain number of rows, and `.Take` queries. In LINQ, the ordering of the query matters.
+
+
+
+A **primary sort** is done using `OrderBy` and `OrderByDescending`. For performing a **secondary sort**, use `ThenBy` or `ThenByDescending`, which will apply for rows tied by primary sort.
+
+
+
+The `.First` and `.Last` operators take the first or last item, but they is *not deferred*!
+
+
+
+LINQ also has `Any`, `All` and `Contains` operators for getting Boolean values for a datasets.
+To check if anything exists, you can call `.Any()` which will return `true` if anything exists
+
+
+
+Anonymous types allow defining what is equivalent to object literal syntax in JavaScript. It has strong typing but no need to define a class.  If the anon object's keys will have same name as source, shorthand can be used
+
+```C#
+new { Name = "Test", Count = 5 }; // anon object
+
+new { car.Name, car.Count }; // Shorthand (Name and Count keys created in anon obj)
+```
+
+
+
+**Select Operators**
+The `Select` operator is like `map` in JavaScript.
+
+The `SelectMany` operator produces a flattened collection where you have a **sequence of sequences** (for example, if the data source is a list of list, you can iterate over the nested one directly).
+
+
+
