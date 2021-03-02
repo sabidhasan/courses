@@ -188,3 +188,95 @@ The `SelectMany` operator produces a flattened collection where you have a **seq
 
 
 
+# Joining, Grouping and Aggregation
+
+## Basic Joins
+
+Two separate data sources can be joined by using the join keyword, which behaves as an inner join in SQL (so if a join lookup doesn't exist, it will get dropped):
+
+```C#
+var query = from car in cars
+    join man in carmakers on man.Name equals car.Maker 
+    where car.Year > 2010
+    orderby car.Year
+    select new { car.Year, man.Headquarters }
+```
+
+
+
+In the extension method syntax, this is a little more complicated, because the join method must give a callback that stitches the objects.
+
+```C#
+var query = cars
+    .Join(
+    	man,
+    	c => c.Maker,
+    	m => m.Name,
+    	(c, m) => new { c.Year, m.Headquarters }
+	)
+    .Where(c => c.Year > 2010)
+    .OrderBy(c => c.Year);
+```
+
+
+
+## Composite Joins
+
+To join on multiple columns, we can pass an anonymous type into the join method:
+
+```C#
+var query = cars.Join(
+    manufacturer,
+	c => new { Year = c.Year, Name = c.Manufacturer },
+    m => new { Year = m.Year, Name = m.Name },
+    (c, m) => new { Name = c.Name, Man = m.Name }
+	);
+```
+
+
+
+## Grouping
+
+A grouping is done by using the `group ... by` syntax in the *query syntax*:
+
+```C#
+var query = from car in cars
+    	    group car by car.Manufacturer into g
+    		orderby g.Manufacturer;
+```
+
+This produces essentially a **hash map** or **dictionary** with keys being the grouping, and values being `IEnumerable<T>`. In the *extension method syntax*. They key can be accessed by the `.Key` prop when using the group:
+
+```C#
+var q = cars
+    	.GroupBy(c => c.Manufacturer)
+    	.OrderBy(g => g.Key);
+```
+
+
+
+The **group join** operator can group and join at once.
+
+
+
+## Aggregation
+
+SQL-like aggregation functions: **max**, **min** and **average** are available.
+
+For custom aggregations (and prevent looping over collections numerous times), there is an **aggregate** method that behaves similar to JavaScript's `reduce` method:
+
+```C#
+var q = cars.GroupBy(c => c.Manufacturer)
+    		.Select(g => {
+                // Define a custom class CarStats that has Accumulate and Compute methods
+                var res = g.Aggregate(
+                    new CarStats(),
+                    (acc, val) => acc.Accumulate(val),
+                    acc => acc.Compute()
+                );
+                return new { Car = c, Max = res.Max };
+            });
+```
+
+
+
