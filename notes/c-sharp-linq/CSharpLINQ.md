@@ -280,3 +280,36 @@ var q = cars.GroupBy(c => c.Manufacturer)
 
 
 
+# XML and LINQ
+
+The **System.XML.LINQ** namespace contains classes for working with XML documents, all inheriting from the `XNode` base class:
+
+- `XDocument` for the entire document
+- `XElement` for an element
+- `XAttribute` for an element's attribute
+- `XComment` for an XML comment
+
+These constructors are versatile and can take a LINQ operator (`IEnumerable` as parameters to build the XML).
+
+XML documents can be queried against using LINQ:
+
+```C#
+var document = XDocument.Load("file.xml");
+var query = from elem in document.Element("Parent").Elements("Child")
+    		where elem.Attribute("Key2") == "SomeVal"
+    		select elem.Attribute("Key3").Value;
+```
+
+
+
+**Null Coalescing Operator**
+
+- `Enumerable.Empty<T>()` is a good stand-in for an empty `IEnumerable` list. This can be combined with the null coalescing operator. This is like the JavaScript `||` and expression evaluates to the right side if the left side is null:
+
+- ```C#
+  // The ?. is the null check operator; the ?? is null coalescing operator 
+  from e in document.Element("Parent")?.Elements("Child") ?? Enumerable.Empty<XElement>();
+  ```
+
+
+
