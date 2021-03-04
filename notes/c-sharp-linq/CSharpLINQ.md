@@ -313,3 +313,47 @@ var query = from elem in document.Element("Parent").Elements("Child")
 
 
 
+# LINQ and the Entity Framework (SQL)
+
+## Intro to Entity Framework
+
+**Entity Framework** is an ORM for SQL Server. LINQ can be interfaced with Entity Framework, so that LINQ queries can be translated to Entity Framework's language.
+
+First, `EntityFramework` must be installed using NuGet. Some random notes on entity framework:
+
+- Classes that are **entities** in the DB require a primary key ID column `Id`
+- The database must be a class inheriting from `DbContext`, and define tables in the DB (by default, its name is the name of the DB that Entity Framework connects to)
+
+
+
+## IQueryable Interface
+
+The Entity Framework translates the LINQ queries into SQL statements.
+
+To do this, it leverages the `IQueryable` interface. **IQueryable** is like **IEnumerable**, but it instead of iterating over the incoming list and `return yield`ing the results, it instead examines the incoming expression and converts it to SQL.
+
+The key behind this is the **Expression** type. Expressions don't compile into executable code, but instead they allow it to be inspected at runtime - examine its AST, walk the nodes, etc.
+
+When running a Entity Framework LINQ query, all operations occur on DB, unless you use an `IEnumerable` query (like `ToList()`, which will convert it into an in-memory data structure). In some cases, this may be desired - e.g. a `.Count()` will force ANOTHER database query to be run, where as `ToList` would not.
+
+
+
+## Limitations
+
+ There are limitations. This code compiles, but fails at runtime as Entity Framework doesn't know how to do `Split`:
+
+```C#
+var q = db.Cars
+    	  .Select(c => new { Name = c.Name.Split(' ') })
+    	  .ToList();
+```
+
+On the contrary, the following is successful, as the operation is occurring on an `IEnumerable`:
+
+```C#
+var q = db.Cars
+    	  .ToList()
+    	  .Select(c => new { Name = c.Name.Split(' ') });
+```
+
+
