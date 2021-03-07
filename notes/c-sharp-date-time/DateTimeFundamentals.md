@@ -101,3 +101,19 @@ var extended = dt.AddMonths(5).AddTicks(-1);
 
 
 
+# Common Scenarios
+
+## Overlapping Dates and Times
+
+- To calculate relative time, `DateTimeOffset.UtcNow` can be used, but comparison should be done in the same time zone (UTC)
+- Dates can be subtracted by calling `AddDate` with a negative date
+- `ArgumentOutOfRangeException` can occur when working with leap years
+- When working with SQL, `EntityFramework` contains support for `DateTimeOffset`. SQL Server also supports `DateTime` but that has no time zone details.
+
+
+
+## Unix Timestamps
+
+- **Unix Timestamp** is elapsed seconds since Jan 1, 1970 UTC
+- `DateTimeOffset.FromUnixTimeSeconds()` method provides a DateTimeOffset instance from Unix timestamp
+
