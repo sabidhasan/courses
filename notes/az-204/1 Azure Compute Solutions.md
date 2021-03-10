@@ -155,6 +155,203 @@ Built in functions:
 
 
 
-## Containers in Azure
+## Azure Containers Registry
+
+### Introduction to Containers
+
+**Azure Container Registry** is a container registry based on the Docker registry. **Azure Container Instances** is a serverless way to run containers in Azure. Azure Container Instances handles the OS for you - you just deploy containers.
+
+Container terminology:
+
+- **Container Image** - us a binary application package
+- **Container** - running instance of a container image
+- **Container Registry** - share container images
+
+
+
+### Docker and Dockerfiles
+
+- Dockerfile starts with **FROM**, indicating the basis on which the application is installed
+- Next **RUN** executes commands inside container images
+- **WORKDIR** sets the working directory for instructions (it will auto `cd` to that for subsequent commands)
+- **COPY** will copy from the local host directory into the container image
+- **EXPOSE** exposes ports in the container to host
+- **ENTRYPOINT** defines a command to run a binary when the container is started
+
+
+
+Common Docker commands:
+
+- `docker build --progress plain -t myimage:v1 .` will build a binary container locally. The `-t` applies a tag to image. The `--progress plain` makes it output in-container commands' output to the console when building
+- `docker run --name myname -p 8080:80 --detach myimage:v1` defines ports and a name for container. The `--detach` makes image run in background
+- `docker image ls`
+
+
+
+### Azure Container Registry Overview
+
+Builds, stores and manages container images, as part of CI/CD. There are several tiers for security, speed, etc.
+
+**Authentication** for operations is critical - all operations require auth and headless authentication is used for automated operations. **ACR Admin** is a special account for administrative use, by default disabled. RBAC defines what can be done.
+
+To log in use the following:
+
+```bash
+az acr login
+```
+
+| **Role**       | Intended For  |
+| -------------- | ------------- |
+| Owner          | Humans        |
+| Contributer    | Humans        |
+| Reader         | Humans        |
+| AcrPush        | Headless Auth |
+| AcrPull        | Headless Auth |
+| AcrDelete      | Headless Auth |
+| AcrImageSigner | Headless Auth |
+
+
+
+The **ACR_NAME** is the name of your container registry and must be globally unique. To create a container registry:
+
+```bash
+az acr create \
+	--resource-group myrg
+	--name $ACR_NAME
+    --sku Standard
+
+az acr login --name $ACR_NAME
+```
+
+
+
+### Azure Container Registry - Pushing with Docker
+
+To push an image into ACR, we first get the login server FQDN by calling `az acr show`, and the push is done using docker itself:
+
+```bash
+ACR_NAME = 'psdemoacr'
+ACR_LOGINSERVER = $(az acr show --name $ACR_NAME --query loginServer --output tsv)
+
+# Push into ACR
+docker tag webappimage:v1 $ACR_LOGINSERVER/webappimage:v1
+docker push $ACR_LOGIN_SERVER/webappimage:v1
+```
+
+
+
+To show Azure ACR listing:
+
+```bash
+az acr repository list --name $ACR_NAME --output table
+# or to show tags
+az acr repository show-tags --name $ACR_NAME --repository "name"
+```
+
+
+
+### Azure Container Registry - Pushing with  ACR Tasks
+
+With ACR Tasks, no need to build Docker image locally, it sends the Dockerfile up and builds in Azure:
+
+```bash
+# Build image in Azure
+az acr build \
+	--image "webappimage:v1-acr-task" \
+	--registry $ACR_NAME .
+```
+
+
+
+## Azure Container Instances
+
+### Intro to Container Instances
+
+ACI is a serverless container platform, capable of Windows and Linux containers. Can set CPU and memory requirements and use Azure Files for persistent storage. A restart policy describes what to do if the app stops.
+
+ACI can consume containers from many container registries: e.g. Azure Container Registry or Docker Hub.
+
+
+
+### Deploying Container Instance in Portal
+
+The portal asks for a few types of information:
+
+- **Basics**: subscription, resource group, a container name (anything to identify it), an image source (pre-built, DockerHub or Azure Container Registry).
+- **Networking**: ports, networking type
+
+In the portal, you need to enable *Admin User* before being able to create a container instance.
+
+
+
+### Deploying Container Instance in Azure CLI
+
+To create a container from a public image we use `az container create`:
+
+```bash
+az container create \
+	--resource-group 'a-group' \
+	--name 'psdemo-cli-hello-world'
+	--dns-name-label 'psdemo-cli-hello-world'
+	--image mcr.microsoft.com/azuredocs/aci-helloworld
+	--ports 80
+```
+
+
+
+The DNS image name can come from Azure Container Registry but in that case need a **service principal** and auth:
+
+- ACR Registry ID (from `az acr show`)
+- A password for a ACR-compatible RBAC role obtained using `az ad sp create-for-rbac`
+- SP_APPID (obtained using `az ad sp show`)
+
+```bash
+# Get ACR registry ID and login information
+ACR_REG_ID=$(az acr show --name $NAME --query id --output tsv)
+ACR_LOGIN_SERVER= $(az acr show --name $NAME --query loginServer --output tsv)
+
+# Create service principal (temp username/password)
+SP_NAME=acr-service-principal
+SP_PW=$(az ad sp create-for-rbac \
+	--name http://$NAME-pull --scopes $ACR_REG_ID \
+    --role acrpull --query password --output tsv
+)
+# Get service principal App ID
+SP_APPID=$(az ad sp show --id http://$NAME-pull \
+	--query appId --output tsv
+)
+
+# Create container image in ACI
+az container create \
+	# Basics
+	--resource-group psdemo-rg \
+	--name psdemo-webapp-cli \
+	# Parameters for deployment
+	--ports 80 \
+	--dns-name-label psdemo-webapp-cli \
+	# Where to pull from
+	--image $ACR_LOGIN_SERVER \
+	# Credentials
+	--registry-login-server $ACR_LOGIN_SERVER \
+	--registry-username $SP_APPID \
+	--registry-password $SP_PW
+```
+
+
+
+
+
+
+
+
+
+Once deployed, we can show using `az container show --resource-group 'a-group' --name 'psdemo-cli-hello-world'` 
+
+If the FQDN is needed, pass query parameters: `az container show --resource-group 'a-group' --name 'psdemo-cli-hello-world' --query ipAddress.fqdn`
+
+
+
+
+
 
 
