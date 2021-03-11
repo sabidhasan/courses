@@ -155,7 +155,7 @@ Built in functions:
 
 
 
-## Azure Containers Registry
+## Azure Container Registry
 
 ### Introduction to Containers
 
@@ -339,19 +339,149 @@ az container create \
 
 
 
-
-
-
-
-
-
 Once deployed, we can show using `az container show --resource-group 'a-group' --name 'psdemo-cli-hello-world'` 
 
 If the FQDN is needed, pass query parameters: `az container show --resource-group 'a-group' --name 'psdemo-cli-hello-world' --query ipAddress.fqdn`
 
+To view **logs from container** use `az container logs`
+
+To delete the container `az container delete --resource-group <rg> --name <name>`
+
+# Azure App Service WebApps
+
+## Azure App Service Intro
+
+- Managed, **HTTP-based service** for hosting apps. Microsoft handles the VMs behind the scenes
+- Windows or Linux supported
+- Numerous programming languages
+- Load balancing and security focused
+- Web app runs on top on an **app service plan**
 
 
 
+## App Service Plans
+
+Overall cost determined by **app service plan**. Two types: **isolated** and **non-isolated**. Both can connect to other resources (Storage, SQL Databases, etc.)
+
+**Non-Isolated**:
+
+- has no network isolation (meaning the web app runs directly in a resource group)
+- Most common type of app service plan
+- Five tiers:
+  - free/shared (F1 and D1) - not for prod
+  - Basic (B1, B2 and B3) - not for prod
+  - Standard (S1, S2, S3) - prod ready
+  - Premium v2 - prod ready
+  - Premium v3 - prod ready
+
+ **Isolated**:
+
+- Fully isolated, dedicated and secure network access (can use Network Security Groups) called **app service environment**
+- Within the virtual network the App Service Environment has a private IP address 
+- Designed for larger scale and higher memory
+- Can connect back to on-premises resources
 
 
+
+## Create Web Apps
+
+To create a web app, we first make an app service plan then a web app. In the portal, creating a web app auto creates the app service plan.
+
+In the CLI:
+
+```bash
+az group create --name myrg --region westus2
+
+az appservice plan create --name webapps-dev-plan \
+	--resource-group myrg \
+	--sku s1 \
+	--is-linux
+
+az webapp create --resource-group myrg \
+	--plan webapps-dev-plan
+	--name my-webapp
+	--runtime "node|10.14"
+```
+
+In PowerShell:
+
+```powershell
+New-AzResourceGroup -Name "somename" -Location "westus2"
+
+New-AzAppServicePlan -Name "webappplan" -Location "westus2" -ResourceGroupName "somename" -Tier S1
+
+New-AzWebApp -Name "mywebapp" -ResourceGroupName "somename" -Location "westus2" -AppServicePlan "webappplan" 
+```
+
+ARM Templates can be deployed from the CLI.
+
+```bash
+az group deployment create --resource-group '<rg>' --template-uri '<uri>'
+```
+
+```powershell
+New-AzResourceGroupDeployment -ResourceGroupName '<rg>' -TemplateUri '<uri>'
+```
+
+
+
+## Configuring Web Apps (SSL, Databases, Domains & Logging)
+
+### SSL Certificates and Custom Domains
+
+Normally, `<webappname>.azurewebsites.net` is exposed with both HTTP and HTTPS. Considerations of SSL:
+
+- Need at least a basic plan - the free/shared doesn't work
+- Can use **public or private** certs, but private certification may not be trusted by users' browsers
+- Can enforce HTTPS only
+
+An **App Service Domain** is a domain name service from Azure (but any domain supplier can be used). The App Service Domain provides a DNS Domain as well, which you can use to prove you own the domain.
+
+In the WebApp, we can add any **custom domain**, so long as ownership is proven. Custom domains can be bound to **TLS/SSL Certificate** by importing a cert, creating a managed cert or a cert from 3rd party. Once imported, the cert **binding** is created (**SNI Based SSL**)
+
+ 
+
+### Database Configuration
+
+Set up a DB connection to auto-inject the connection string as env variable. For an Azure SQL Database, we can show connection strings in portal.
+
+Under **Configuration** tab of the web app in portal, can set up connection strings, by copy-pasting from the connection string. 
+
+
+
+### Logging
+
+Logging can be enabled under **Monitoring** in portal for web app. Logs can be stored on file system or Azure Storage. Several types of logging:
+
+- **Deployment Logging** (from code deployments)
+- **Application Logging** (custom logs from the app)
+- **WebServer Logging** (raw HTTP requests from server)
+- **Detailed Error Messages** (Windows-only, shows details like stack trace upon demand)
+- **Failed Request Tracing** (Windows-only, showing timing etc.)
+
+
+
+### Continuous Deployment
+
+- App Service supports CI via GitHub, BitBucket or Azure Repos.
+- Azure App Service must be authorized. In Portal, this is **Deployment Center** in the App Service
+- Next, a **build provider** must be provided (who builds the code) - **Azure App Service Build Service** is built in, but GitHub available.
+
+
+
+## Scaling App Service
+
+Scaling **vertically** and **horizontally** is possible.
+
+For vertical scaling - can move underlying VM to higher SKU (for example S1 to S3)
+
+Horizontal scaling involves adding additional instances of the app.
+
+App Service has an implicit load balancer that runs behind-the-scenes. Auto-scaling can be done on **schedule** (time-based) or **consumption** (CPU, memory, etc. usage). Auto scaling only for standard, premium or isolated.
+
+Scale out and Scale In are configured in portal. There is **limit** to the number of instances permitted based on the underlying VM SKU (basic, premium, standard, etc.).
+
+
+
+# Azure Functions
 
