@@ -485,3 +485,104 @@ Scale out and Scale In are configured in portal. There is **limit** to the numbe
 
 # Azure Functions
 
+## Intro to Azure Functions
+
+- Serverless (Function as a Service) application platform for running functions
+- Auto-scaling
+- Billing only when function running
+- Supports numerous languages
+
+An **Azure Function App** is a grouping of related underlying functions.
+
+Hosting choices:
+
+1. **Consumption Plan** - serverless; pay per use and auto-scale
+   Time limit 5 minutes
+2. **App Service Plan** - uses underlying VM
+3. **Premium Plan** - reserved instances, speed and security
+
+Functions can be run in Docker container (either on premises or in cloud) or directly deployed as code.
+
+Azure Functions have **Azure Functions Core Tools**, a tool for developing functions locally.
+
+Requirements:
+
+1. **Azure Storage Account**
+2. **Azure App Service Plan**
+
+
+
+## Function Triggers
+
+Triggers cause functions to be executed. **Functions must have exactly ONE trigger**:
+
+1. Timer Trigger (scheduled task)
+2. HTTP Request Trigger (webhook) - RESTful APIs
+3. Blob Storage Trigger (data trigger)
+4. Queue trigger (in response to message in Service Bus)
+5. CosmosDB or Blob trigger (when document/file created or updated)
+
+The **function.json** file defines bindings and parameters and trigger definitions for the Azure Function.
+
+
+
+### HTTP Trigger
+
+- Must define the **HTTP verb** to respond to
+- Authentication is three levels:
+  - *Anonymous* (no auth)
+  - *Function* (one key per function)
+  - *Admin* (one key per function app)
+
+### Timer Trigger
+
+- Runs based on cron schedule
+
+
+
+### Blob Trigger
+
+- Expects a **path** in Azure Storage that it will monitor, for example `mystorage/sample/{name}`
+- Function gets called with incoming blob and trigger details
+
+
+
+## Function Bindings
+
+**Bindings** is a connection to some data, and define how to get data into and out of a function (input and output bindings). Example bindings:
+
+- **Input Binding**: Blob storage, Cosmos DB, OneDrive binding
+- **Output Bindings**: Blob storage, Cosmos DB, Queue Storage, Event Hub, Service Bus
+
+Create new Function App and Function locally using the Azure Functions CLI:
+
+```bash
+func init 	# creates local.settings.json and host.json 
+func new 	# creates function.json and index.js
+func start  # run function locally
+```
+
+Files: `local.settings.json` (Function App local settings) and `host.json` (Function App settings) and `function.json` (settings for specific function)
+
+
+
+## Azure Durable Functions
+
+- Extension to Functions that creates stateful functions (called **orchestrations**)
+- Recommended to use C# or JavaScript
+- Three types of functions:
+  - **Starter function** (function that starts the whole flow [calls orchestrator function, gets back an ID that can be used to check status of orchestration])
+  - **Orchestrator function** (defines steps in flow and handles errors; control returned to orchestrator after every activity function is run)
+  - **Activity Functions** (perform actual work)
+
+There are a few workflow patterns:
+
+1. **Function Chaining** is the order for sequential functions
+2. **Fan Out Fan In** does parallel processing (wait for all to finish before continuing)
+3. **Async HTTP API** handles polling logic for long running steps
+4. **Monitor Pattern** waits until some process is complete before resuming
+5. **Human Interaction** waits for manual approval
+
+
+
+To develop a Durable Function, need NuGet Durable Function package.
