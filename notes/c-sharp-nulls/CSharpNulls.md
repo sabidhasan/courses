@@ -29,5 +29,57 @@ To represent **nullable value types**, use the `System.Nullable<T>` struct - thi
 
 
 
+## Accessing Nullable Values
 
+`Nullable<T>` provides various methods:
+
+- `.HasValue`	(whether underlying value is null; equivalent to `nullableValue != null`)
+- `.Value` (gets underlying value - throws at runtime if value hasn't been set)
+- `.GetValueOrDefault()` (get underlying value or default value)
+- `.GetValueOrDefault(value)` (get underlying value or provided default value)
+
+A nullable variable can be created from a non-nullable by implicit casting, but the reverse throws a compilation error. In that case, we can cast manually:
+
+```C#
+int i = 42;
+int? j = i;		// this is OK as no data lost
+
+int? a = 42;
+int b = a;		// compilation error
+int c = (int)a;
+```
+
+
+
+C# provides several null checking operators:
+
+- `?` **conditional operator** (similar to JavaScript ternary operator)
+
+  ```C#
+  int i = nullableValue.HasValue ? nullableValue.Value : -1;
+  ```
+
+- `??` **null coalescing operator** (similar to JavaScript `||` shortcut operator)
+
+  ```C#
+  int i = nullableValue ?? -1;
+  ```
+
+- `?.` or `?` **null conditional operator** (optional chaining operator)
+  This evaluates to null if the playerCharacter is `null`.
+
+  ```C#
+  int? days = playerCharacter?.DaysSinceLastLogin;
+  // or
+  int days2 = playerCharacter?.DaysSinceLastLogin ?? -1;
+  ```
+
+  For arrays, we can use the `?` operator to guard against the entire array being `null`. If array is defined but given index is out of bounds, you will still get an error.
+
+  ```C#
+  PlayerCharacter[] pca = null;
+  string p1 = pca?[1]?.Name;
+  ```
+
+  
 
