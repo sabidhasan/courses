@@ -12,12 +12,12 @@ namespace c_sharp_nulls
                 System.Console.WriteLine(player.Name);
             }
 
-            if (player.DateOfBirth != null)
+            if (player.DateOfBirth.HasValue)
             {
                 System.Console.WriteLine(player.DateOfBirth);
             }
 
-            if (player.DaysSinceLastLogin != null)
+            if (player.DaysSinceLastLogin.HasValue)
             {
                 System.Console.WriteLine(player.DaysSinceLastLogin);
             }
