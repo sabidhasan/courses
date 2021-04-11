@@ -34,6 +34,8 @@ namespace c_sharp_nulls
             {
                 System.Console.WriteLine("Player is new");
             }
+
+            System.Console.WriteLine($"Player has #{player.Health} health");
         }
     }
 }
