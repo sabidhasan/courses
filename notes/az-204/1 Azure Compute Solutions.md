@@ -368,11 +368,10 @@ Overall cost determined by **app service plan**. Two types: **isolated** and **n
 - has no network isolation (meaning the web app runs directly in a resource group)
 - Most common type of app service plan
 - Five tiers:
-  - free/shared (F1 and D1) - not for prod
-  - Basic (B1, B2 and B3) - not for prod
-  - Standard (S1, S2, S3) - prod ready
-  - Premium v2 - prod ready
-  - Premium v3 - prod ready
+  - **free/shared** (F and D) - not for prod
+  - **Basic** (B) - not for prod
+  - **Standard** (S) - prod ready
+  - **Premium** (P) - prod ready
 
  **Isolated**:
 
