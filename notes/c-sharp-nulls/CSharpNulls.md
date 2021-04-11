@@ -29,7 +29,7 @@ To represent **nullable value types**, use the `System.Nullable<T>` struct - thi
 
 
 
-## Accessing Nullable Values
+# Accessing Nullable Values
 
 `Nullable<T>` provides various methods:
 
@@ -81,5 +81,22 @@ C# provides several null checking operators:
   string p1 = pca?[1]?.Name;
   ```
 
-  
+
+
+# Null Object Pattern and Null Reference Exceptions
+
+The **Null Object Pattern** reduces null checks in the client code. This reduces run time **null reference excetpions** and checks.
+
+The null object uses the same abstraction as the real class, except the null object *does* nothing.
+
+![image-20210411114612857](./CSharpNulls.assets/image-20210411114612857.png)
+
+We can further refactor this:
+
+1. Make ISpecialDefence an abstract class with abstract methods that child classes implement.
+2. Use the Null Object a private class within the SpecialDefence abstract class, and have a public field/getter for it to make it a singleton.
+
+It's a bad idea to use null objects to hide exceptions (e.g if you can't access the database, don't return a null object, instead throw the error which has a stack trace).
+
+
 
