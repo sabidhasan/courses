@@ -1,4 +1,6 @@
-﻿namespace c_sharp_nulls
+﻿using System;
+
+namespace c_sharp_nulls
 {
     class Program
     {
@@ -8,21 +10,21 @@
             player.IsNew = false;
             PlayerDisplayer.Display(player);
 
-            PlayerCharacter[] pca = new PlayerCharacter[3] {
+            PlayerCharacter?[] pca = {
                 new PlayerCharacter("John", new IronDefence()),
                 new PlayerCharacter("John 2", SpecialDefence.Null),
                 null
             };
 
-            string n = pca?[2]?.Name;
-            System.Console.WriteLine(n);
+            string n = pca?[1]?.Name ?? "";
+            Console.WriteLine(n);
 
-            System.Console.WriteLine("Taking damage");
-            pca[0].TakeDamage();
-            pca[1].TakeDamage();
-            foreach (PlayerCharacter p in pca)
+            Console.WriteLine("Taking damage");
+            pca?[0]?.TakeDamage();
+            pca?[1]?.TakeDamage();
+            foreach (PlayerCharacter? p in pca!)
             {
-                if (p != null) PlayerDisplayer.Display(p);
+                PlayerDisplayer.Display(p);
             }
         }
     }

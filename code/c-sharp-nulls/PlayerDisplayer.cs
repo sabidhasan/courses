@@ -2,8 +2,14 @@ namespace c_sharp_nulls
 {
     class PlayerDisplayer
     {
-        public static void Display(PlayerCharacter player)
+        public static void Display(PlayerCharacter? player)
         {
+            if (player == null)
+            {
+                System.Console.WriteLine("Player is null");
+                return;
+            }
+
             if (string.IsNullOrEmpty(player.Name))
             {
                 System.Console.WriteLine("Empty name");
