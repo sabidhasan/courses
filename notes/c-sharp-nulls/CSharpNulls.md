@@ -100,3 +100,56 @@ It's a bad idea to use null objects to hide exceptions (e.g if you can't access 
 
 
 
+# Non Nullable Reference Types
+
+C# 8.0 added more features for nulls, such as the ability for reference types to be marked non nullable. Before C#8.0, all reference types were assignable as null, and you had to add null checks to **dereference** them. With C#8.0, we can specify reference types as **non-nullable**, meaning no null checks are needed and `null` cannot be assigned to them. All this is enforced by the compiler and output warning or errors - this is done on an opt-in basis.
+
+To opt in, there are three options all of which mean that the variables cannot be `null`:
+
+1. surround code with `#nullable enable`
+
+   ```c#
+   #nullable enable
+   string message = null;
+   #nullable disable
+   ```
+
+2. at the top of the file to make it apply to the entire file.
+
+3. In the `.csproject` file to make it apply to the whole project `<Nullable>enable</Nullable>`
+
+
+
+When opted in, we can must mark specific nullable variables with a `?`:
+
+```C#
+#nullable enable
+string? message = null; // no error/warning
+```
+
+
+
+C#8 adds a **Null Forgiving Operator** (Typescript's `!` bang operator) in cases where the compiler is wrong in guessing null reference checks. This could be, for example, if a property is set using `Reflection` rather than directly. Uses:
+
+- Unit tests
+- Setting properties using reflection
+
+
+
+For constraining generics, we can use the `where` operator:
+
+```C#
+public static void LogNullable<T>(T value) where T : class?
+{
+  // value will be something that extends class
+  // i.e. an object or null, but not e.g. `DateTime?` as that is struct
+}
+
+public static void LogNonNullable<T>(T value) where T : class
+{
+  // now, value will be concrete - cannot be null
+}
+```
+
+
+
