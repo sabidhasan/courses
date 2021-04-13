@@ -104,7 +104,7 @@ public void Method(string op)
 ## Catching
 
 Catch blocks should be specified most specific to least specific.
-C#6.0 allows adding conditions (using `when`) for filtering when specific catch blocks should be run.
+C#6.0 allows adding filter conditions (using `when`) for filtering when specific catch blocks should be run (similar to `case` statements).
 
 ```C#
 try
@@ -160,4 +160,11 @@ catch (DivideByZeroException ex)
 ```
 
 
+
+To handle Global Errors for logging purposes, use `AppDomain`'s  unhandled exception event:
+
+```C#
+var currentAppDomain = AppDomain.CurrentDomain;
+currentAppDomain.UnhandledException += myExceptionHandler;  // event receives sender and exception args
+```
 
