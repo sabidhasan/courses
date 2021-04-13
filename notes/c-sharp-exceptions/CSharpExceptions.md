@@ -47,7 +47,7 @@ throw new System.Exception(string message, Exception innerException); // message
 
 ## Exceptions to Throw
 
-- `InvalidOperationException` 
+- `InvalidOperationException` - if property set or method call is invalid
 - `ArgumentException` - generic exception for throwing when method argument is invalid
 - `ArgumentNullException` - thrown when null passed to a non-null accepting method
 - `ArgumentOutOfRangeException` - e.g. passing 0 for a divisor
@@ -61,7 +61,7 @@ Do not throw these, as they are for runtime system use:
 - `NullReferenceException` - thrown when deferencing null object
 - `IndexOutOfRangeException` - when accessing an item in array that doesn't exist
 - `StackOverflowException` - for infinite recursion
-- `OutOfMemoryException` - when
+- `OutOfMemoryException`
 - `ApplicationException` - also, custom exceptions should not derive from the `ApplicationException` base class. This class was originally intended for only the CLR, but has been used all over the place apparently.
 
 
@@ -166,5 +166,25 @@ To handle Global Errors for logging purposes, use `AppDomain`'s  unhandled excep
 ```C#
 var currentAppDomain = AppDomain.CurrentDomain;
 currentAppDomain.UnhandledException += myExceptionHandler;  // event receives sender and exception args
+```
+
+
+
+# Custom Exceptions
+
+Custom exceptions should be created when they are different from .NET built in exceptions, or if you are building a library.
+
+Exception names should end with `Exception`, extend `System.Exception`, and implement standard constructors (message, wrapper and no parameter constructor).
+
+```C#
+class CalculationException : System.Exception
+{
+  private static readonly string DefaultMessage = "Calc error occurred!";
+  
+  // Three constructors
+  public CalculationException() : base(DefaultMessage) { }
+  public CalculationException(string message) : base(message) {}
+  public CalculationException(Exception innerException) : base(DefaultMessage, innerException) {}
+}
 ```
 
