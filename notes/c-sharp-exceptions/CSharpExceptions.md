@@ -64,3 +64,100 @@ Do not throw these, as they are for runtime system use:
 - `OutOfMemoryException` - when
 - `ApplicationException` - also, custom exceptions should not derive from the `ApplicationException` base class. This class was originally intended for only the CLR, but has been used all over the place apparently.
 
+
+
+# Catching, Throwing and Rethrowing Exceptions
+
+## Throwing
+
+To throw an exception, use the `throw` keyword:
+
+```C#
+public int Calculate(int num1, int num2, char operation)
+{
+  if (operation != '/')
+  {
+    // We use `nameof` so that if arg name changes, this will still be valid
+    throw new ArgumentOutOfRangeException(nameof(operation), "operator not supported");
+  }
+}
+```
+
+Expressions can be thrown as of C#7.0, for example in a `??` operator:
+
+```C#
+public void Method(string op)
+{
+	string nonNullValue = someString ?? throw new ArgumentNotNullException(nameof(op));  
+}
+```
+
+**Tips**
+
+- Program flow should not be controlled by throwing exceptions (this is unlike Python)
+- Never have empty catch blocks to swallow errors
+- Use `TryParse` type methods with `out` parameters rather than throwing exceptions
+- Return `null` for simple errors
+
+
+
+## Catching
+
+Catch blocks should be specified most specific to least specific.
+C#6.0 allows adding conditions (using `when`) for filtering when specific catch blocks should be run.
+
+```C#
+try
+{
+  // Some operation
+}
+catch (ArgumentNullException ex) when (ex.ParamName == "operationParam")
+{
+  // do something to handle specific exception
+}
+catch
+{
+  // handle all exceptions, without specifying type
+}
+finally
+{
+  // always execute
+}
+```
+
+
+
+## Rethrowing
+
+To rethrow, simply use the `throw` keyword **without** providing an exception variable. If you provide the variable, it will rethrow exactly that exception, thereby losing current stack trace:
+
+```C#
+try
+{
+  return Divide(num1, num2);
+}
+catch (DivideByZeroException ex)
+{
+  Log.Error(ex);
+  throw;
+}
+```
+
+
+
+**Rrethrowing with wrapping** allows re-throwing a caught exception while wrapping it. This allows, for example, changing exception type to make it more general.
+
+```C#
+try
+{
+  return Divide(num1, num2);
+}
+catch (DivideByZeroException ex)
+{
+	// Wrap the caught exception in another more general exception
+  throw new ArithmeticException("Invalid divisor", ex);
+}
+```
+
+
+
