@@ -188,3 +188,27 @@ class CalculationException : System.Exception
 }
 ```
 
+
+
+# Unit Testing - xUnit
+
+For xUnit unit testing against exceptions, create a project for testing and add `xunit` and `xunit.runner` from NuGet.
+
+```C#
+using Xunit;
+
+namespace tests
+{
+  public class CalculatorShould
+  {
+    [Fact]
+    public void ThrowsException()
+    {
+      var sut = new Calculator();
+      var exc = Assert.Throws<CalcOperationException>(() => sut.Calculate(1, 1, "&")); // invalid operation
+      Assert.Equal("+", exc.Operation);
+    }
+  }
+}
+```
+
