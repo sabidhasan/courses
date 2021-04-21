@@ -13,9 +13,16 @@ import { Component, OnInit } from '@angular/core';
 export class ServersComponent implements OnInit {
   username = ""
   buttonDisabled = true;
+  showSecret = false;
+  toggleClickTimes = [];
 
   constructor() { 
     this.buttonDisabled = this.username == "";
+  }
+
+  onDisplayClick() {
+    this.showSecret = !this.showSecret;
+    this.toggleClickTimes.push(+new Date())
   }
 
   ngOnInit(): void {
@@ -30,4 +37,7 @@ export class ServersComponent implements OnInit {
     this.username = "";
   }
 
+  getParaStyle(i: number) {
+    return i >= 5 ? { background: 'blue' } : {}
+  }
 }

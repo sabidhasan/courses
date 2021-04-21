@@ -1,7 +1,24 @@
-<input type="text" [(ngModel)]="username" (input)="onTextChange($event)" />
-<p>{{ username || "&nbsp;" }}</p>
+<div class="section">
+    <input type="text" [(ngModel)]="username" (input)="onTextChange($event)" />
+    <p *ngIf="!buttonDisabled">{{ username || "&nbsp;" }}</p>
+    <button [disabled]="buttonDisabled" (click)="onClick()">Add Name</button>
+</div>
 
-<button [disabled]="buttonDisabled" (click)="onClick()">Add Name</button>
+<div class="section">
+    <button (click)="onDisplayClick()">Display Details</button>
+    <p *ngIf="showSecret; else blank">SECRET GOES HERE!</p>
+    <ng-template #blank>
+        <p>&nbsp;</p>
+    </ng-template>
+
+    <p
+        *ngFor="let time of toggleClickTimes; let i = index"
+        [ngStyle]="getParaStyle(i)"
+        [ngClass]="{ whiteText: i >= 5 }"
+    >
+        {{time}}
+    </p>
+</div>
 
 <server></server>
 <server></server>

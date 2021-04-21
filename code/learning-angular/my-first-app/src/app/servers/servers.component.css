@@ -1,0 +1,10 @@
+.section {
+    display: block;
+    margin: 20px 0;
+    border: 1px solid;
+    padding: 25px 5px;
+}
+
+.whiteText {
+    color: white;
+}
