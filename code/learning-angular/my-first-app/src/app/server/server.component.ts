@@ -5,5 +5,7 @@ import { Component } from "@angular/core";
     templateUrl: './server.component.html'
 })
 export class ServerComponent {
-
+    serverId() {
+        return Math.round(Math.random() * 100);
+    }
 }

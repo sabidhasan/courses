@@ -1,0 +1,7 @@
+<input type="text" [(ngModel)]="username" (input)="onTextChange($event)" />
+<p>{{ username || "&nbsp;" }}</p>
+
+<button [disabled]="buttonDisabled" (click)="onClick()">Add Name</button>
+
+<server></server>
+<server></server>
