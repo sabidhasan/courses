@@ -4,17 +4,17 @@
             <div class="row">
                 <div class="col-sm-5 form-group">
                     <label for="shopping-name">Name</label>
-                    <input type="text" id="shopping-name" class="form-control">
+                    <input type="text" id="shopping-name" class="form-control" name="shopping-name" [(ngModel)]="nameValue">
                 </div>
                 <div class="col-sm-2 form-group">
                     <label for="shopping-amount">Amount</label>
-                    <input type="text" id="shopping-amount" class="form-control">
+                    <input type="number" min="1" id="shopping-amount" class="form-control" name="shopping-amount" [(ngModel)]="amountValue">
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
                     <button class="btn btn-primary" type="button">Clear</button>
-                    <button class="btn btn-success" type="button">Save</button>
+                    <button class="btn btn-success" type="button" (click)="onAddItem()">Save</button>
                     <button class="btn btn-danger" type="button">Delete</button>
                 </div>
             </div>

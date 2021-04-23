@@ -6,14 +6,14 @@ import { Ingredient } from '../shared/ingredient.model';
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.css']
 })
-export class ShoppingListComponent implements OnInit {
+export class ShoppingListComponent {
   ingredients: Ingredient[] = [];
 
   constructor() {
     this.ingredients.push(new Ingredient('apple', 2))    
   }
 
-  ngOnInit(): void {
+  handleIngredientAdded(ingredient: Ingredient) {
+    this.ingredients.push(ingredient);
   }
-
 }
