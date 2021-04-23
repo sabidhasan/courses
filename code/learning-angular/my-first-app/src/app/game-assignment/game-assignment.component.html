@@ -1,0 +1,14 @@
+<app-game-control (numberEmitted)="onNumberEmitted($event)"></app-game-control>
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div>
+        <app-odd *ngFor="let num of oddNumbers">
+            <p>This is a number {{ num }}</p>
+        </app-odd>
+    </div>
+    <div>
+        <app-even *ngFor="let num of evenNumbers">
+            <p>This is an even number {{ num }}</p>
+        </app-even>
+    </div>
+</div>
