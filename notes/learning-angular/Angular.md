@@ -146,7 +146,7 @@ By default, styles are **scoped** to each component - every HTML DOM node gets a
 To create a ref in the template, use the `#` symbol - refs are available to other elements but **only in the template**. This way, we can remove unneeded 2-way bindings (e.g a button that needs a value from an input on click doesn't need data in TS class):
 
 ```html
-<input type="text" #myRef />
+<input type="text" #componentRef />
 <button (click)="handleClick(myRef)"></button>		<!-- passes myRef element -->
 ```
 
@@ -185,7 +185,7 @@ To pass in content into a child (like slots):
 
 ```typescript
 // In child.component.ts
-@ViewContent('paragraphTag', { static: true}) paragraphTagRef: ElementRef;
+@ViewContent('paragraphTag', { static: true }) paragraphTagRef: ElementRef;
 ```
 
 
@@ -207,4 +207,7 @@ Some points:
 
 - **Change detection only works for primitives!**
 - Angular runs change detection often and runs **one extra time in dev mode**
-- 
+
+# Directives
+
+**Attribute** and **Structural** directives are different - structural attributes delete/add from DOM and attribute only affect internal attributes.
