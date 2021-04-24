@@ -8,7 +8,8 @@ import { ServersComponent } from './servers/servers.component';
 import { GameControlComponent } from './game-control/game-control.component';
 import { OddComponent } from './odd/odd.component';
 import { EvenComponent } from './even/even.component';
-import { GameAssignmentComponent } from './game-assignment/game-assignment.component'
+import { GameAssignmentComponent } from './game-assignment/game-assignment.component';
+import { UnlessDirective } from './unless.directive'
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { GameAssignmentComponent } from './game-assignment/game-assignment.compo
     GameControlComponent,
     OddComponent,
     EvenComponent,
-    GameAssignmentComponent
+    GameAssignmentComponent,
+    UnlessDirective
   ],
   imports: [
     BrowserModule,
