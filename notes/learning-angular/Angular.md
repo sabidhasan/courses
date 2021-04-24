@@ -58,7 +58,7 @@ All app-related components' directories go in the `app` directory. The selector 
 
 **Directives** are instructions in the DOM - two types are **structural** and **attribute** directives. Components are also directives but general directives are TS classes without templates. Examples:
 
-- `ng-template` and `*ngIf`, a **structural** directive (star indicates it's structural directive, that deletes/adds to DOM).
+- `ng-template` and `*ngIf`, a **structural** directive (star indicates it's structural directive that deletes/adds to DOM).
   The `*ngIf` is a shorthand for `<ng-template [ngIf]="condition"><div>Hello></div></ng-template>` in example below.
 
   ```html
@@ -72,12 +72,79 @@ All app-related components' directories go in the `app` directory. The selector 
   <app-server *ngFor="let server of servers; let i = index"></app-server>
   ```
 
+- `*ngSwitch` for switch/case in the template:
+
+  ```html
+  <div [ngSwitch]="someValue">
+    <p *ngSwitchCase="5">someValue is 5</p>
+    <p *ngSwitchCase="10">someValue is 10</p>
+    <p *ngSwitchDefault>Else case</p>
+  </div>
+  ```
+
+  
+
 - `ngStyle` or `ngClass`, both **attribute** directives:
 
 - ```html
   <p [ngStyle]="{ backgroundColor: 'red' }"></p>
   <div [ngClass]="{ onlineCssClass: isOnline() }"></div>
   ```
+
+ Only one structural directive can exist on an element at a time.
+
+
+
+**Custom attribute directives** can be made as needed; From cli we use `ng generate directive <name>`.
+
+They get access to DOM elems via DI. For updating elements' DOM attrs, use `Renderer2` as a DI within the `ngOnInit` lifecycle hook (safer than modifying DOM directly) or use the `HostListener` for listening to JS events on host, or `HostBinder` for binding to a host JS property. Custom directives also support **Inputs** for setting values from outside.
+
+```typescript
+@Directive({
+	selector: '[appBasicHighlight]'			// select by element, 
+})
+export class CustomHighlightDirective {
+  @Input() mouseColor: string = 'red';
+
+  // Bind to a host property
+  @HostBinding('style.background') backgroundColor: string;
+
+  // Bind to host event, updating style using input
+  @HostListener('mouseenter')
+  mouseEnter(eventData: Event) {
+    this.backgroundColor = this.mouseColor;
+  }
+
+  // ElementRef tells Angular to inject the element itself
+  constructor(private elRef: ElementRef, private renderer: Renderer2) { }
+  
+  ngOnInit() {
+    // Change on lifecycle method using renderer
+    this.renderer.setStyle(this.elRef.nativeElement, 'color', 'red');
+  }  
+}
+```
+
+```html
+<div appBasicHighlight [mouseColor]="pink">Hello!</div>
+```
+
+
+
+In certain cases, we name the directive and an input prop with the same name. This way, they can be used in template at once:
+
+```typescript
+@Directive({
+  selector: '[myCoolDir]'
+})
+export class Directive {
+	@Input('myCoolDir') myCoolDir: string;
+}
+```
+
+```html
+<div [myCoolDir]="red"></div> <!-- first, NG applies directive, then it uses [] to pass input -->
+```
 
 # Data Binding
 
@@ -211,3 +278,4 @@ Some points:
 # Directives
 
 **Attribute** and **Structural** directives are different - structural attributes delete/add from DOM and attribute only affect internal attributes.
+
