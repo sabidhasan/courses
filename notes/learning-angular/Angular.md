@@ -275,7 +275,31 @@ Some points:
 - **Change detection only works for primitives!**
 - Angular runs change detection often and runs **one extra time in dev mode**
 
-# Directives
+# Services
 
-**Attribute** and **Structural** directives are different - structural attributes delete/add from DOM and attribute only affect internal attributes.
+A **service** is a class for saving/fetching *data* (such as a data store) or *methods* (like a logger), decorated by `@Injectable`. A service class is provided to a module by supplying `providedIn`. Then, use service by requesting it in the constructor.
 
+Angular's injector is **hierarchical** - the same instance is provided to all child components of the module it is `providedIn`, but not parents.
+
+```bash
+ng generate service <service-name>
+```
+
+
+
+```typescript
+@Injectable({
+  providedIn: 'root'		// or any other module
+})
+export class LoggingService {
+  logStatusChange(status: string) { /* do something */ }
+}
+
+// In client class
+export class MyComponent {
+	constructor(private loggingService: LoggingService) { }  
+}
+
+```
+
+Also, services can serve as **observer pattern** - we can create an `EventEmitter` property and `emit` events from one part of the app, and use `.subscribe` on that property to listen for events.
