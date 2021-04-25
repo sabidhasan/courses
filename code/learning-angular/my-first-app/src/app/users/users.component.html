@@ -1,0 +1,12 @@
+<h1>Users</h1>
+
+<div style="display: flex;">
+    <div class="usersContainer">
+        <app-user *ngFor="let user of users" [user]="user"></app-user>
+    </div>
+    <div>
+        <app-user-events></app-user-events>
+    </div>
+</div>
+
+<button (click)="addUser()">Add New User</button>

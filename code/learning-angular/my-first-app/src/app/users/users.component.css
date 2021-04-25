@@ -1,0 +1,15 @@
+button {
+    padding: 8px;
+    background-color: lightgray;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.usersContainer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}

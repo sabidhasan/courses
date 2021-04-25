@@ -9,7 +9,9 @@ import { GameControlComponent } from './game-control/game-control.component';
 import { OddComponent } from './odd/odd.component';
 import { EvenComponent } from './even/even.component';
 import { GameAssignmentComponent } from './game-assignment/game-assignment.component';
-import { UnlessDirective } from './unless.directive'
+import { UsersComponent } from './users/users.component';
+import { UserComponent } from './user/user.component';
+import { UserEventsComponent } from './user-events/user-events.component'
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { UnlessDirective } from './unless.directive'
     OddComponent,
     EvenComponent,
     GameAssignmentComponent,
-    UnlessDirective
+    UsersComponent,
+    UserComponent,
+    UserEventsComponent
   ],
   imports: [
     BrowserModule,
