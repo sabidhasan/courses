@@ -277,9 +277,14 @@ Some points:
 
 # Services
 
-A **service** is a class for saving/fetching *data* (such as a data store) or *methods* (like a logger), decorated by `@Injectable`. A service class is provided to a module by supplying `providedIn`. Then, use service by requesting it in the constructor.
+A **service** is a class with several use cases:
 
-Angular's injector is **hierarchical** - the same instance is provided to all child components of the module it is `providedIn`, but not parents.
+1. Saving/fetching *data* (such as a data store)
+2. Centralizing *methods* (like a logger)
+3. Route Guards for router (see routing)
+4. Route Resolvers (these pre-fetch data before a route is loaded)
+
+Services are decorated by `@Injectable`. Service class is provided to modules by supplying `providedIn`. Use service by requesting it in constructor. Angular's injector is **hierarchical** - same instance is provided to all children of a module, but not parents.
 
 ```bash
 ng generate service <service-name>
@@ -303,3 +308,122 @@ export class MyComponent {
 ```
 
 Also, services can serve as **observer pattern** - we can create an `EventEmitter` property and `emit` events from one part of the app, and use `.subscribe` on that property to listen for events.
+
+# Routing
+
+## Setting up Routes
+
+Each route must have a **path** (without slash) and a **component**. To register routes, use the **RouterModule** in the root. Routing is generally kept in its own module.
+
+```typescript
+import { Routes } from '@angular/router';
+const appRoutes: Routes = [
+  { path: 'users/:id', component: UsersComponent, data: { /* any data needed goes here */ } },
+  { path: 'four-oh-four', component FourOhFourComponent },
+  { path: '**', redirectTo: '/four-oh-four' }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(appRoutes)],
+})
+```
+
+```html
+<router-outlet></router-outlet>			<!-- inject current route here -->
+```
+
+
+
+## Navigating in HTML
+
+An Angular route has three features. All can be provided when navigating routes:
+
+1. **params** (dynamic params part of the URL)
+
+2. **queryParams** (`?`)
+
+3. **fragment** (`#`)
+
+4. **data** (arbitrary data passed from router configuration)
+
+   
+
+To navigate, use `routerLink` directive on `<a>` tags by binding or using directly - takes array or exact path, absolute and relative:
+
+```html
+<a routerLink="/users">Some Link</a>
+
+<!-- goes to users relative to current page, ./users/5/edit -->
+<a [routerLink]="['users', 5, 'edit']">Some Link 2</a>
+```
+
+The `routerLinkActive` directive applies a CSS class to the element if that routerLink path is active:
+
+```html
+<a
+   routerLink="/somePage"
+   routerLinkActive="myCssClass"
+   [routerLinkActiveOptions]="{ exact: true }"
+   [queryParams]="{ allowEdit: '1234' }"
+   fragment="loading"
+>
+  Blah
+</a>
+```
+
+
+
+## Navigating Programatically
+
+The router can be used Typescript-side by injecting it. Optionally, we can pass a second param to make it relative to current path. To get dynamic params, use `currentRoute.snapshot.params`, a dict containing params:
+
+```typescript
+class MyComponent {
+  constructor(private router: Router, private currentRoute: ActivatedRoute) {
+    // currentRoute is current route, fragment is URL hash value (`#`)
+  	this.router.navigate(['/servers'], { relativeTo: currentRoute, queryParams: {}, fragment: 'loading' });
+  }
+}
+```
+
+
+
+**Route params, queryParams and fragment support observables** - `currentRoute.params` has a `subscribe` method to add an observer for params changes (this happens when navigating from dynamic route to dynamic route for same component [e.g. going from `/users/1` to `/users/2` if they both use `UsersComponent`, then the `ngOnInit` wont be called]).
+Angular destroys subscriptions automatically.
+
+
+
+## Nesting Routes
+
+Routes can be nested for cleaning up route object. To nest, use `children` property. The parent should be given a `router-outler`.
+
+```typescript
+{
+  path: 'servers',
+  component: ServersComponent,
+  children: [
+    { path: 'edit', component: ServersEdit }
+  ]
+}
+```
+
+
+
+## Guards
+
+A **route guard** is a service that implements the `CanActivate` and/or `CanActivateChild` interfaces or the `CanDeactivate` interface (this one gets access to the current component).
+
+Add `canActivate` or `canActivateChild` (or `canDeactivate`) can to a service to protect it (or its children) with that guard.
+
+
+
+## Resolvers
+
+A **route resolver** is a service that pre-fetches data for routes, so that Angular waits until it returns data before loading route. Resolvers implement `Resolve<T>` iterface where `T` is the data the resolver returns from its `resolve` method.
+
+Use the resolver for a route by adding it to the route definition. Then, Angular will inject `editData` as part of `data` being passed:
+
+```typescript
+{ path: 'edit', component: EditComponent, resolve: { editData: EditResolver } }
+```
+
