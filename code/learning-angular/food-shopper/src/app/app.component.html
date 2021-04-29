@@ -1,6 +1,5 @@
-<app-header (onRouteChange)="updateCurrentRoute($event)"></app-header>
+<app-header></app-header>
 
-<div>
-    <app-recipes *ngIf="showAppRecipes"></app-recipes>
-    <app-shopping-list *ngIf="!showAppRecipes"></app-shopping-list>
+<div style="padding:25px">
+    <router-outlet></router-outlet>
 </div>
