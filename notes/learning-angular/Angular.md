@@ -190,7 +190,7 @@ export class ChildComponent {
 
 
 
-**Services** are a way for components to communicate over longer distances to avoid prop drilling.
+**Services** are a way for components to communicate over longer distances to avoid prop drilling. In many cases, RxJS **Subject** is a better alternative to `EventEmitter` as it supports all RxJS pipes.
 
 
 
@@ -426,4 +426,41 @@ Use the resolver for a route by adding it to the route definition. Then, Angular
 ```typescript
 { path: 'edit', component: EditComponent, resolve: { editData: EditResolver } }
 ```
+
+
+
+# Observables
+
+**Observables** are alternative to promises coming via **RxJS**. Observables emit a stream of data that subscribers listen to (UI events, HTTP responses, custom). Observables have 3 hooks for subscribers:
+
+1. Data (for custom observer, done by calling `observer.next`)
+2. Error (for custom observer, done by calling `observer.error`)
+3. Observable completed (not all observables complete, like click events; for custom observer done by calling `observer.complete`)
+
+A custom observable can be created from numerous sources. For example: `interval` (time based), `Observer.create` (custom observer). Custom subscriptions MUST be cleaned up `onDestroy` to prevent memory leaks.
+
+Observebles also support **operators**, which do something to the data stream before calling the subscriber callback:
+
+- `pipe` - transforms data stream to make a new observable with operator(s) e.g. `map`
+- `map`
+- `filter`
+
+
+
+**Subjects** are similar to observables but they unlike normal observables that push data when THEY want, a subject's observers can ask for data as well. This means they are replacements for `EventEmitter`s.
+
+```typescript
+public onClickEvt = new EventEmitter<boolean>();
+onClick() { this.onClickEvt.emit(true); }
+
+// this is the same as:
+public onClickSubj = new Subject<boolean>();
+onClick() { this.onClickSubj.next(true); }
+```
+
+The observing component will **subscribe** to both the event emitter *and* subject similarly. Remember to **unsubscribe** onDestroy.
+
+
+
+# Forms
 
