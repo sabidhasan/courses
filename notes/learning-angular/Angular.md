@@ -464,3 +464,72 @@ The observing component will **subscribe** to both the event emitter *and* subje
 
 # Forms
 
+Angular manages local form state and validation. Two ways to create forms:
+
+1. **Template driven** - Angular infers form structure/values from HTML
+2. **Reactive** - Angular creates form programatically from config in Typescript
+
+
+
+## Template Driven Forms
+
+When the **FormsModule** is imported in the AppModule, Angular can creates form objects for `<form>`s in templates. To mark an input for the form, mark it with `ngModel`:
+
+```html
+<form (ngSubmit)="onSubmit(formRef)" #formRef="ngForm">
+  <!-- or, use ViewChild to get access to formRef rather than passing to onSubmit -->
+  <input type="text" name="username" ngModel required #usernameElem="ngModel">
+  <p *ngIf="!usernameElem.valid && usernameElem.touched">The above is invalid</p>
+  
+  <submit [disabled]="!formRef.valid && formRef.touched"></submit>
+</form>
+```
+
+- In Typescript the `onSubmit` handler gets access to the form object containing form state (for the fields and dirty/touched/valid) - of type `NgForm`.
+
+- To add **validation**, we can use directives such as: `required`, `email` (Angular-specific directive), `minlength`, etc.
+
+- Angular auto-adds CSS classes for validation and touched/dirty/valid.
+
+- To give a default value to an element, we can use one-way binding: `<input [ngModel]="someString">`. Alternatively, two way binding `<input [(ngModel)]="someVariable">` can be used to get access to the value in Typescript.
+
+- More complex form elements can be grouped by using `ngModelGroup` directive and providing a name (they get grouped in the `ngForm` object).
+
+- NgForm object provides `setValue` and `patchValue` for batch-setting or updating values programatically and `reset` (this resets form fields, CSS classes for touched/dirty/valid, etc).
+
+  
+
+## Reactive Forms
+
+Make class property of type `FormGroup` in Typescript. Secondly, import **ReactiveFormsModule** in the app module (the FormsModule is not needed). Initialize the form in `onInit`, passing init state and validators:
+
+```typescript
+myForm: FormGroup;
+
+onInit() {
+  this.myForm = new FormGroup({
+    // Initial state and validators
+    'email': new FormControl('inital state!', [Validators.required, Validators.email]),
+    'gender': new FormControl(null)
+  })
+}
+```
+
+Hook this form and its inputs to programatically created formgroup.
+
+```html
+<form [formGroup]="myForm">
+  <input type="email" name="email" formControlName="email">
+  <input type="radio" formControlName="gender">
+</form>
+```
+
+Differences compared to template driven forms:
+
+- onSubmit is handled similarly, but we don't use ViewChild, instead use the class `FormGroup` property to access form
+- To get values from other items, rather than using `#elemRef="ngModel"`, use `formGroup.get('name')`
+- To group form elements, use a `new FormGroup` in the parent `FormGroup`
+- A **FormArray** is a field that can store a dynamic number of controls. At runtime, we can `.push` a control into array.
+- **Custom validators** return an object with fields that fail validation. **Async validators** return a promis.
+- Forms and any fields in them provide two observables: **statusChanges** and **valueChanges**
+
