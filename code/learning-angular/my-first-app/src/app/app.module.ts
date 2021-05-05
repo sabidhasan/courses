@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ServerComponent } from './server/server.component';
@@ -11,7 +11,9 @@ import { EvenComponent } from './even/even.component';
 import { GameAssignmentComponent } from './game-assignment/game-assignment.component';
 import { UsersComponent } from './users/users.component';
 import { UserComponent } from './user/user.component';
-import { UserEventsComponent } from './user-events/user-events.component'
+import { UserEventsComponent } from './user-events/user-events.component';
+import { FormsComponent } from './forms/forms.component';
+import { FormsProgrammaticComponent } from './forms-programmatic/forms-programmatic.component'
 
 @NgModule({
   declarations: [
@@ -24,11 +26,14 @@ import { UserEventsComponent } from './user-events/user-events.component'
     GameAssignmentComponent,
     UsersComponent,
     UserComponent,
-    UserEventsComponent
+    UserEventsComponent,
+    FormsComponent,
+    FormsProgrammaticComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

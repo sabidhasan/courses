@@ -1,0 +1,46 @@
+div.form-holder {
+    margin-top: 50px;
+    border-top: 3px solid;
+}
+
+form {
+    margin-left: 15px;
+    margin-top: 15px;
+}
+
+form div {
+    margin: 15px 0;
+}
+
+form label {
+    font-size: 1.6rem;
+    width: 50%;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+}
+
+button {
+    margin: 0 0 15px 0;
+    border: 2px solid black;
+    background-color: cornflowerblue;
+    color: white;
+    padding: 5px 15px;
+    font-weight: bold;
+    font-size: 1.75rem;
+    border-radius: 5px;
+}
+
+button:disabled {
+    background-color: gray;
+    opacity: 40%;
+    cursor: not-allowed;
+}
+
+form .ng-invalid.ng-dirty:not(:focus) {
+    border: 1px solid red;
+    background-color: salmon;
+}
+
+.warning {
+    color: red;
+}

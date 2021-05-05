@@ -1,0 +1,37 @@
+<div class="form-holder">
+    <h1>forms-programmatic works!</h1>
+    <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label>
+                <span>Project Name: </span>
+                <input type="text" formControlName="projectName" formControlName="projectName">
+                <!-- <span class="warning" *ngIf="emailRef.touched && !emailRef.valid">
+                    Email is invalid
+                </span> -->
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <span>Email: </span>
+                <input type="email" formControlName="email" formControlName="email">
+                <!-- <span class="warning" *ngIf="emailRef.touched && !emailRef.valid">
+                    Email is invalid
+                </span> -->
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <span>Status</span>
+                <select formControlName="projectStatus">
+                    <option value="stable">Stable</option>
+                    <option value="critical">Critical</option>
+                    <option value="done">Done</option>
+                </select>
+            </label>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>

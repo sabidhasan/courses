@@ -1,0 +1,41 @@
+<div class="form-holder">
+    <h1>Forms</h1>
+    <form (ngSubmit)="handleSubmit()" #formRef="ngForm">
+        <div>
+            <label>
+                <span>Email: </span>
+                <input type="email" ngModel required email name="email" #emailRef="ngModel">
+                <span class="warning" *ngIf="emailRef.touched && !emailRef.valid">
+                    Email is invalid
+                </span>
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <span>Subscription Type</span>
+                <select name="subscriptionTypes" [(ngModel)]="defaultSubscription">
+                    <option
+                        *ngFor="let st of subscriptionTypes"
+                        [value]="st"
+                    >
+                        {{ st.slice(0, 1).toUpperCase() + st.slice(1) }}
+                    </option>
+                </select>
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <span>Password: </span>
+                <input type="password" name="password" ngModel required #passwordRef="ngModel">
+                <span class="warning" *ngIf="passwordRef.touched && !passwordRef.valid">
+                    Password is invalid
+                </span>
+            </label>
+        </div>
+
+        <p class="warning" *ngIf="!formRef.valid && formRef.touched">Form has errors</p>
+        <button type="submit" [disabled]="!formRef.valid">Submit</button>
+    </form>
+</div>
