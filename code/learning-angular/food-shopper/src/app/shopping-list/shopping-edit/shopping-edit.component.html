@@ -1,21 +1,23 @@
 <div class="row">
     <div class="col-xs-12">
-        <form>
+        <form (ngSubmit)="onUpdateItem()" #form="ngForm">
             <div class="row">
                 <div class="col-sm-5 form-group">
                     <label for="shopping-name">Name</label>
-                    <input type="text" id="shopping-name" class="form-control" name="shopping-name" [(ngModel)]="nameValue">
+                    <input type="text" id="shopping-name" class="form-control" name="name" ngModel required>
                 </div>
                 <div class="col-sm-2 form-group">
                     <label for="shopping-amount">Amount</label>
-                    <input type="number" min="1" id="shopping-amount" class="form-control" name="shopping-amount" [(ngModel)]="amountValue">
+                    <input type="number" min="1" id="shopping-amount" class="form-control" name="amount" ngModel required pattern="^[0-9]+$">
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <button class="btn btn-primary" type="button">Clear</button>
-                    <button class="btn btn-success" type="button" (click)="onAddItem()">Save</button>
-                    <button class="btn btn-danger" type="button">Delete</button>
+                    <button class="btn btn-primary" type="button" style="margin-right: 10px;" (click)="clearForm()">Clear</button>
+                    <button class="btn btn-success" type="submit" style="margin-right: 10px;" [disabled]="!form.valid">
+                        {{ this.isEditing ? 'Update' : 'Add' }}
+                    </button>
+                    <button class="btn btn-danger" type="button" (click)="handleDelete()" [disabled]="!this.isEditing">Delete</button>
                 </div>
             </div>
         </form>
