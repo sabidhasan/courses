@@ -30,7 +30,7 @@ All app-related components' directories go in the `app` directory. The selector 
 
 **Modules** bundle related functionality together. In smaller apps, you may only need one module. The `NgModule` decorator defines a module with config:
 
-1. **declarations** - dependent components
+1. **declarations** - dependent components, directives and pipes
 2. **imports** - what other modules this module uses (for example, Angular specific functionality from `@angular/forms`)
 3. **providers** - services used
 4. **bootstrap** - where to kick off this module
@@ -532,4 +532,16 @@ Differences compared to template driven forms:
 - A **FormArray** is a field that can store a dynamic number of controls. At runtime, we can `.push` a control into array.
 - **Custom validators** return an object with fields that fail validation. **Async validators** return a promis.
 - Forms and any fields in them provide two observables: **statusChanges** and **valueChanges**
+
+
+
+# Pipes
+
+Pipes transforms output in templates both in literals (`{{ }}`) and loops (`<p *ngFor="let s of list | filterPipe">`). For example the `uppercase` pipe: `<p>{{ name | uppercase }}</p>`, the `async` pipe that auto-resolves for promises/observables.
+
+Pipes can be **parameterized** by params: `<p>{{ someDate | date: 'fullDate' }}</p>`. Multiple params are colon-separated. Multiple pipes can be chained with `|`.
+
+**Custom pipes** can be defined: a pipe is a class decorated with `@Pipe({ name: string})` implementing the `PipeTransform` interface (`transform` method). Custom pipes have to be included in `declarations` of a module.
+
+Pipes don't get reevaluated when underlying reference data (obj and arrays) change. To change this, set `pure` to `false` which will update on any changes.
 
