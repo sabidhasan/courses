@@ -17,7 +17,7 @@
             <div class="dropdown-menu">
                 <li><a (click)="handleAddToShoppingList()" style="cursor: pointer;">Add to Shopping List</a> </li>
                 <li style="cursor: pointer;"><a [routerLink]="['edit']">Edit Recipe</a></li>
-                <li style="cursor: pointer;"><a>Delete Recipe</a></li>
+                <li style="cursor: pointer;" (click)="handleDeleteRecipe(recipe)"><a>Delete Recipe</a></li>
             </div>
         </div>
     </div>
