@@ -32,7 +32,7 @@ All app-related components' directories go in the `app` directory. The selector 
 
 1. **declarations** - dependent components, directives and pipes
 2. **imports** - what other modules this module uses (for example, Angular specific functionality from `@angular/forms`)
-3. **providers** - services used
+3. **providers** - services used (alternately services themselves define where they are provided via `providedIn` in their decorator) and Http Interceptors
 4. **bootstrap** - where to kick off this module
 
 
@@ -545,3 +545,34 @@ Pipes can be **parameterized** by params: `<p>{{ someDate | date: 'fullDate' }}<
 
 Pipes don't get reevaluated when underlying reference data (obj and arrays) change. To change this, set `pure` to `false` which will update on any changes.
 
+
+
+# HTTP Requests
+
+HTTP requests handled by **HTTPClientModule** (`@angular/client/http`), injected as an import in app module. Then, DI the HttpClient; data returned as an observable. Requests are not sent unless subscription is created (of course `pipe` is supported). HTTP methods in client are generically typable.
+
+```typescript
+constructor(private http: HttpClient) { }
+onCreate() {
+  this.http.post<ReturnType>('someUrl', { key: value }).subscribe((data) => console.log(data));
+  this.http.get<ReturnType>('someUrl').pipe(map(r => /* map*/)).subscribe((data) => console.log(data));
+}
+```
+
+Data fetching should be done in **services** while components handle UI-related things (e.g. loading state). Services should either provide a **Subject** (for multicasting), or return the observable from HTTP methods directly, which component can subscribe to.
+
+For **handling errors**, subscribe takes second callback with error details. Alternatively, create a **subject** in the service that components subcribe to. If generic error handling is required, `pipe` can be given a `catchError` operator.
+
+HTTPClient methods support customization:
+
+- **headers** allows appending headers
+
+- **params** allows query parameters
+
+- **observe** key tells Angular what to do with response - parse body, return entire response, return **events** (req sent, resp received...)
+
+- **responseType** for parsing strategy - JSON, blob, text, etc.
+
+  
+
+**Interceptors** are classes implementing `HttpInterceptor` interface injected into app root - they guard requests.
