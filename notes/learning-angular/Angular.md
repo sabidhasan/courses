@@ -419,12 +419,12 @@ Add `canActivate` or `canActivateChild` (or `canDeactivate`) can to a service to
 
 ## Resolvers
 
-A **route resolver** is a service that pre-fetches data for routes, so that Angular waits until it returns data before loading route. Resolvers implement `Resolve<T>` iterface where `T` is the data the resolver returns from its `resolve` method.
+A **route resolver** is a service that pre-fetches data for routes, so that Angular waits until it returns data before loading route. Resolvers implement `Resolve<T>` iterface where `T` is the data the resolver returns from its `resolve` method (as promise or observable). The `resolve` method gets the current route and router state.
 
 Use the resolver for a route by adding it to the route definition. Then, Angular will inject `editData` as part of `data` being passed:
 
 ```typescript
-{ path: 'edit', component: EditComponent, resolve: { editData: EditResolver } }
+{ path: 'edit', component: EditComponent, resolve: [EditResolver] }
 ```
 
 
