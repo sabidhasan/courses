@@ -1,0 +1,24 @@
+{
+    "recipes": [
+        {
+            "id": 0,
+            "name": "Test",
+            "description": "This is a good recipe",
+            "imagePath": "http://img.com",
+            "ingredients": [
+                {
+                    "name": "Pasta",
+                    "amount": 1
+                },
+                {
+                    "name": "Sauce",
+                    "amount": 2
+                },
+                {
+                    "name": "Cheese",
+                    "amount": 3
+                }
+            ]
+        }
+    ]
+}
