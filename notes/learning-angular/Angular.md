@@ -575,4 +575,53 @@ HTTPClient methods support customization:
 
   
 
-**Interceptors** are classes implementing `HttpInterceptor` interface injected into app root - they guard requests.
+**Interceptors** are Angular services (classes) implementing `HttpInterceptor` interface that is injected into app root - they guard requests. Add them in app root module:
+
+```typescript
+providers: [
+  { provide: HTTP_INTERCEPTORS, multi: true, useClass: YourAuthInterceptorClass }
+]
+```
+
+# Authentication
+
+Authentication is best handled in a dedicated service that returns Observables for POST/GET to respective endpoints. Steps to auth:
+
+1. Create `AuthService` that has `logIn`, `signUp` and `logOut` methods called from a form.
+
+   Methods return observable of HTTP methods (so that UI state can be handled in components), and serialize the user to `localStorage`. The `logOut` removes `localStorage` value, navigates to auth page.
+
+   Create `BehaviorSubject` for holding current user that emits upon login a `User` model, and `null` on `logOut`
+
+2. Transform error messages from backend in service (use `createError` to create custom rxjs errors)
+
+3. Redirect user on successful login within th component in success callback of subscription
+
+4. Create interceptor that calls the behavior subject and attaches user auth token
+
+5. Set up auto-login in AppRoot's `ngInit`
+
+6. Implement `autoLogout` that sets timer to log out when user subject is emitted (on autoLogin or login)
+
+7. Implement auth guard class `auth.guard.ts` for protected routes, and pass as `canActivate` in routes definition.
+
+
+
+A **BehaviorSubject** is just like Subject, but the BehaviorSubject allows subscribers to get the PREVIOUS value of the subject, even if they subscribe after that value was emitted. This is good for getting the previous value of a subject:
+
+```typescript
+public subj = new BehaviorSubject<number>(null);
+
+// In another component, take latest value and unsubscribe automatically
+const mySubjLatestValue = subj.pipe(take(1)).subscribe((val) => console.log(val));
+```
+
+The **ExhaustMap** operator switches an *outer observable* with *another observable*. It waits for an outer observable to be completed and after it is complete it replaces the outer observable with a newly returned observable in the callback:
+
+```typescript
+this.authService.userBehavior.pipe(
+	take(1), // exhause the observable after one value
+  exhaustMap((usr) => return of([1, 2, usr])) // replace userBehavior observable with 1, 2, user observable
+);
+```
+
