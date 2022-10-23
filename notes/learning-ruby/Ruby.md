@@ -1,8 +1,101 @@
-# **Ruby (SoloLearn)**
+# **Ruby and Rails**
+
+Sources:
+
+- SoloLearn
+- [This](https://www.youtube.com/watch?v=HMotb6naTe0) youtube tutorial
+- Michael Hartl's book
+- Learn Ruby the Hard Way
+
+
+
+## Questions
+
+- What variables are available in a view. Scaffold gen provides a `notice` and instance variables get included but what else?
+- How does `respond_do` and `status` work from the return of a controller
+
+
+
+## Rails
+
+### Overview and Routing
+
+Basics of request-response: Requests go to the **router** which directs the request to a **controller**, which (optionally) talks to the database through a **model** and then returns a **view** to the browser.
+
+Routing documentation: https://guides.rubyonrails.org/routing.html. For generating the RESTful actions' routes shown below, we can use:
+
+```ruby
+Rails.application.routes.draw do
+	resources :users			# generates routes for 7 standard routes
+end
+```
+
+Rails controllers have verbs that correspond to specfic RESTful actions:
+
+| **URL**           | **Action** | **Purpose**                          |
+| ----------------- | ---------- | ------------------------------------ |
+| GET /users        | `index`    | Show all users                       |
+| GET /users/1      | `show`     | Show one user                        |
+| GET /users/new    | `new`      | Show form for creating a user        |
+| GET /users/1/edit | `edit`     | Show form for editing one user       |
+| POST /users       | `create`   | Create a new user (from /users/new)  |
+| PATCH /users/1    | `update`   | Update one user (from /users/1/edit) |
+| DELETE /users/1   | `destroy`  | Delete one user                      |
+
+
+
+Controllers inherit from **ApplicationController**, which inherits from **ActionController::Base**
+Models inherit from **ApplicationRecord**, which inherits from **ActiveRecord::Base**
+
+### CLI
+
+Rails' CLI comes with several commands:
+
+1. `rails new` for generating a new app
+2. `rails server` for starting a local development server 
+3. `rails generate` for generating auto-created files. For example `rails generate scaffold User name:string` will quickly create a model, migration, test and views for a new entity
+4. `rails db:migrate` for migrating the database (or `rails db:rollback` for going back a step or `rails db:migrate:down VERSION=xxxx` for rolling back a specific migration)
+
+
+
+### Controllers and Views
+
+- Any **instance variables** in a controller are available to the view.
+- By default, a controller action that doesn't call `render` will return a view corresponding to the name of the controller
+- The `before_action` **action** allows running some code before some or all actions are run (e.g. set instance variable)
+- Handoff to a view:
+  - To return simple text from a controller, we can call `render html: <string>`
+  - If not render method or `respond_to` is given, Rails will try to look for the `<action>.html.erb` file in the views directory
+
+
+
+### Associations
+
+Enforced at the Rails level, they provide methods on the model to tie back to another model
+
+- `has_many` or `has_one` (the model with this line will be referenced in a **DIFFERENT** DB table)
+- `belongs_to` (the model with this line *actually has* an `id` + foreign key in its DB table)
+
+
+
+## Tooling
+
+Ruby language tools:
+
+- `rvm` - tool like `nvm` for managing the Ruby language versions (since the Ruby language comes with `gem`/`irb`/`ruby`, this tool also manages those)
+- `irb` - the interactive REPL for Ruby (built into the Ruby language)
+- `ruby` - the JIT tool for running a Ruby file (built into the Ruby language)
+- `gem` - tool for installing a single gem. A gem is a shippable module of Ruby code (built into the Ruby language)
+
+
+
+- `bundler` - tool for managing `Gemfile` and managing/installing a collection of gems. If two deps have the same dependency, `bundler` will ensure only one version gets installed
+
+
 
 ## Basic Concepts
 
-- Everything is an object
+- Ruby is an **object oriented language**
 
 - `puts` and `print` write to stdout. `print` will not end with new line
 
@@ -20,6 +113,8 @@
 
   - `/`, `+`, `-`, `%`, `**`, `*`
 
+  
+
 - Ruby supports **parallel assignment** and the self assignment operators:
 
   ```ruby
@@ -27,8 +122,18 @@
   a += 55
   ```
 
+  
+
 - **Strings** are double or single quoted, but single quote only allow escaping `'` and `\`. To have \n, \t etc., use a double quote string. **Concatenation** works with `+` and we can use `*` to repeat strings.
 
+  Can also do named interpolation
+
+  ```ruby
+  st = "Some string %{interpolation}" % { interpolation: "ss"}
+  ```
+
+  Multiline strings are `"""` triple quoted.
+  
 - To **read user input**, use the `gets` method (or `gets.chomp` which chomps the new line). To get integer input, use `gets.to_i`, which will return `0` if user enters something non sensical.
 
 
