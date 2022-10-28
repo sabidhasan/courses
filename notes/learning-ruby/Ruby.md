@@ -18,19 +18,15 @@ Sources:
 
 ## Rails
 
-### Overview and Routing
+### Overview
 
 Basics of request-response: Requests go to the **router** which directs the request to a **controller**, which (optionally) talks to the database through a **model** and then returns a **view** to the browser.
 
-Routing documentation: https://guides.rubyonrails.org/routing.html. For generating the RESTful actions' routes shown below, we can use:
 
-```ruby
-Rails.application.routes.draw do
-	resources :users			# generates routes for 7 standard routes
-end
-```
 
-Rails controllers have verbs that correspond to specfic RESTful actions:
+### Routing
+
+Routing documentation: https://guides.rubyonrails.org/routing.html. Rails supports the seven RESTful routes corresponding to controller actions:
 
 | **URL**           | **Action** | **Purpose**                          |
 | ----------------- | ---------- | ------------------------------------ |
@@ -44,22 +40,56 @@ Rails controllers have verbs that correspond to specfic RESTful actions:
 
 
 
-Controllers inherit from **ApplicationController**, which inherits from **ActionController::Base**
-Models inherit from **ApplicationRecord**, which inherits from **ActiveRecord::Base**
+Defining routes can be done in several ways.
+
+1. **Generate all seven routes/actions**
+
+```ruby
+Rails.application.routes.draw do
+	resources :users			# generates standard routes to Users controller
+end
+```
+
+2. **For a root route**
+
+```ruby
+Rails.application.routes.draw do
+  root "some_controller#some_method" # map "/" to a controller action
+end
+```
+
+3. **For a specific HTTP Verb and URL**
+
+```ruby
+Rails.application.routes.draw do
+  get "user/profile"				# map route to UserController#profile action
+  get "user/profile", to: "user#profile"			# same as above
+end
+```
+
+
+
+
 
 ### CLI
 
 Rails' CLI comes with several commands:
 
-1. `rails new` for generating a new app
-2. `rails server` for starting a local development server 
-3. `rails generate` for generating auto-created files. For example `rails generate scaffold User name:string` will quickly create a model, migration, test and views for a new entity
-4. `rails db:migrate` for migrating the database (or `rails db:rollback` for going back a step or `rails db:migrate:down VERSION=xxxx` for rolling back a specific migration)
+| **Command**                                                | Shortcut  | Purpose                                                      |
+| ---------------------------------------------------------- | --------- | ------------------------------------------------------------ |
+| `rails new`                                                |           | Generate a new app scaffold                                  |
+| `rails server`                                             | `rails s` | Start local development server                               |
+| `rails generate ...`                                       | `rails g` | Auto-generate code. For example: `rails generate scaffold User name:string` |
+| `rails destroy`                                            |           | For undoing something `rails generate` makes                 |
+| `rails db:migrate`                                         |           | For applyig migrations to the database                       |
+| `rails db:rollback` or `rails db:migrate:down VERSION=xxx` |           | For going back a step or for rolling back a specific migration |
 
 
 
 ### Controllers and Views
 
+- Controllers inherit from **ApplicationController**, which inherits from **ActionController::Base**
+  Models inherit from **ApplicationRecord**, which inherits from **ActiveRecord::Base**
 - Any **instance variables** in a controller are available to the view.
 - By default, a controller action that doesn't call `render` will return a view corresponding to the name of the controller
 - The `before_action` **action** allows running some code before some or all actions are run (e.g. set instance variable)
