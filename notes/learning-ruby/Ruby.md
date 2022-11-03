@@ -1,6 +1,6 @@
 # **Ruby and Rails**
 
-Sources:
+## Sources
 
 - SoloLearn
 - [This](https://www.youtube.com/watch?v=HMotb6naTe0) youtube tutorial
@@ -24,7 +24,7 @@ Basics of request-response: Requests go to the **router** which directs the requ
 
 
 
-### Routing
+### Routes and Routing
 
 Routing documentation: https://guides.rubyonrails.org/routing.html. Rails supports the seven RESTful routes corresponding to controller actions:
 
@@ -37,6 +37,13 @@ Routing documentation: https://guides.rubyonrails.org/routing.html. Rails suppor
 | POST /users       | `create`   | Create a new user (from /users/new)  |
 | PATCH /users/1    | `update`   | Update one user (from /users/1/edit) |
 | DELETE /users/1   | `destroy`  | Delete one user                      |
+
+
+
+Each route has a corresponding URL helper that Rails provides. Basically:
+
+- For resources-generated routes, `<controller_name>_<action>_url` is a magic helper for the route
+- For custom routes (like `get "path/test", to: "some_controller#method"`), a corresponding `path_test_url` helper is defined
 
 
 
@@ -86,16 +93,48 @@ Rails' CLI comes with several commands:
 
 
 
-### Controllers and Views
+### Controllers
 
 - Controllers inherit from **ApplicationController**, which inherits from **ActionController::Base**
   Models inherit from **ApplicationRecord**, which inherits from **ActiveRecord::Base**
-- Any **instance variables** in a controller are available to the view.
 - By default, a controller action that doesn't call `render` will return a view corresponding to the name of the controller
 - The `before_action` **action** allows running some code before some or all actions are run (e.g. set instance variable)
 - Handoff to a view:
   - To return simple text from a controller, we can call `render html: <string>`
   - If not render method or `respond_to` is given, Rails will try to look for the `<action>.html.erb` file in the views directory
+- 
+
+
+
+### Views/Templates
+
+- Any **instance variables** in a controller are available to the view.
+
+- By default, a controller action that doesn't call `render` will return a view corresponding to the name of the controller
+
+- The `application.html.erb` is the special base view from which all views descend
+
+- `<%= %>` means execute the Ruby code AND put it in the template output
+  `<% %>` means execute the Ruby code and don't put it in the output
+
+- `yield` and `provide` (formerly called `content_for` but that helper is not Asset Pipeline friendly) are sibling methods that allow a template to consume data from a child. For example:
+
+  ```erb
+  <!-- In parent template, like `application.html.erb` -->
+  <title><%= yield(:page_title) %>
+  
+  <!-- Then in the child template -->
+  <% provide(:title, "My title") %>
+  ```
+
+  When used without any helper `yield` will consume data from the template returned from the controller directly.
+
+- **Helpers** are controller methods available in views for that controller (or in all controllers if provided in the **ApplicationControllerHelper**)
+
+- Built in methods available in views
+
+  - `link_to` will create an anchor tag with the given text. It can be given a path (like `root_url` or `some_controller_some_action_url`)
+    - `image_tag` creates an image tag from an image in the asset pipeline (`app/assets/images`) along with optional alt-text and styles. It also adds cache invalidation hash to the image path.
 
 
 
@@ -105,6 +144,17 @@ Enforced at the Rails level, they provide methods on the model to tie back to an
 
 - `has_many` or `has_one` (the model with this line will be referenced in a **DIFFERENT** DB table)
 - `belongs_to` (the model with this line *actually has* an `id` + foreign key in its DB table)
+
+
+
+### Testing
+
+Rails ships with **Minitest**, but **Rspec** is the more common framework for testing.
+
+Minitest helpers:
+
+- `assert_response` for asserting HTTP response code 
+- `assert_select(tag, text)` for asserting against a page tag
 
 
 
@@ -127,7 +177,9 @@ Ruby language tools:
 
 - Ruby is an **object oriented language**
 
-- `puts` and `print` write to stdout. `print` will not end with new line
+- `puts` and `print` write to stdout. `print` will not end with new line.
+
+- `p` is a shorthand for calling `puts` with `.inspect` on the passed parameter. `.inspect` is a Ruby method for writing a **LITERAL** representation of something (e.g. strings will have quotes, arrays will have `[...]`, etc.)
 
 - For comments, use:
 
@@ -389,6 +441,38 @@ puts Math::PI
 - **Public** - method available from outside the class
 - **Protected** - method available from the object of the <u>same family</u> (the object itself, by using `self.<method>` or from another object of the same class)
 - **Private** - method literally only available from within object (*not* from the outside, *not* with `self.<method>`, and not with another object of any type)
+
+
+
+To find any object's class (the blueprint that made this object), call the `.class` method. To find a class's parent class, call the `.superclass` method. For example:
+
+```ruby
+"some string".class															# String
+"some string".class.class												# Class (class of a class is Class)
+"some string".class.superclass									# Object
+"some string".class.superclass.superclass				# BasicObject
+"some string".class.superclass.superclass.superclass				# nil
+
+Class.class											# Class
+Class.superclass								# Module - this is key - Class extends Module
+Class.superclass.superclass			# Object
+```
+
+All classes inherit ultimately from `BasicObject`, whose superclass is `nil`.
+
+
+
+To add to another another class, redefine the class anywhere:
+
+```ruby
+class String
+  def custom_method
+    # this methocd lives on all objects of the String type now!
+  end
+end
+```
+
+
 
 
 
