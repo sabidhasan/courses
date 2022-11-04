@@ -40,10 +40,11 @@ Routing documentation: https://guides.rubyonrails.org/routing.html. Rails suppor
 
 
 
-Each route has a corresponding URL helper that Rails provides. Basically:
+Each route has two corresponding helpers that Rails provides. Basically: something like `get "path/test", to: "some_controller#method"`), a corresponding `path_test_url` helper (and the `_path` helper) is defined.
 
-- For resources-generated routes, `<controller_name>_<action>_url` is a magic helper for the route
-- For custom routes (like `get "path/test", to: "some_controller#method"`), a corresponding `path_test_url` helper is defined
+The **path** and **url** helpers are defined from the entries in `routes.rb`. Each entry has an `_path` and an `_url`, where the former has the path (like `/about`) and the latter has full URL (`http://example.com/about`). Convention is to use `_path` unless redirecting, in which case you use `_url`.
+
+The `as` kwarg can be used to alias the helpers' names.
 
 
 
@@ -86,10 +87,11 @@ Rails' CLI comes with several commands:
 | ---------------------------------------------------------- | --------- | ------------------------------------------------------------ |
 | `rails new`                                                |           | Generate a new app scaffold                                  |
 | `rails server`                                             | `rails s` | Start local development server                               |
-| `rails generate ...`                                       | `rails g` | Auto-generate code. For example: `rails generate scaffold User name:string` |
+| `rails generate ...`                                       | `rails g` | Auto-generate code. For example: `rails generate scaffold User name:string` or `integration_test` |
 | `rails destroy`                                            |           | For undoing something `rails generate` makes                 |
 | `rails db:migrate`                                         |           | For applyig migrations to the database                       |
 | `rails db:rollback` or `rails db:migrate:down VERSION=xxx` |           | For going back a step or for rolling back a specific migration |
+| `rails routes`                                             |           | Lists all of the available routes                            |
 
 
 
@@ -133,8 +135,29 @@ Rails' CLI comes with several commands:
 
 - Built in methods available in views
 
-  - `link_to` will create an anchor tag with the given text. It can be given a path (like `root_url` or `some_controller_some_action_url`)
-    - `image_tag` creates an image tag from an image in the asset pipeline (`app/assets/images`) along with optional alt-text and styles. It also adds cache invalidation hash to the image path.
+  - `link_to` along with `_path` URL helpers create an anchor tag. It can be given a path (like `root_url` or `some_path`). See routing section for more details
+  - `image_tag` creates an image tag from an image in the asset pipeline (`app/assets/images`) along with optional alt-text and styles. It also adds cache invalidation hash to the image path.
+  - `render` will render a **partial**: a piece of an ERB template that can be inserted. Unlike `yield`, this is for DRYing the code where you *know* what fills in the blank. The render helpers looks in `app/views` for a file starting with `_<file_name>.html.erb`. By convention, shared partials are placed in either:
+    - `app/views/shared` - for partials shared in a few places
+    - `app/views/layouts` - for partials used in all of the site
+
+
+
+### Asset Pipeline
+
+The asset pipeline simplifies management of static assets (images and styles) and works in combination with Webpack for JS assets and preprocessors for SCSS/LESS files. (*Note: this text might be outdated because a lot changed in Rails 7*).
+
+**Asset Directories**
+These indicate where assets can be found. There are three directories:
+
+1. `app/assets` - assets for this application
+2. `lib/assets` - for custom created libraries
+3. `vendor/assets` - for assets from third parties
+
+All directories have subdirectories for `stylesheets` and `images`. Because assets can be spread over multiple files (either within one of the above directories or multiple), the **Sprockets** gem's job is to combine the bundlable assets (CSS and JS) into one file. 
+
+**Manifests and Preprocessing**
+Rails automatically minifies the files, which is called a **manifest**. Rails also handles preprocessing (as for SCSS/LESS) before passing the assets into the pipeline.
 
 
 
@@ -149,7 +172,9 @@ Enforced at the Rails level, they provide methods on the model to tie back to an
 
 ### Testing
 
-Rails ships with **Minitest**, but **Rspec** is the more common framework for testing.
+Rails ships with **Minitest**, but **Rspec** is the more common framework for testing. Integration tests can be created with the rails generator, as well.
+
+Helpers needed for more than one test can be provided in `test_helper.rb`. For example, you can `include` another module here if needed for many tests.
 
 Minitest helpers:
 
