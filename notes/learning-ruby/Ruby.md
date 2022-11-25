@@ -11,8 +11,8 @@
 
 ## Questions
 
-- What variables are available in a view. Scaffold gen provides a `notice` and instance variables get included but what else?
-- How does `respond_do` and `status` work from the return of a controller
+- What variables are available in a view. Scaffold gem provides a `notice` and instance variables get included but what else?
+- How does `respond_to` and `status` work from the return of a controller
 
 
 
@@ -161,12 +161,27 @@ Rails automatically minifies the files, which is called a **manifest**. Rails al
 
 
 
-### Associations
+### Models, Associations and Migrations
+
+A model, which ultimtely extend from `ActiveRecord`, allow persisting data to a data store. Models can be generated with the CLI, and consist of a class as well as a corresponding **migration**: this is an incremental change to the DB that can be rolled back as needed:
+
+```bash
+$ bin/rails db:migrate
+```
+
+Models magically provide getters for the fields in the DB. They do this by looking at **schema.rb**, which is a Ruby class that tracks the state of the DB currently. If an ActiveRecord backed database needs to be recreated, this file is used (rather than running all migrations, because this is faster and because migrations can be irreversible).
 
 Enforced at the Rails level, they provide methods on the model to tie back to another model
 
 - `has_many` or `has_one` (the model with this line will be referenced in a **DIFFERENT** DB table)
 - `belongs_to` (the model with this line *actually has* an `id` + foreign key in its DB table)
+
+Models have some useful methods:
+
+- `valid?`
+- `.save` (and `save!`, which fails if it can't succeed)
+- `.create` for making a new model and saving it in one step
+- `destroy` (and `destroy!`)
 
 
 
@@ -474,8 +489,8 @@ To find any object's class (the blueprint that made this object), call the `.cla
 ```ruby
 "some string".class															# String
 "some string".class.class												# Class (class of a class is Class)
-"some string".class.superclass									# Object
-"some string".class.superclass.superclass				# BasicObject
+"some string".class.superclass									# Object (String extends Object)
+"some string".class.superclass.superclass				# BasicObject (object extends BasicObject)
 "some string".class.superclass.superclass.superclass				# nil
 
 Class.class											# Class
